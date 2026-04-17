@@ -13,8 +13,8 @@ export default function BottomNav() {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 flex justify-center">
-      <div className="w-full max-w-md bg-white border-t-[0.5px] border-black rounded-t-[18px] h-[92px] flex items-center justify-around px-8">
+    <div className="fixed bottom-0 left-0 right-0 z-[5000] flex justify-center pointer-events-auto">
+      <div className="w-full max-w-md bg-white border-t-[0.5px] border-black rounded-t-[18px] h-[92px] shadow-[0_-4px_24px_rgba(0,0,0,0.08)] flex items-center justify-around px-8">
         {/* R (Home) */}
         <button
           onClick={() => navigate('/matches')}

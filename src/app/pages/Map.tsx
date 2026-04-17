@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
-import { Loader2, LocateFixed, Menu } from 'lucide-react';
+import { Loader2, LocateFixed } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -30,6 +30,79 @@ const DISTANCE_OPTIONS = [
   { label: '10 km', value: 10000 },
 ];
 
+function distanceMeters(a: [number, number], b: [number, number]): number {
+  const R = 6371000;
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const dLat = toRad(b[0] - a[0]);
+  const dLon = toRad(b[1] - a[1]);
+  const lat1 = toRad(a[0]);
+  const lat2 = toRad(b[0]);
+  const h =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
+  return 2 * R * Math.asin(Math.min(1, Math.sqrt(h)));
+}
+
+async function fetchOverpassJson(center: [number, number], radiusMeters: number): Promise<any> {
+  const [lat, lon] = center;
+  const overpassQuery = `
+    [out:json][timeout:25];
+    (
+      node(around:${radiusMeters},${lat},${lon})["building"="apartments"];
+      way(around:${radiusMeters},${lat},${lon})["building"="apartments"];
+      node(around:${radiusMeters},${lat},${lon})["tourism"="apartment"];
+      way(around:${radiusMeters},${lat},${lon})["tourism"="apartment"];
+      node(around:${radiusMeters},${lat},${lon})["amenity"="real_estate_agent"];
+      way(around:${radiusMeters},${lat},${lon})["amenity"="real_estate_agent"];
+    );
+    out center tags;
+  `;
+
+  const dataParam = encodeURIComponent(overpassQuery.replace(/\s+/g, ' ').trim());
+  const overpassUrl = `https://overpass-api.de/api/interpreter?data=${dataParam}`;
+
+  // Browser CORS often blocks Overpass; proxy avoids that on static hosts (GitHub Pages).
+  const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(overpassUrl)}`;
+  const response = await fetch(proxyUrl);
+  if (!response.ok) throw new Error('proxy fetch failed');
+  const payload = await response.json();
+  if (typeof payload.contents !== 'string' || !payload.contents.trim()) throw new Error('invalid proxy response');
+  try {
+    return JSON.parse(payload.contents);
+  } catch {
+    throw new Error('overpass parse failed');
+  }
+}
+
+async function fetchPhotonFallback(center: [number, number], radiusMeters: number): Promise<RentalPlace[]> {
+  const [lat, lon] = center;
+  const url = `https://photon.komoot.io/api/?q=apartment&lat=${lat}&lon=${lon}&limit=80&lang=en`;
+  const response = await fetch(url);
+  if (!response.ok) throw new Error('photon failed');
+  const data = await response.json();
+  const next: RentalPlace[] = [];
+  const features = data.features ?? [];
+  for (let i = 0; i < features.length; i++) {
+    const f = features[i];
+    const coords = f.geometry?.coordinates;
+    if (!Array.isArray(coords) || coords.length < 2) continue;
+    const position: [number, number] = [coords[1], coords[0]];
+    if (distanceMeters(center, position) > radiusMeters) continue;
+    const props = f.properties ?? {};
+    const name =
+      props.name ||
+      props.street ||
+      (props.city ? `Near ${props.city}` : 'Place');
+    next.push({
+      id: `photon-${i}-${props.osm_id ?? coords[0]}-${coords[1]}`,
+      name,
+      type: props.type === 'house' ? 'Housing' : 'Nearby place',
+      position,
+    });
+  }
+  return next;
+}
+
 export default function Map() {
   const [userPosition, setUserPosition] = useState<[number, number]>(DEFAULT_CENTER);
   const [radius, setRadius] = useState(2500);
@@ -49,33 +122,8 @@ export default function Map() {
     setIsLoading(true);
     setError('');
 
-    try {
-      const [lat, lon] = center;
-      const overpassQuery = `
-        [out:json][timeout:25];
-        (
-          node(around:${radiusMeters},${lat},${lon})["building"="apartments"];
-          way(around:${radiusMeters},${lat},${lon})["building"="apartments"];
-          node(around:${radiusMeters},${lat},${lon})["tourism"="apartment"];
-          way(around:${radiusMeters},${lat},${lon})["tourism"="apartment"];
-          node(around:${radiusMeters},${lat},${lon})["amenity"="real_estate_agent"];
-          way(around:${radiusMeters},${lat},${lon})["amenity"="real_estate_agent"];
-        );
-        out center tags;
-      `;
-
-      const response = await fetch('https://overpass-api.de/api/interpreter', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'text/plain;charset=UTF-8',
-        },
-        body: overpassQuery,
-      });
-
-      if (!response.ok) throw new Error('Could not load nearby rentals.');
-
-      const data = await response.json();
-      const nextRentals: RentalPlace[] = (data.elements ?? [])
+    const mapElements = (data: any): RentalPlace[] =>
+      (data.elements ?? [])
         .map((element: any) => {
           const latValue = element.lat ?? element.center?.lat;
           const lonValue = element.lon ?? element.center?.lon;
@@ -99,10 +147,46 @@ export default function Map() {
         })
         .filter(Boolean);
 
+    try {
+      let data: any;
+      try {
+        data = await fetchOverpassJson(center, radiusMeters);
+      } catch {
+        data = await fetch('https://overpass-api.de/api/interpreter', {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+          body: `
+            [out:json][timeout:25];
+            (
+              node(around:${radiusMeters},${center[0]},${center[1]})["building"="apartments"];
+              way(around:${radiusMeters},${center[0]},${center[1]})["building"="apartments"];
+            );
+            out center tags;
+          `,
+        }).then((r) => {
+          if (!r.ok) throw new Error('direct overpass failed');
+          return r.json();
+        });
+      }
+
+      let nextRentals = mapElements(data);
+
+      if (!nextRentals.length) {
+        nextRentals = await fetchPhotonFallback(center, radiusMeters);
+      }
+
       setRentals(nextRentals);
-      if (!nextRentals.length) setError('No rentals found in this range. Try a larger distance.');
+      if (!nextRentals.length) {
+        setError('No rentals found in this range. Try a larger distance.');
+      }
     } catch (err) {
-      setError('Unable to fetch rentals right now. Please try again.');
+      try {
+        const fallback = await fetchPhotonFallback(center, radiusMeters);
+        setRentals(fallback);
+        if (!fallback.length) setError('No places found nearby. Try increasing distance.');
+      } catch {
+        setError('Unable to load nearby places. Check your connection and try again.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -144,10 +228,7 @@ export default function Map() {
     <div className="bg-white relative h-screen w-full max-w-md mx-auto">
       {/* Top-left Controls */}
       <div className="absolute top-6 left-6 z-[1000] w-[230px] bg-white/95 rounded-[15px] px-3 py-3 shadow-md">
-        <div className="flex items-center justify-between mb-2">
-          <button className="p-1">
-            <Menu className="size-6" />
-          </button>
+        <div className="flex items-center justify-end mb-2">
           <button
             onClick={handleUseMyLocation}
             className="bg-[#d9d9d9] rounded-[10px] px-2 h-[28px] flex items-center gap-1 text-[11px] font-['ABC_Diatype_Edu:Regular',sans-serif]"
