@@ -2,3 +2,66 @@
 @import './tailwind.css';
 @import './theme.css';
 @import './leaflet.css';
+
+.phone-mockup-shell {
+  position: relative;
+  width: min(420px, calc(100vw - 24px));
+  height: min(860px, calc(100vh - 24px));
+  margin: 12px auto;
+}
+
+.phone-mockup-frame {
+  position: absolute;
+  inset: 0;
+  border: 10px solid #141414;
+  border-radius: 46px;
+  background: #141414;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+.phone-mockup-frame::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  width: 130px;
+  height: 22px;
+  transform: translateX(-50%);
+  border-radius: 0 0 14px 14px;
+  background: #0f0f0f;
+}
+
+.phone-mockup-screen {
+  position: absolute;
+  inset: 10px;
+  border-radius: 36px;
+  overflow: hidden;
+  background: #fff;
+}
+
+@media (max-width: 520px) {
+  .phone-mockup-shell {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+  }
+
+  .phone-mockup-frame {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .phone-mockup-frame::before {
+    content: none;
+  }
+
+  .phone-mockup-screen {
+    position: relative;
+    inset: auto;
+    height: 100%;
+    border-radius: 0;
+  }
+}

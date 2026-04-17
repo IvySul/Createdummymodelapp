@@ -5,7 +5,12 @@ import { UserProvider } from './context/UserContext';
 function App() {
   return (
     <UserProvider>
-      <RouterProvider router={router} />
+      <div className="phone-mockup-shell">
+        <div className="phone-mockup-frame" aria-hidden="true" />
+        <div className="phone-mockup-screen">
+          <RouterProvider router={router} />
+        </div>
+      </div>
     </UserProvider>
   );
 }
