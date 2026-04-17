@@ -16,7 +16,9 @@ export default function QuestionnaireStep2() {
   const [formData, setFormData] = useState({
     bio: '',
     budget: [500],
-    substances: '',
+    drinking: '',
+    smoking: '',
+    otherSubstances: '',
     pets: '',
     cleanliness: '',
     guests: '',
@@ -84,12 +86,46 @@ export default function QuestionnaireStep2() {
           Living Habits
         </p>
 
-        {/* Substances */}
+        {/* Drinking */}
         <div className="mb-6">
           <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-2">
-            Do you smoke, drink, or use other substances?
+            Drinking
           </p>
-          <Select value={formData.substances} onValueChange={(value) => setFormData({ ...formData, substances: value })}>
+          <Select value={formData.drinking} onValueChange={(value) => setFormData({ ...formData, drinking: value })}>
+            <SelectTrigger className="bg-[#d9d9d9] h-[38px] rounded-[11px] border-none w-full">
+              <SelectValue placeholder="Select an option" />
+            </SelectTrigger>
+            <SelectContent>
+              {substanceOptions.map(option => (
+                <SelectItem key={option} value={option}>{option}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Smoking */}
+        <div className="mb-6">
+          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-2">
+            Smoking
+          </p>
+          <Select value={formData.smoking} onValueChange={(value) => setFormData({ ...formData, smoking: value })}>
+            <SelectTrigger className="bg-[#d9d9d9] h-[38px] rounded-[11px] border-none w-full">
+              <SelectValue placeholder="Select an option" />
+            </SelectTrigger>
+            <SelectContent>
+              {substanceOptions.map(option => (
+                <SelectItem key={option} value={option}>{option}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Other Substances */}
+        <div className="mb-6">
+          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-2">
+            Other substances
+          </p>
+          <Select value={formData.otherSubstances} onValueChange={(value) => setFormData({ ...formData, otherSubstances: value })}>
             <SelectTrigger className="bg-[#d9d9d9] h-[38px] rounded-[11px] border-none w-full">
               <SelectValue placeholder="Select an option" />
             </SelectTrigger>
