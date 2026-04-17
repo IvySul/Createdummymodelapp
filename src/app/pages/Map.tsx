@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
-import { Loader2, LocateFixed } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -23,11 +23,11 @@ type RentalPlace = {
 
 const DEFAULT_CENTER: [number, number] = [35.9544, -83.9295];
 const DISTANCE_OPTIONS = [
-  { label: '0.5 km', value: 500 },
-  { label: '1 km', value: 1000 },
-  { label: '2.5 km', value: 2500 },
-  { label: '5 km', value: 5000 },
-  { label: '10 km', value: 10000 },
+  { label: '0.5 mi', value: 805 },
+  { label: '1 mi', value: 1609 },
+  { label: '2 mi', value: 3219 },
+  { label: '3 mi', value: 4828 },
+  { label: '5 mi', value: 8047 },
 ];
 
 function distanceMeters(a: [number, number], b: [number, number]): number {
@@ -229,13 +229,12 @@ export default function Map() {
       {/* Top-left Controls */}
       <div className="absolute top-6 left-6 z-[1000] w-[230px] bg-white/95 rounded-[15px] px-3 py-3 shadow-md">
         <div className="flex items-center justify-end mb-2">
-          <button
-            onClick={handleUseMyLocation}
-            className="bg-[#d9d9d9] rounded-[10px] px-2 h-[28px] flex items-center gap-1 text-[11px] font-['ABC_Diatype_Edu:Regular',sans-serif]"
-          >
-            {isLocating ? <Loader2 className="size-3 animate-spin" /> : <LocateFixed className="size-3" />}
-            Locate
-          </button>
+          {isLocating ? (
+            <div className="bg-[#d9d9d9] rounded-[10px] px-2 h-[28px] flex items-center gap-1 text-[11px] font-['ABC_Diatype_Edu:Regular',sans-serif]">
+              <Loader2 className="size-3 animate-spin" />
+              Locating...
+            </div>
+          ) : null}
         </div>
 
         <div className="bg-[#f4f4f4] h-[34px] rounded-[12px] px-3 flex items-center mb-2">
