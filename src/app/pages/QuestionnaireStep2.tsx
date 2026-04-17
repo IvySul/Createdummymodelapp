@@ -10,6 +10,7 @@ import {
 } from "../components/ui/select";
 import { Textarea } from "../components/ui/textarea";
 import { Slider } from "../components/ui/slider";
+import { Input } from "../components/ui/input";
 
 export default function QuestionnaireStep2() {
   const navigate = useNavigate();
@@ -32,6 +33,19 @@ export default function QuestionnaireStep2() {
   const guestOptions = ['Love guests', 'Okay with guests', 'Rarely have guests', 'No guests'];
   const scheduleOptions = ['Morning person', 'Night person', 'Flexible'];
   const noiseOptions = ['Very quiet', 'Quiet', 'Moderate', 'Loud'];
+
+  const handleBudgetInputChange = (value: string) => {
+    if (value === '') {
+      setFormData({ ...formData, budget: [0] });
+      return;
+    }
+
+    const parsed = Number(value);
+    if (Number.isNaN(parsed)) return;
+
+    const clamped = Math.min(10000, Math.max(0, parsed));
+    setFormData({ ...formData, budget: [clamped] });
+  };
 
   return (
     <div className="bg-white relative min-h-screen w-full overflow-y-auto pb-24">
@@ -75,9 +89,15 @@ export default function QuestionnaireStep2() {
             </div>
           </div>
           <div className="mt-2 text-center">
-            <span className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[20px]">
-              ${formData.budget[0]}
-            </span>
+            <Input
+              type="number"
+              min={0}
+              max={10000}
+              step={100}
+              value={formData.budget[0]}
+              onChange={(e) => handleBudgetInputChange(e.target.value)}
+              className="mx-auto h-[38px] w-[150px] rounded-[11px] border-none bg-[#d9d9d9] text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[20px]"
+            />
           </div>
         </div>
 
