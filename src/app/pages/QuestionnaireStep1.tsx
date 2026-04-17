@@ -30,7 +30,6 @@ export default function QuestionnaireStep1() {
 
   const genders = ['Male', 'Female', 'Non-binary', 'Prefer not to say'];
   const ethnicities = ['Asian', 'Black', 'Hispanic/Latino', 'White', 'Middle Eastern', 'Mixed', 'Other', 'Prefer not to say'];
-  const occupations = ['Student', 'Software Engineer', 'Teacher', 'Healthcare Worker', 'Artist', 'Business Professional', 'Service Industry', 'Other'];
   const religions = ['Christian', 'Muslim', 'Jewish', 'Hindu', 'Buddhist', 'Atheist', 'Agnostic', 'Other', 'Prefer not to say'];
   const politicalViews = ['Very Liberal', 'Liberal', 'Moderate', 'Conservative', 'Very Conservative', 'Not Political', 'Prefer not to say'];
 
@@ -134,16 +133,12 @@ export default function QuestionnaireStep1() {
           <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-2">
             Occupation
           </p>
-          <Select value={formData.occupation} onValueChange={(value) => setFormData({ ...formData, occupation: value })}>
-            <SelectTrigger className="bg-[#d9d9d9] h-[38px] rounded-[11px] border-none w-full">
-              <SelectValue placeholder="Select occupation" />
-            </SelectTrigger>
-            <SelectContent>
-              {occupations.map(occupation => (
-                <SelectItem key={occupation} value={occupation}>{occupation}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Input
+            value={formData.occupation}
+            onChange={(e) => setFormData({ ...formData, occupation: e.target.value })}
+            placeholder="Type your occupation"
+            className="bg-[#d9d9d9] h-[38px] rounded-[11px] border-none font-['ABC_Diatype_Edu:Regular',sans-serif]"
+          />
         </div>
 
         {/* Religion */}
