@@ -31,7 +31,7 @@ export default function QuestionnaireStep1() {
   const genders = ['Male', 'Female', 'Non-binary', 'Prefer not to say'];
   const ethnicities = ['Asian', 'Black', 'Hispanic/Latino', 'White', 'Middle Eastern', 'Mixed', 'Other', 'Prefer not to say'];
   const religions = ['Christian', 'Muslim', 'Jewish', 'Hindu', 'Buddhist', 'Atheist', 'Agnostic', 'Other', 'Prefer not to say'];
-  const politicalViews = ['Very Liberal', 'Liberal', 'Moderate', 'Conservative', 'Very Conservative', 'Not Political', 'Prefer not to say'];
+  const politicalViews = ['Right', 'Left', 'Not political', 'Moderate'];
 
   return (
     <div className="bg-white relative min-h-screen w-full overflow-y-auto pb-24">
@@ -164,7 +164,7 @@ export default function QuestionnaireStep1() {
             Politics
           </p>
           <div className="grid grid-cols-4 gap-2">
-            {politicalViews.slice(0, 4).map(view => (
+            {politicalViews.map(view => (
               <button
                 key={view}
                 onClick={() => setFormData({ ...formData, politics: view })}
@@ -172,7 +172,7 @@ export default function QuestionnaireStep1() {
                   formData.politics === view ? 'ring-2 ring-black' : ''
                 }`}
               >
-                {view.split(' ')[0]}
+                {view}
               </button>
             ))}
           </div>
