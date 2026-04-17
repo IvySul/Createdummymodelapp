@@ -30,6 +30,10 @@ export default function QuestionnaireStep2() {
     min: 0,
     max: 10000,
   });
+  const [budgetRangeInput, setBudgetRangeInput] = useState({
+    min: '0',
+    max: '10000',
+  });
 
   const substanceOptions = ['Never', 'Socially', 'Regularly', 'Prefer not to say'];
   const petOptions = ['No pets', 'Have pets', 'Love pets but don\'t have', 'Allergic to pets'];
@@ -38,18 +42,45 @@ export default function QuestionnaireStep2() {
   const scheduleOptions = ['Morning person', 'Night person', 'Flexible'];
   const noiseOptions = ['Very quiet', 'Quiet', 'Moderate', 'Loud'];
 
-  const handleBudgetRangeChange = (field: 'min' | 'max', value: string) => {
-    if (value === '') return;
-    const parsed = Number(value);
-    if (Number.isNaN(parsed)) return;
+  const commitBudgetRangeInput = (field: 'min' | 'max') => {
+    const rawValue = budgetRangeInput[field];
+    const fallbackValue = budgetRange[field];
+
+    if (rawValue.trim() === '') {
+      setBudgetRangeInput({
+        ...budgetRangeInput,
+        [field]: String(fallbackValue),
+      });
+      return;
+    }
+
+    const parsed = Number(rawValue);
+    if (Number.isNaN(parsed)) {
+      setBudgetRangeInput({
+        ...budgetRangeInput,
+        [field]: String(fallbackValue),
+      });
+      return;
+    }
 
     const clampedValue = Math.min(10000, Math.max(0, parsed));
     const next = { ...budgetRange, [field]: clampedValue };
 
-    if (next.min >= next.max) return;
+    if (next.min >= next.max) {
+      setBudgetRangeInput({
+        ...budgetRangeInput,
+        min: String(budgetRange.min),
+        max: String(budgetRange.max),
+      });
+      return;
+    }
 
     const clampedBudget = Math.min(next.max, Math.max(next.min, formData.budget[0]));
     setBudgetRange(next);
+    setBudgetRangeInput({
+      min: String(next.min),
+      max: String(next.max),
+    });
     setFormData({ ...formData, budget: [clampedBudget] });
   };
 
@@ -81,9 +112,15 @@ export default function QuestionnaireStep2() {
           <div className="flex items-center gap-4">
             <Input
               type="number"
-              value={budgetRange.min}
-              onChange={(e) => handleBudgetRangeChange('min', e.target.value)}
-              className="bg-[#d9d9d9] h-[30px] rounded-[11px] border-none px-2 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] min-w-[60px] w-[60px]"
+              value={budgetRangeInput.min}
+              onChange={(e) => setBudgetRangeInput({ ...budgetRangeInput, min: e.target.value })}
+              onBlur={() => commitBudgetRangeInput('min')}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.currentTarget.blur();
+                }
+              }}
+              className="no-number-spinner bg-[#d9d9d9] h-[30px] rounded-[11px] border-none px-2 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] min-w-[60px] w-[60px]"
             />
             <Slider
               value={formData.budget}
@@ -95,9 +132,15 @@ export default function QuestionnaireStep2() {
             />
             <Input
               type="number"
-              value={budgetRange.max}
-              onChange={(e) => handleBudgetRangeChange('max', e.target.value)}
-              className="bg-[#d9d9d9] h-[30px] rounded-[11px] border-none px-2 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] min-w-[60px] w-[60px]"
+              value={budgetRangeInput.max}
+              onChange={(e) => setBudgetRangeInput({ ...budgetRangeInput, max: e.target.value })}
+              onBlur={() => commitBudgetRangeInput('max')}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.currentTarget.blur();
+                }
+              }}
+              className="no-number-spinner bg-[#d9d9d9] h-[30px] rounded-[11px] border-none px-2 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] min-w-[60px] w-[60px]"
             />
           </div>
           <div className="mt-2 text-center">
