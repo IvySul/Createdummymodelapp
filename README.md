@@ -1,7 +1,7 @@
 
-  # Create dummy model app
+  # Untitled
 
-  This is a code bundle for Create dummy model app. The original project is available at https://www.figma.com/design/Yd9tKL8qc6IQF4xdf53c0s/Create-dummy-model-app.
+  This is a code bundle for Untitled. The original project is available at https://www.figma.com/design/Yd9tKL8qc6IQF4xdf53c0s/Untitled.
 
   ## Running the code
 
