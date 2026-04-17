@@ -16,7 +16,7 @@ export default function QuestionnaireStep2() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     bio: '',
-    budget: [500],
+    budget: [500, 2500],
     drinking: '',
     smoking: '',
     otherSubstances: '',
@@ -75,13 +75,18 @@ export default function QuestionnaireStep2() {
       return;
     }
 
-    const clampedBudget = Math.min(next.max, Math.max(next.min, formData.budget[0]));
+    const clampedBudgetMin = Math.min(next.max, Math.max(next.min, formData.budget[0]));
+    const clampedBudgetMax = Math.min(next.max, Math.max(next.min, formData.budget[1]));
+    const normalizedBudget = [
+      Math.min(clampedBudgetMin, clampedBudgetMax),
+      Math.max(clampedBudgetMin, clampedBudgetMax),
+    ];
     setBudgetRange(next);
     setBudgetRangeInput({
       min: String(next.min),
       max: String(next.max),
     });
-    setFormData({ ...formData, budget: [clampedBudget] });
+    setFormData({ ...formData, budget: normalizedBudget });
   };
 
   return (
@@ -145,7 +150,7 @@ export default function QuestionnaireStep2() {
           </div>
           <div className="mt-2 text-center">
             <span className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[20px]">
-              ${formData.budget[0]}
+              ${formData.budget[0]} - ${formData.budget[1]}
             </span>
           </div>
         </div>
