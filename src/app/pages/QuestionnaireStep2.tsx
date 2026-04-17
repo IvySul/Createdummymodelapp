@@ -26,6 +26,10 @@ export default function QuestionnaireStep2() {
     schedule: '',
     noise: '',
   });
+  const [budgetRange, setBudgetRange] = useState({
+    min: 0,
+    max: 10000,
+  });
 
   const substanceOptions = ['Never', 'Socially', 'Regularly', 'Prefer not to say'];
   const petOptions = ['No pets', 'Have pets', 'Love pets but don\'t have', 'Allergic to pets'];
@@ -34,17 +38,17 @@ export default function QuestionnaireStep2() {
   const scheduleOptions = ['Morning person', 'Night person', 'Flexible'];
   const noiseOptions = ['Very quiet', 'Quiet', 'Moderate', 'Loud'];
 
-  const handleBudgetInputChange = (value: string) => {
-    if (value === '') {
-      setFormData({ ...formData, budget: [0] });
-      return;
-    }
-
+  const handleBudgetRangeChange = (field: 'min' | 'max', value: string) => {
     const parsed = Number(value);
     if (Number.isNaN(parsed)) return;
 
-    const clamped = Math.min(10000, Math.max(0, parsed));
-    setFormData({ ...formData, budget: [clamped] });
+    const next = { ...budgetRange, [field]: parsed };
+    const normalizedMin = Math.min(next.min, next.max);
+    const normalizedMax = Math.max(next.min, next.max);
+    const clampedBudget = Math.min(normalizedMax, Math.max(normalizedMin, formData.budget[0]));
+
+    setBudgetRange({ min: normalizedMin, max: normalizedMax });
+    setFormData({ ...formData, budget: [clampedBudget] });
   };
 
   return (
@@ -73,31 +77,31 @@ export default function QuestionnaireStep2() {
             Budget
           </p>
           <div className="flex items-center gap-4">
-            <div className="bg-[#d9d9d9] h-[30px] rounded-[11px] px-3 flex items-center justify-center min-w-[60px]">
-              <span className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px]">0</span>
-            </div>
+            <Input
+              type="number"
+              value={budgetRange.min}
+              onChange={(e) => handleBudgetRangeChange('min', e.target.value)}
+              className="h-[30px] rounded-[11px] border-none bg-[#d9d9d9] px-2 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] min-w-[70px]"
+            />
             <Slider
               value={formData.budget}
               onValueChange={(value) => setFormData({ ...formData, budget: value })}
-              min={0}
-              max={10000}
+              min={budgetRange.min}
+              max={budgetRange.max}
               step={100}
               className="flex-1"
             />
-            <div className="bg-[#d9d9d9] h-[30px] rounded-[11px] px-3 flex items-center justify-center min-w-[60px]">
-              <span className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px]">10000</span>
-            </div>
-          </div>
-          <div className="mt-2 text-center">
             <Input
               type="number"
-              min={0}
-              max={10000}
-              step={100}
-              value={formData.budget[0]}
-              onChange={(e) => handleBudgetInputChange(e.target.value)}
-              className="mx-auto h-[38px] w-[150px] rounded-[11px] border-none bg-[#d9d9d9] text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[20px]"
+              value={budgetRange.max}
+              onChange={(e) => handleBudgetRangeChange('max', e.target.value)}
+              className="h-[30px] rounded-[11px] border-none bg-[#d9d9d9] px-2 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] min-w-[70px]"
             />
+          </div>
+          <div className="mt-2 text-center">
+            <span className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[20px]">
+              ${formData.budget[0]}
+            </span>
           </div>
         </div>
 
