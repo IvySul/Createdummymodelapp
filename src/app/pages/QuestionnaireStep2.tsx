@@ -86,55 +86,45 @@ export default function QuestionnaireStep2() {
           Living Habits
         </p>
 
-        {/* Drinking */}
+        {/* Substances */}
         <div className="mb-6">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-2">
-            Drinking
+          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-3">
+            Drinking / Smoking / Other substances
           </p>
-          <Select value={formData.drinking} onValueChange={(value) => setFormData({ ...formData, drinking: value })}>
-            <SelectTrigger className="bg-[#d9d9d9] h-[38px] rounded-[11px] border-none w-full">
-              <SelectValue placeholder="Select an option" />
-            </SelectTrigger>
-            <SelectContent>
-              {substanceOptions.map(option => (
-                <SelectItem key={option} value={option}>{option}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+          <div className="grid grid-cols-3 gap-2">
+            <Select value={formData.drinking} onValueChange={(value) => setFormData({ ...formData, drinking: value })}>
+              <SelectTrigger className="bg-[#d9d9d9] h-[38px] rounded-[11px] border-none w-full">
+                <SelectValue placeholder="Drinking" />
+              </SelectTrigger>
+              <SelectContent>
+                {substanceOptions.map(option => (
+                  <SelectItem key={`drinking-${option}`} value={option}>{option}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-        {/* Smoking */}
-        <div className="mb-6">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-2">
-            Smoking
-          </p>
-          <Select value={formData.smoking} onValueChange={(value) => setFormData({ ...formData, smoking: value })}>
-            <SelectTrigger className="bg-[#d9d9d9] h-[38px] rounded-[11px] border-none w-full">
-              <SelectValue placeholder="Select an option" />
-            </SelectTrigger>
-            <SelectContent>
-              {substanceOptions.map(option => (
-                <SelectItem key={option} value={option}>{option}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+            <Select value={formData.smoking} onValueChange={(value) => setFormData({ ...formData, smoking: value })}>
+              <SelectTrigger className="bg-[#d9d9d9] h-[38px] rounded-[11px] border-none w-full">
+                <SelectValue placeholder="Smoking" />
+              </SelectTrigger>
+              <SelectContent>
+                {substanceOptions.map(option => (
+                  <SelectItem key={`smoking-${option}`} value={option}>{option}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-        {/* Other Substances */}
-        <div className="mb-6">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-2">
-            Other substances
-          </p>
-          <Select value={formData.otherSubstances} onValueChange={(value) => setFormData({ ...formData, otherSubstances: value })}>
-            <SelectTrigger className="bg-[#d9d9d9] h-[38px] rounded-[11px] border-none w-full">
-              <SelectValue placeholder="Select an option" />
-            </SelectTrigger>
-            <SelectContent>
-              {substanceOptions.map(option => (
-                <SelectItem key={option} value={option}>{option}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            <Select value={formData.otherSubstances} onValueChange={(value) => setFormData({ ...formData, otherSubstances: value })}>
+              <SelectTrigger className="bg-[#d9d9d9] h-[38px] rounded-[11px] border-none w-full">
+                <SelectValue placeholder="Other" />
+              </SelectTrigger>
+              <SelectContent>
+                {substanceOptions.map(option => (
+                  <SelectItem key={`other-${option}`} value={option}>{option}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         {/* Pets */}
