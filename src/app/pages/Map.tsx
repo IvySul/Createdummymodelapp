@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Circle, MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
+import { Circle, MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import { Loader2, LocateFixed, Menu } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
 import L from 'leaflet';
@@ -24,16 +24,6 @@ type RentalPlace = {
 const DEFAULT_CENTER: [number, number] = [35.9544, -83.9295];
 const MIN_RADIUS = 500;
 const MAX_RADIUS = 10000;
-
-function RecenterMap({ center }: { center: [number, number] }) {
-  const map = useMap();
-
-  useEffect(() => {
-    map.setView(center);
-  }, [center, map]);
-
-  return null;
-}
 
 export default function Map() {
   const [userPosition, setUserPosition] = useState<[number, number]>(DEFAULT_CENTER);
@@ -200,12 +190,12 @@ export default function Map() {
 
       {/* Map */}
       <MapContainer
+        key={`${userPosition[0]}-${userPosition[1]}`}
         center={userPosition}
         zoom={14}
         style={{ height: '100%', width: '100%' }}
         zoomControl={false}
       >
-        <RecenterMap center={userPosition} />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
