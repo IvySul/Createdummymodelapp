@@ -123,23 +123,23 @@ export default function Matches() {
         {/* Details Card */}
         <div className="bg-[#d9d9d9] rounded-[51px] p-6 shadow-lg">
           {/* Stats Row */}
-          <div className="flex items-center border-b border-black pb-4 mb-4 gap-4 overflow-x-auto whitespace-nowrap flex-nowrap">
-            <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
+          <div className="no-scrollbar flex items-center border-b border-black pb-4 mb-4 gap-4 overflow-x-auto whitespace-nowrap flex-nowrap">
+            <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] shrink-0">
               {match.age}
             </span>
-            <div className="w-px h-[35px] bg-black" />
-            <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
+            <div className="w-px h-[35px] bg-black shrink-0" />
+            <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] shrink-0">
               {match.gender}
             </span>
-            <div className="w-px h-[35px] bg-black" />
-            <div className="flex items-center gap-1">
+            <div className="w-px h-[35px] bg-black shrink-0" />
+            <div className="flex items-center gap-1 shrink-0">
               <MapPin className="size-5" />
               <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
                 {match.school}
               </span>
             </div>
-            <div className="w-px h-[35px] bg-black" />
-            <div className="flex items-center gap-1">
+            <div className="w-px h-[35px] bg-black shrink-0" />
+            <div className="flex items-center gap-1 shrink-0">
               <DollarSign className="size-5" />
               <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
                 {match.budget}

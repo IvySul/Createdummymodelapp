@@ -12,3 +12,12 @@
 .no-number-spinner[type='number'] {
   -moz-appearance: textfield;
 }
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
