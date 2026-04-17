@@ -3,7 +3,7 @@ import BottomNav from '../components/BottomNav';
 
 export default function Profile() {
   return (
-    <div className="bg-white relative min-h-screen w-full pb-24">
+    <div className="bg-white relative min-h-screen w-full max-w-md mx-auto pb-24">
       {/* Header */}
       <div className="flex items-center gap-4 px-6 pt-12 mb-8">
         <div className="size-[58px] rounded-full overflow-hidden bg-[#eaddff] flex items-center justify-center flex-shrink-0">

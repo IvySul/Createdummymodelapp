@@ -25,7 +25,7 @@ export default function Matches() {
   const match = matches[0];
 
   return (
-    <div className="bg-white relative min-h-screen w-full pb-24">
+    <div className="bg-white relative min-h-screen w-full max-w-md mx-auto pb-24">
       {/* Header */}
       <div className="flex items-center justify-between px-6 pt-12 mb-8">
         <button className="p-2">

@@ -61,7 +61,7 @@ const apartments = [
 
 export default function Map() {
   return (
-    <div className="bg-white relative h-screen w-full">
+    <div className="bg-white relative h-screen w-full max-w-md mx-auto">
       {/* Header with Menu */}
       <div className="absolute top-8 left-6 z-[1000] bg-white rounded-lg shadow-md p-2">
         <button className="p-2">

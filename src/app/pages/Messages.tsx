@@ -42,7 +42,7 @@ const conversations = [
 
 export default function Messages() {
   return (
-    <div className="bg-white relative min-h-screen w-full pb-24">
+    <div className="bg-white relative min-h-screen w-full max-w-md mx-auto pb-24">
       {/* Header */}
       <div className="flex items-start gap-4 px-6 pt-12 mb-8">
         <button className="p-2 mt-2">
