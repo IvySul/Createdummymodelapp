@@ -1,5 +1,6 @@
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { Menu } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { Circle, MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
+import { Loader2, LocateFixed, Menu } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -13,53 +14,137 @@ const icon = L.icon({
   iconAnchor: [12, 41],
 });
 
-// Sample apartments near University of Tennessee, Knoxville
-const apartments = [
-  {
-    id: 1,
-    name: 'The Standard',
-    address: '1900 Melrose Ave',
-    price: 850,
-    position: [35.9539, -83.9288] as [number, number],
-  },
-  {
-    id: 2,
-    name: 'GrandMarc',
-    address: '2009 Grand Ave',
-    price: 920,
-    position: [35.9560, -83.9310] as [number, number],
-  },
-  {
-    id: 3,
-    name: 'The Knox',
-    address: '1307 Clinch Ave',
-    price: 780,
-    position: [35.9626, -83.9200] as [number, number],
-  },
-  {
-    id: 4,
-    name: 'The Nine',
-    address: '1916 Melrose Pl',
-    price: 890,
-    position: [35.9545, -83.9295] as [number, number],
-  },
-  {
-    id: 5,
-    name: 'Campus Vue',
-    address: '1522 Highland Ave',
-    price: 810,
-    position: [35.9580, -83.9250] as [number, number],
-  },
-  {
-    id: 6,
-    name: 'The Fort',
-    address: '1115 17th St',
-    price: 950,
-    position: [35.9640, -83.9320] as [number, number],
-  },
-];
+type RentalPlace = {
+  id: string;
+  name: string;
+  type: string;
+  position: [number, number];
+};
+
+const DEFAULT_CENTER: [number, number] = [35.9544, -83.9295];
+const MIN_RADIUS = 500;
+const MAX_RADIUS = 10000;
+
+function RecenterMap({ center }: { center: [number, number] }) {
+  const map = useMap();
+
+  useEffect(() => {
+    map.setView(center);
+  }, [center, map]);
+
+  return null;
+}
 
 export default function Map() {
+  const [userPosition, setUserPosition] = useState<[number, number]>(DEFAULT_CENTER);
+  const [radius, setRadius] = useState(2500);
+  const [search, setSearch] = useState('');
+  const [rentals, setRentals] = useState<RentalPlace[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLocating, setIsLocating] = useState(false);
+  const [error, setError] = useState('');
+
+  const filteredRentals = useMemo(() => {
+    if (!search.trim()) return rentals;
+    const query = search.toLowerCase();
+    return rentals.filter((rental) => rental.name.toLowerCase().includes(query) || rental.type.toLowerCase().includes(query));
+  }, [rentals, search]);
+
+  const fetchNearbyRentals = async (center: [number, number], radiusMeters: number) => {
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const [lat, lon] = center;
+      const overpassQuery = `
+        [out:json][timeout:25];
+        (
+          node(around:${radiusMeters},${lat},${lon})["building"="apartments"];
+          way(around:${radiusMeters},${lat},${lon})["building"="apartments"];
+          node(around:${radiusMeters},${lat},${lon})["tourism"="apartment"];
+          way(around:${radiusMeters},${lat},${lon})["tourism"="apartment"];
+          node(around:${radiusMeters},${lat},${lon})["amenity"="real_estate_agent"];
+          way(around:${radiusMeters},${lat},${lon})["amenity"="real_estate_agent"];
+        );
+        out center tags;
+      `;
+
+      const response = await fetch('https://overpass-api.de/api/interpreter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain;charset=UTF-8',
+        },
+        body: overpassQuery,
+      });
+
+      if (!response.ok) throw new Error('Could not load nearby rentals.');
+
+      const data = await response.json();
+      const nextRentals: RentalPlace[] = (data.elements ?? [])
+        .map((element: any) => {
+          const latValue = element.lat ?? element.center?.lat;
+          const lonValue = element.lon ?? element.center?.lon;
+
+          if (typeof latValue !== 'number' || typeof lonValue !== 'number') return null;
+
+          const tags = element.tags ?? {};
+          const type =
+            tags.amenity === 'real_estate_agent'
+              ? 'Real estate'
+              : tags.tourism === 'apartment'
+                ? 'Apartment'
+                : 'Apartments';
+
+          return {
+            id: `${element.type}-${element.id}`,
+            name: tags.name || 'Unnamed listing',
+            type,
+            position: [latValue, lonValue] as [number, number],
+          };
+        })
+        .filter(Boolean);
+
+      setRentals(nextRentals);
+      if (!nextRentals.length) setError('No rentals found in this range. Try a larger distance.');
+    } catch (err) {
+      setError('Unable to fetch rentals right now. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleUseMyLocation = () => {
+    if (!navigator.geolocation) {
+      setError('Geolocation is not supported on this device.');
+      return;
+    }
+
+    setIsLocating(true);
+    setError('');
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const nextCenter: [number, number] = [position.coords.latitude, position.coords.longitude];
+        setUserPosition(nextCenter);
+        setIsLocating(false);
+      },
+      () => {
+        setError('Location permission denied. Showing default area.');
+        setIsLocating(false);
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  };
+
+  useEffect(() => {
+    handleUseMyLocation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    fetchNearbyRentals(userPosition, radius);
+  }, [userPosition, radius]);
+
   return (
     <div className="bg-white relative h-screen w-full max-w-md mx-auto">
       {/* Header with Menu */}
@@ -71,28 +156,76 @@ export default function Map() {
 
       {/* Search Bar */}
       <div className="absolute top-8 left-20 right-6 z-[1000]">
-        <div className="bg-[#f4f4f4] h-[37px] rounded-[15px] px-4 flex items-center max-w-[184px]">
+        <div className="bg-[#f4f4f4] h-[37px] rounded-[15px] px-4 flex items-center">
           <input
             type="text"
-            placeholder="Search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search rentals"
             className="bg-transparent font-['ABC_Diatype_Edu:Thin',sans-serif] text-[14px] text-black outline-none w-full"
           />
         </div>
       </div>
 
+      {/* Controls */}
+      <div className="absolute top-[88px] left-6 right-6 z-[1000] bg-white/95 rounded-[15px] px-3 py-3 shadow-md">
+        <div className="flex items-center justify-between gap-3 mb-2">
+          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[14px] text-black">
+            Distance: {(radius / 1000).toFixed(1)} km
+          </p>
+          <button
+            onClick={handleUseMyLocation}
+            className="bg-[#d9d9d9] rounded-[10px] px-3 h-[30px] flex items-center gap-2 text-[12px] font-['ABC_Diatype_Edu:Regular',sans-serif]"
+          >
+            {isLocating ? <Loader2 className="size-4 animate-spin" /> : <LocateFixed className="size-4" />}
+            Use my location
+          </button>
+        </div>
+        <input
+          type="range"
+          min={MIN_RADIUS}
+          max={MAX_RADIUS}
+          step={250}
+          value={radius}
+          onChange={(e) => setRadius(Number(e.target.value))}
+          className="w-full"
+        />
+        <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[12px] text-black mt-1">
+          {isLoading ? 'Loading nearby rentals...' : `${filteredRentals.length} places found`}
+        </p>
+        {error ? (
+          <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[12px] text-red-700 mt-1">{error}</p>
+        ) : null}
+      </div>
+
       {/* Map */}
       <MapContainer
-        center={[35.9544, -83.9295]}
+        center={userPosition}
         zoom={14}
         style={{ height: '100%', width: '100%' }}
         zoomControl={false}
       >
+        <RecenterMap center={userPosition} />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        
-        {apartments.map((apartment) => (
+
+        <Circle
+          center={userPosition}
+          radius={radius}
+          pathOptions={{ color: '#4f46e5', fillColor: '#6366f1', fillOpacity: 0.12 }}
+        />
+
+        <Marker position={userPosition} icon={icon}>
+          <Popup>
+            <div className="p-1">
+              <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[14px]">Your location</p>
+            </div>
+          </Popup>
+        </Marker>
+
+        {filteredRentals.map((apartment) => (
           <Marker key={apartment.id} position={apartment.position} icon={icon}>
             <Popup>
               <div className="p-2">
@@ -100,10 +233,7 @@ export default function Map() {
                   {apartment.name}
                 </h3>
                 <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[12px] mb-1">
-                  {apartment.address}
-                </p>
-                <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[14px] text-green-600">
-                  ${apartment.price}/month
+                  {apartment.type}
                 </p>
               </div>
             </Popup>
