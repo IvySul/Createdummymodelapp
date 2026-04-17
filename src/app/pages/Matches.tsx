@@ -3,17 +3,26 @@ import { Menu, MapPin, DollarSign, Circle, Home, BookOpen } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
 
 const names = ['Olivia', 'Maya', 'Jordan', 'Alex', 'Taylor', 'Sofia', 'Riley', 'Noah'];
-const schools = ['UTK', 'Pellissippi State', 'South College', 'LMU Knoxville'];
-const genders = ['woman', 'man', 'non-binary'];
+const knoxvilleLocations = [
+  'Downtown Knoxville',
+  'Old City',
+  'Bearden',
+  'Fort Sanders',
+  'North Knoxville',
+  'South Knoxville',
+  'Sequoyah Hills',
+  'Market Square',
+];
+const genders = ['woman', 'woman', 'man', 'man', 'woman', 'woman', 'man', 'man'];
 const images = [
-  'https://images.unsplash.com/photo-1546961329-78bef0414d7c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
-  'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
-  'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
-  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
-  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
-  'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
-  'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
-  'https://images.unsplash.com/photo-1542206395-9feb3edaa68d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
+  'https://randomuser.me/api/portraits/women/44.jpg',
+  'https://randomuser.me/api/portraits/women/68.jpg',
+  'https://randomuser.me/api/portraits/men/32.jpg',
+  'https://randomuser.me/api/portraits/men/75.jpg',
+  'https://randomuser.me/api/portraits/women/22.jpg',
+  'https://randomuser.me/api/portraits/women/54.jpg',
+  'https://randomuser.me/api/portraits/men/41.jpg',
+  'https://randomuser.me/api/portraits/men/63.jpg',
 ];
 const bios = [
   "I'm a junior looking for a calm apartment close to campus. I keep shared spaces tidy and usually cook at home during the week.",
@@ -35,7 +44,7 @@ const matches = Array.from({ length: 8 }, (_, i) => ({
   name: names[i % names.length],
   age: 19 + (i % 5),
   gender: genders[i % genders.length],
-  school: schools[i % schools.length],
+  school: knoxvilleLocations[i % knoxvilleLocations.length],
   budget: 700 + i * 100,
   image: images[i % images.length],
   bio: bios[i % bios.length],
