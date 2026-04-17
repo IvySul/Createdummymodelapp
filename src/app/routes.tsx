@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createHashRouter } from "react-router";
 import Landing from "./pages/Landing";
 import QuestionnaireStep1 from "./pages/QuestionnaireStep1";
 import QuestionnaireStep2 from "./pages/QuestionnaireStep2";
@@ -7,7 +7,7 @@ import Map from "./pages/Map";
 import Messages from "./pages/Messages";
 import Profile from "./pages/Profile";
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
   {
     path: "/",
     Component: Landing,
