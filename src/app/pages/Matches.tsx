@@ -114,7 +114,7 @@ export default function Matches() {
         {/* Details Card */}
         <div className="bg-[#d9d9d9] rounded-[51px] p-6 shadow-lg">
           {/* Stats Row */}
-          <div className="flex items-center border-b border-black pb-4 mb-4 gap-4">
+          <div className="flex items-center border-b border-black pb-4 mb-4 gap-4 overflow-x-auto whitespace-nowrap flex-nowrap">
             <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
               {match.age}
             </span>
