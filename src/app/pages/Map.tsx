@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Circle, MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import { Loader2, LocateFixed, Menu } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
 import L from 'leaflet';
@@ -199,12 +199,6 @@ export default function Map() {
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-
-        <Circle
-          center={userPosition}
-          radius={radius}
-          pathOptions={{ color: '#4f46e5', fillColor: '#6366f1', fillOpacity: 0.12 }}
         />
 
         <Marker position={userPosition} icon={icon}>
