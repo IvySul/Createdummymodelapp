@@ -22,8 +22,13 @@ type RentalPlace = {
 };
 
 const DEFAULT_CENTER: [number, number] = [35.9544, -83.9295];
-const MIN_RADIUS = 500;
-const MAX_RADIUS = 10000;
+const DISTANCE_OPTIONS = [
+  { label: '0.5 km', value: 500 },
+  { label: '1 km', value: 1000 },
+  { label: '2.5 km', value: 2500 },
+  { label: '5 km', value: 5000 },
+  { label: '10 km', value: 10000 },
+];
 
 export default function Map() {
   const [userPosition, setUserPosition] = useState<[number, number]>(DEFAULT_CENTER);
@@ -137,54 +142,51 @@ export default function Map() {
 
   return (
     <div className="bg-white relative h-screen w-full max-w-md mx-auto">
-      {/* Header with Menu */}
-      <div className="absolute top-8 left-6 z-[1000] bg-white rounded-lg shadow-md p-2">
-        <button className="p-2">
-          <Menu className="size-9" />
-        </button>
-      </div>
+      {/* Top-left Controls */}
+      <div className="absolute top-6 left-6 z-[1000] w-[230px] bg-white/95 rounded-[15px] px-3 py-3 shadow-md">
+        <div className="flex items-center justify-between mb-2">
+          <button className="p-1">
+            <Menu className="size-6" />
+          </button>
+          <button
+            onClick={handleUseMyLocation}
+            className="bg-[#d9d9d9] rounded-[10px] px-2 h-[28px] flex items-center gap-1 text-[11px] font-['ABC_Diatype_Edu:Regular',sans-serif]"
+          >
+            {isLocating ? <Loader2 className="size-3 animate-spin" /> : <LocateFixed className="size-3" />}
+            Locate
+          </button>
+        </div>
 
-      {/* Search Bar */}
-      <div className="absolute top-8 left-20 right-6 z-[1000]">
-        <div className="bg-[#f4f4f4] h-[37px] rounded-[15px] px-4 flex items-center">
+        <div className="bg-[#f4f4f4] h-[34px] rounded-[12px] px-3 flex items-center mb-2">
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search rentals"
-            className="bg-transparent font-['ABC_Diatype_Edu:Thin',sans-serif] text-[14px] text-black outline-none w-full"
+            className="bg-transparent font-['ABC_Diatype_Edu:Thin',sans-serif] text-[13px] text-black outline-none w-full"
           />
         </div>
-      </div>
 
-      {/* Controls */}
-      <div className="absolute top-[88px] left-6 right-6 z-[1000] bg-white/95 rounded-[15px] px-3 py-3 shadow-md">
-        <div className="flex items-center justify-between gap-3 mb-2">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[14px] text-black">
-            Distance: {(radius / 1000).toFixed(1)} km
-          </p>
-          <button
-            onClick={handleUseMyLocation}
-            className="bg-[#d9d9d9] rounded-[10px] px-3 h-[30px] flex items-center gap-2 text-[12px] font-['ABC_Diatype_Edu:Regular',sans-serif]"
+        <div className="flex items-center gap-2 mb-1">
+          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px] text-black shrink-0">Distance</p>
+          <select
+            value={radius}
+            onChange={(e) => setRadius(Number(e.target.value))}
+            className="bg-[#f4f4f4] h-[30px] rounded-[10px] px-2 text-[12px] font-['ABC_Diatype_Edu:Regular',sans-serif] outline-none w-full"
           >
-            {isLocating ? <Loader2 className="size-4 animate-spin" /> : <LocateFixed className="size-4" />}
-            Use my location
-          </button>
+            {DISTANCE_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
         </div>
-        <input
-          type="range"
-          min={MIN_RADIUS}
-          max={MAX_RADIUS}
-          step={250}
-          value={radius}
-          onChange={(e) => setRadius(Number(e.target.value))}
-          className="w-full"
-        />
-        <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[12px] text-black mt-1">
+
+        <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[11px] text-black">
           {isLoading ? 'Loading nearby rentals...' : `${filteredRentals.length} places found`}
         </p>
         {error ? (
-          <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[12px] text-red-700 mt-1">{error}</p>
+          <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[11px] text-red-700 mt-1">{error}</p>
         ) : null}
       </div>
 
