@@ -5,6 +5,7 @@ import QuestionnaireStep2 from "./pages/QuestionnaireStep2";
 import Matches from "./pages/Matches";
 import Map from "./pages/Map";
 import Messages from "./pages/Messages";
+import Chat from "./pages/Chat";
 import Profile from "./pages/Profile";
 
 export const router = createHashRouter([
@@ -31,6 +32,10 @@ export const router = createHashRouter([
   {
     path: "/messages",
     Component: Messages,
+  },
+  {
+    path: "/messages/chat/:conversationId",
+    Component: Chat,
   },
   {
     path: "/profile",

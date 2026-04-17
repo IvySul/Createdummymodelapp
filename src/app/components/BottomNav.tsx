@@ -45,7 +45,9 @@ export default function BottomNav() {
         <button
           onClick={() => navigate('/messages')}
           className={`flex flex-col items-center justify-center ${
-            location.pathname === '/messages' ? 'opacity-100' : 'opacity-60'
+            location.pathname === '/messages' || location.pathname.startsWith('/messages/chat')
+              ? 'opacity-100'
+              : 'opacity-60'
           }`}
         >
           <svg className="h-[48px] w-[62px]" fill="none" viewBox="0 0 62 48.4686">
