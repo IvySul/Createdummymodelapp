@@ -39,15 +39,17 @@ export default function QuestionnaireStep2() {
   const noiseOptions = ['Very quiet', 'Quiet', 'Moderate', 'Loud'];
 
   const handleBudgetRangeChange = (field: 'min' | 'max', value: string) => {
+    if (value === '') return;
     const parsed = Number(value);
     if (Number.isNaN(parsed)) return;
 
-    const next = { ...budgetRange, [field]: parsed };
-    const normalizedMin = Math.min(next.min, next.max);
-    const normalizedMax = Math.max(next.min, next.max);
-    const clampedBudget = Math.min(normalizedMax, Math.max(normalizedMin, formData.budget[0]));
+    const clampedValue = Math.min(10000, Math.max(0, parsed));
+    const next = { ...budgetRange, [field]: clampedValue };
 
-    setBudgetRange({ min: normalizedMin, max: normalizedMax });
+    if (next.min >= next.max) return;
+
+    const clampedBudget = Math.min(next.max, Math.max(next.min, formData.budget[0]));
+    setBudgetRange(next);
     setFormData({ ...formData, budget: [clampedBudget] });
   };
 
@@ -81,7 +83,7 @@ export default function QuestionnaireStep2() {
               type="number"
               value={budgetRange.min}
               onChange={(e) => handleBudgetRangeChange('min', e.target.value)}
-              className="h-[30px] rounded-[11px] border-none bg-[#d9d9d9] px-2 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] min-w-[70px]"
+              className="bg-[#d9d9d9] h-[30px] rounded-[11px] border-none px-2 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] min-w-[60px] w-[60px]"
             />
             <Slider
               value={formData.budget}
@@ -95,7 +97,7 @@ export default function QuestionnaireStep2() {
               type="number"
               value={budgetRange.max}
               onChange={(e) => handleBudgetRangeChange('max', e.target.value)}
-              className="h-[30px] rounded-[11px] border-none bg-[#d9d9d9] px-2 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] min-w-[70px]"
+              className="bg-[#d9d9d9] h-[30px] rounded-[11px] border-none px-2 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] min-w-[60px] w-[60px]"
             />
           </div>
           <div className="mt-2 text-center">
