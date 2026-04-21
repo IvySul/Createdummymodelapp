@@ -1,6 +1,20 @@
 import { useState } from 'react';
 import { MapPin, DollarSign, Circle, Home, BookOpen, Edit, Check } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../components/ui/select';
 import BottomNav from '../components/BottomNav';
+
+const genders = ['Male', 'Female', 'Non-binary', 'Prefer not to say'];
+const religions = ['Christian', 'Muslim', 'Jewish', 'Hindu', 'Buddhist', 'Atheist', 'Agnostic', 'Other', 'Prefer not to say'];
+const politicalViews = ['Right', 'Left', 'Not political', 'Moderate'];
+const scheduleOptions = ['Morning person', 'Night person', 'Flexible'];
+const noiseOptions = ['Very quiet', 'Quiet', 'Moderate', 'Loud'];
+const cleanlinessOptions = ['Very clean', 'Clean', 'Average', 'Messy', 'Very messy'];
 
 export default function Profile() {
   const [isEditingMain, setIsEditingMain] = useState(false);
@@ -43,7 +57,7 @@ export default function Profile() {
           <input
             value={profile.name}
             onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-            className="bg-[#d9d9d9] rounded-[10px] px-3 py-2 font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] text-black w-full outline-none"
+            className="bg-transparent border-b border-black/30 px-1 py-1 font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] text-black w-full outline-none"
           />
         ) : (
           <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] text-black">
@@ -56,14 +70,14 @@ export default function Profile() {
         {/* Profile Image Card */}
         <div className="relative bg-[#d9d9d9] rounded-[51px] p-6 mb-6">
           <button
-            className="absolute top-4 right-4 p-2 hover:opacity-80"
+            className="absolute top-4 right-4 z-20 p-2 hover:opacity-80"
             onClick={() => setIsEditingMain((v) => !v)}
           >
             {isEditingMain ? <Check className="size-6" /> : <Edit className="size-6" />}
           </button>
           
           {/* Image Placeholder */}
-          <div className="relative w-full aspect-square rounded-[20px] overflow-hidden mb-4 bg-[#c0c0c0] flex items-center justify-center">
+          <div className="relative z-0 w-full aspect-square rounded-[20px] overflow-hidden mb-4 bg-[#c0c0c0] flex items-center justify-center">
             <img src={profile.image} alt={profile.name} className="w-full h-full object-cover" />
           </div>
           {isEditingMain ? (
@@ -71,7 +85,7 @@ export default function Profile() {
               value={profile.image}
               onChange={(e) => setProfile({ ...profile, image: e.target.value })}
               placeholder="Paste image URL"
-              className="w-full bg-white rounded-[11px] px-3 py-2 mb-3 font-['ABC_Diatype_Edu:Thin',sans-serif] text-[14px] outline-none"
+              className="w-full bg-transparent border-b border-black/30 px-1 py-2 mb-3 font-['ABC_Diatype_Edu:Thin',sans-serif] text-[14px] outline-none"
             />
           ) : null}
 
@@ -80,7 +94,7 @@ export default function Profile() {
             <textarea
               value={profile.bio}
               onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
-              className="w-full min-h-[90px] bg-white rounded-[11px] p-3 font-['ABC_Diatype_Edu:Thin',sans-serif] text-[14px] text-black outline-none resize-none"
+              className="w-full min-h-[90px] bg-transparent border border-black/20 rounded-[11px] p-3 font-['ABC_Diatype_Edu:Thin',sans-serif] text-[14px] text-black outline-none resize-none"
             />
           ) : (
             <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[14px] text-black">
@@ -92,7 +106,7 @@ export default function Profile() {
         {/* Details Card */}
         <div className="relative bg-[#d9d9d9] rounded-[51px] p-6 shadow-lg">
           <button
-            className="absolute top-4 right-4 p-2 hover:opacity-80"
+            className="absolute top-4 right-4 z-20 p-2 hover:opacity-80"
             onClick={() => setIsEditingDetails((v) => !v)}
           >
             {isEditingDetails ? <Check className="size-6" /> : <Edit className="size-6" />}
@@ -104,7 +118,7 @@ export default function Profile() {
               <input
                 value={profile.age}
                 onChange={(e) => setProfile({ ...profile, age: e.target.value })}
-                className="bg-white rounded-[8px] px-2 py-1 w-[56px] font-['ABC_Diatype_Edu:Thin',sans-serif] text-[18px] outline-none"
+                className="bg-transparent border-b border-black/30 px-1 py-1 w-[56px] font-['ABC_Diatype_Edu:Thin',sans-serif] text-[18px] outline-none"
               />
             ) : (
               <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
@@ -113,11 +127,16 @@ export default function Profile() {
             )}
             <div className="w-px h-[35px] bg-black" />
             {isEditingDetails ? (
-              <input
-                value={profile.gender}
-                onChange={(e) => setProfile({ ...profile, gender: e.target.value })}
-                className="bg-white rounded-[8px] px-2 py-1 w-[110px] font-['ABC_Diatype_Edu:Thin',sans-serif] text-[18px] outline-none"
-              />
+              <Select value={profile.gender} onValueChange={(value) => setProfile({ ...profile, gender: value })}>
+                <SelectTrigger className="bg-transparent h-[34px] rounded-[8px] border border-black/20 w-[140px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {genders.map((option) => (
+                    <SelectItem key={option} value={option}>{option}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             ) : (
               <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
                 {profile.gender}
@@ -130,7 +149,7 @@ export default function Profile() {
                 <input
                   value={profile.location}
                   onChange={(e) => setProfile({ ...profile, location: e.target.value })}
-                  className="bg-white rounded-[8px] px-2 py-1 w-[110px] font-['ABC_Diatype_Edu:Thin',sans-serif] text-[18px] outline-none"
+                  className="bg-transparent border-b border-black/30 px-1 py-1 w-[110px] font-['ABC_Diatype_Edu:Thin',sans-serif] text-[18px] outline-none"
                 />
               ) : (
                 <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
@@ -145,7 +164,7 @@ export default function Profile() {
                 <input
                   value={profile.budget}
                   onChange={(e) => setProfile({ ...profile, budget: e.target.value })}
-                  className="bg-white rounded-[8px] px-2 py-1 w-[80px] font-['ABC_Diatype_Edu:Thin',sans-serif] text-[18px] outline-none"
+                  className="bg-transparent border-b border-black/30 px-1 py-1 w-[80px] font-['ABC_Diatype_Edu:Thin',sans-serif] text-[18px] outline-none"
                 />
               ) : (
                 <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
@@ -160,11 +179,16 @@ export default function Profile() {
             <div className="flex items-center gap-3">
               <Circle className="size-6 fill-[#d9d9d9]" />
               {isEditingDetails ? (
-                <input
-                  value={profile.traits[0]}
-                  onChange={(e) => updateTrait(0, e.target.value)}
-                  className="bg-white rounded-[8px] px-2 py-1 w-full font-['ABC_Diatype_Edu:Thin',sans-serif] text-[18px] outline-none"
-                />
+                <Select value={profile.traits[0]} onValueChange={(value) => updateTrait(0, value)}>
+                  <SelectTrigger className="bg-transparent h-[34px] rounded-[8px] border border-black/20 w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {scheduleOptions.map((option) => (
+                      <SelectItem key={option} value={option}>{option}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               ) : (
                 <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
                   {profile.traits[0]}
@@ -175,11 +199,16 @@ export default function Profile() {
             <div className="flex items-center gap-3">
               <Home className="size-6" />
               {isEditingDetails ? (
-                <input
-                  value={profile.traits[1]}
-                  onChange={(e) => updateTrait(1, e.target.value)}
-                  className="bg-white rounded-[8px] px-2 py-1 w-full font-['ABC_Diatype_Edu:Thin',sans-serif] text-[18px] outline-none"
-                />
+                <Select value={profile.traits[1]} onValueChange={(value) => updateTrait(1, value)}>
+                  <SelectTrigger className="bg-transparent h-[34px] rounded-[8px] border border-black/20 w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {politicalViews.map((option) => (
+                      <SelectItem key={option} value={option}>{option}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               ) : (
                 <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
                   {profile.traits[1]}
@@ -190,11 +219,16 @@ export default function Profile() {
             <div className="flex items-center gap-3">
               <BookOpen className="size-6" />
               {isEditingDetails ? (
-                <input
-                  value={profile.traits[2]}
-                  onChange={(e) => updateTrait(2, e.target.value)}
-                  className="bg-white rounded-[8px] px-2 py-1 w-full font-['ABC_Diatype_Edu:Thin',sans-serif] text-[18px] outline-none"
-                />
+                <Select value={profile.traits[2]} onValueChange={(value) => updateTrait(2, value)}>
+                  <SelectTrigger className="bg-transparent h-[34px] rounded-[8px] border border-black/20 w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {religions.map((option) => (
+                      <SelectItem key={option} value={option}>{option}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               ) : (
                 <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
                   {profile.traits[2]}
@@ -208,11 +242,16 @@ export default function Profile() {
                 <line x1="9" y1="12" x2="15" y2="12" stroke="currentColor" strokeWidth="2" />
               </svg>
               {isEditingDetails ? (
-                <input
-                  value={profile.traits[3]}
-                  onChange={(e) => updateTrait(3, e.target.value)}
-                  className="bg-white rounded-[8px] px-2 py-1 w-full font-['ABC_Diatype_Edu:Thin',sans-serif] text-[18px] outline-none"
-                />
+                <Select value={profile.traits[3]} onValueChange={(value) => updateTrait(3, value)}>
+                  <SelectTrigger className="bg-transparent h-[34px] rounded-[8px] border border-black/20 w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {noiseOptions.map((option) => (
+                      <SelectItem key={option} value={option}>{option}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               ) : (
                 <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
                   {profile.traits[3]}
@@ -225,11 +264,16 @@ export default function Profile() {
                 <path d="M12 3L12 21M6 9L18 9M9 15L15 15" stroke="currentColor" strokeWidth="2" />
               </svg>
               {isEditingDetails ? (
-                <input
-                  value={profile.traits[4]}
-                  onChange={(e) => updateTrait(4, e.target.value)}
-                  className="bg-white rounded-[8px] px-2 py-1 w-full font-['ABC_Diatype_Edu:Thin',sans-serif] text-[18px] outline-none"
-                />
+                <Select value={profile.traits[4]} onValueChange={(value) => updateTrait(4, value)}>
+                  <SelectTrigger className="bg-transparent h-[34px] rounded-[8px] border border-black/20 w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {cleanlinessOptions.map((option) => (
+                      <SelectItem key={option} value={option}>{option}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               ) : (
                 <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
                   {profile.traits[4]}
