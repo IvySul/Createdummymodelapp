@@ -1,7 +1,28 @@
-import { MapPin, DollarSign, Circle, Home, BookOpen, Edit } from 'lucide-react';
+import { useState } from 'react';
+import { MapPin, DollarSign, Circle, Home, BookOpen, Edit, Check } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
 
 export default function Profile() {
+  const [isEditingMain, setIsEditingMain] = useState(false);
+  const [isEditingDetails, setIsEditingDetails] = useState(false);
+  const [profile, setProfile] = useState({
+    name: 'Your Name',
+    image:
+      'https://images.unsplash.com/photo-1546961329-78bef0414d7c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
+    bio: "Hi, my name is___ I'm a sophomore looking for housing! I'm a quiet roommate, mostly studying in my room. I love animals, music, and TV. Looking for someone similar!",
+    age: '19',
+    gender: 'woman',
+    location: 'UTK',
+    budget: '900',
+    traits: ['Morning Person', 'Not Political', 'Not Religious', 'Not Noisy', 'Likes it Clean'],
+  });
+
+  const updateTrait = (index: number, value: string) => {
+    const nextTraits = [...profile.traits];
+    nextTraits[index] = value;
+    setProfile({ ...profile, traits: nextTraits });
+  };
+
   return (
     <div className="bg-white relative min-h-screen w-full max-w-md mx-auto pb-24">
       {/* Header */}
@@ -18,69 +39,119 @@ export default function Profile() {
             />
           </svg>
         </div>
-        <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] text-black">
-          Your Name
-        </p>
+        {isEditingMain ? (
+          <input
+            value={profile.name}
+            onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+            className="bg-[#d9d9d9] rounded-[10px] px-3 py-2 font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] text-black w-full outline-none"
+          />
+        ) : (
+          <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] text-black">
+            {profile.name}
+          </p>
+        )}
       </div>
 
       <div className="px-6">
         {/* Profile Image Card */}
         <div className="relative bg-[#d9d9d9] rounded-[51px] p-6 mb-6">
-          <button className="absolute top-4 right-4 p-2 hover:opacity-80">
-            <Edit className="size-6" />
+          <button
+            className="absolute top-4 right-4 p-2 hover:opacity-80"
+            onClick={() => setIsEditingMain((v) => !v)}
+          >
+            {isEditingMain ? <Check className="size-6" /> : <Edit className="size-6" />}
           </button>
           
           {/* Image Placeholder */}
           <div className="relative w-full aspect-square rounded-[20px] overflow-hidden mb-4 bg-[#c0c0c0] flex items-center justify-center">
-            <svg className="w-32 h-32 text-gray-500" viewBox="0 0 248 248" fill="none">
-              <path
-                d="M104 104C104 95.1634 111.163 88 120 88H128C136.837 88 144 95.1634 144 104V112C144 120.837 136.837 128 128 128H120C111.163 128 104 120.837 104 112V104Z"
-                stroke="currentColor"
-                strokeWidth="2"
-              />
-              <path
-                d="M48 200L92 156L132 196L200 128L248 176V200C248 217.673 233.673 232 216 232H80C62.3269 232 48 217.673 48 200Z"
-                stroke="currentColor"
-                strokeWidth="2"
-              />
-              <rect x="1" y="1" width="246" height="246" rx="19" stroke="currentColor" strokeWidth="2" />
-            </svg>
+            <img src={profile.image} alt={profile.name} className="w-full h-full object-cover" />
           </div>
+          {isEditingMain ? (
+            <input
+              value={profile.image}
+              onChange={(e) => setProfile({ ...profile, image: e.target.value })}
+              placeholder="Paste image URL"
+              className="w-full bg-white rounded-[11px] px-3 py-2 mb-3 font-['ABC_Diatype_Edu:Thin',sans-serif] text-[14px] outline-none"
+            />
+          ) : null}
 
           {/* Bio */}
-          <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[14px] text-black">
-            Hi, my name is___ I'm a sophomore looking for housing! I'm a quiet roommate, mostly studying in my room. I love animals, music, and TV. Looking for someone similar!
-          </p>
+          {isEditingMain ? (
+            <textarea
+              value={profile.bio}
+              onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
+              className="w-full min-h-[90px] bg-white rounded-[11px] p-3 font-['ABC_Diatype_Edu:Thin',sans-serif] text-[14px] text-black outline-none resize-none"
+            />
+          ) : (
+            <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[14px] text-black">
+              {profile.bio}
+            </p>
+          )}
         </div>
 
         {/* Details Card */}
         <div className="relative bg-[#d9d9d9] rounded-[51px] p-6 shadow-lg">
-          <button className="absolute top-4 right-4 p-2 hover:opacity-80">
-            <Edit className="size-6" />
+          <button
+            className="absolute top-4 right-4 p-2 hover:opacity-80"
+            onClick={() => setIsEditingDetails((v) => !v)}
+          >
+            {isEditingDetails ? <Check className="size-6" /> : <Edit className="size-6" />}
           </button>
 
           {/* Stats Row */}
           <div className="flex items-center border-b border-black pb-4 mb-4 gap-4 flex-wrap">
-            <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
-              19
-            </span>
+            {isEditingDetails ? (
+              <input
+                value={profile.age}
+                onChange={(e) => setProfile({ ...profile, age: e.target.value })}
+                className="bg-white rounded-[8px] px-2 py-1 w-[56px] font-['ABC_Diatype_Edu:Thin',sans-serif] text-[18px] outline-none"
+              />
+            ) : (
+              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
+                {profile.age}
+              </span>
+            )}
             <div className="w-px h-[35px] bg-black" />
-            <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
-              woman
-            </span>
+            {isEditingDetails ? (
+              <input
+                value={profile.gender}
+                onChange={(e) => setProfile({ ...profile, gender: e.target.value })}
+                className="bg-white rounded-[8px] px-2 py-1 w-[110px] font-['ABC_Diatype_Edu:Thin',sans-serif] text-[18px] outline-none"
+              />
+            ) : (
+              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
+                {profile.gender}
+              </span>
+            )}
             <div className="w-px h-[35px] bg-black" />
             <div className="flex items-center gap-1">
               <MapPin className="size-5" />
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
-                UTK
-              </span>
+              {isEditingDetails ? (
+                <input
+                  value={profile.location}
+                  onChange={(e) => setProfile({ ...profile, location: e.target.value })}
+                  className="bg-white rounded-[8px] px-2 py-1 w-[110px] font-['ABC_Diatype_Edu:Thin',sans-serif] text-[18px] outline-none"
+                />
+              ) : (
+                <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
+                  {profile.location}
+                </span>
+              )}
             </div>
             <div className="w-px h-[35px] bg-black" />
             <div className="flex items-center gap-1">
               <DollarSign className="size-5" />
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
-                900
-              </span>
+              {isEditingDetails ? (
+                <input
+                  value={profile.budget}
+                  onChange={(e) => setProfile({ ...profile, budget: e.target.value })}
+                  className="bg-white rounded-[8px] px-2 py-1 w-[80px] font-['ABC_Diatype_Edu:Thin',sans-serif] text-[18px] outline-none"
+                />
+              ) : (
+                <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
+                  {profile.budget}
+                </span>
+              )}
             </div>
           </div>
 
@@ -88,23 +159,47 @@ export default function Profile() {
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <Circle className="size-6 fill-[#d9d9d9]" />
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
-                Morning Person
-              </span>
+              {isEditingDetails ? (
+                <input
+                  value={profile.traits[0]}
+                  onChange={(e) => updateTrait(0, e.target.value)}
+                  className="bg-white rounded-[8px] px-2 py-1 w-full font-['ABC_Diatype_Edu:Thin',sans-serif] text-[18px] outline-none"
+                />
+              ) : (
+                <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
+                  {profile.traits[0]}
+                </span>
+              )}
             </div>
             
             <div className="flex items-center gap-3">
               <Home className="size-6" />
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
-                Not Political
-              </span>
+              {isEditingDetails ? (
+                <input
+                  value={profile.traits[1]}
+                  onChange={(e) => updateTrait(1, e.target.value)}
+                  className="bg-white rounded-[8px] px-2 py-1 w-full font-['ABC_Diatype_Edu:Thin',sans-serif] text-[18px] outline-none"
+                />
+              ) : (
+                <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
+                  {profile.traits[1]}
+                </span>
+              )}
             </div>
             
             <div className="flex items-center gap-3">
               <BookOpen className="size-6" />
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
-                Not Religious
-              </span>
+              {isEditingDetails ? (
+                <input
+                  value={profile.traits[2]}
+                  onChange={(e) => updateTrait(2, e.target.value)}
+                  className="bg-white rounded-[8px] px-2 py-1 w-full font-['ABC_Diatype_Edu:Thin',sans-serif] text-[18px] outline-none"
+                />
+              ) : (
+                <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
+                  {profile.traits[2]}
+                </span>
+              )}
             </div>
             
             <div className="flex items-center gap-3">
@@ -112,18 +207,34 @@ export default function Profile() {
                 <path d="M12 3L15 9L12 15L9 9L12 3Z" stroke="currentColor" strokeWidth="2" />
                 <line x1="9" y1="12" x2="15" y2="12" stroke="currentColor" strokeWidth="2" />
               </svg>
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
-                Not Noisy
-              </span>
+              {isEditingDetails ? (
+                <input
+                  value={profile.traits[3]}
+                  onChange={(e) => updateTrait(3, e.target.value)}
+                  className="bg-white rounded-[8px] px-2 py-1 w-full font-['ABC_Diatype_Edu:Thin',sans-serif] text-[18px] outline-none"
+                />
+              ) : (
+                <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
+                  {profile.traits[3]}
+                </span>
+              )}
             </div>
             
             <div className="flex items-center gap-3">
               <svg className="size-6" viewBox="0 0 24 24" fill="none">
                 <path d="M12 3L12 21M6 9L18 9M9 15L15 15" stroke="currentColor" strokeWidth="2" />
               </svg>
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
-                Likes it Clean
-              </span>
+              {isEditingDetails ? (
+                <input
+                  value={profile.traits[4]}
+                  onChange={(e) => updateTrait(4, e.target.value)}
+                  className="bg-white rounded-[8px] px-2 py-1 w-full font-['ABC_Diatype_Edu:Thin',sans-serif] text-[18px] outline-none"
+                />
+              ) : (
+                <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
+                  {profile.traits[4]}
+                </span>
+              )}
             </div>
           </div>
         </div>
