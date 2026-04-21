@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { ChevronDown } from 'lucide-react';
 import {
@@ -90,6 +90,10 @@ export default function QuestionnaireStep2() {
     });
     setFormData({ ...formData, budget: normalizedBudget });
   };
+
+  useEffect(() => {
+    localStorage.setItem('questionnaireStep2', JSON.stringify(formData));
+  }, [formData]);
 
   return (
     <div className="bg-white relative min-h-screen w-full overflow-y-auto pb-24">

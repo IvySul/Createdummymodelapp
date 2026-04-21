@@ -142,6 +142,9 @@ export default function Matches() {
 
   const match = filteredMatches[matchIndex];
 
+  const normalize = (value: string) =>
+    value.toLowerCase().replace(/[^a-z0-9]/g, '');
+
   const compatibilityScore = useMemo(() => {
     if (!match) return 0;
 
@@ -154,19 +157,26 @@ export default function Matches() {
     };
 
     if (questionnaireStep1?.politics) {
-      check(match.traits[1].label.toLowerCase() === String(questionnaireStep1.politics).toLowerCase());
+      check(normalize(match.traits[1].label) === normalize(String(questionnaireStep1.politics)));
     }
     if (questionnaireStep1?.religion) {
-      check(match.traits[2].label.toLowerCase() === String(questionnaireStep1.religion).toLowerCase());
+      check(normalize(match.traits[2].label) === normalize(String(questionnaireStep1.religion)));
     }
     if (questionnaireStep2?.schedule) {
-      check(match.traits[0].label.toLowerCase() === String(questionnaireStep2.schedule).toLowerCase());
+      const userSchedule = normalize(String(questionnaireStep2.schedule));
+      const candidateSchedule = normalize(match.traits[0].label);
+      const scheduleMatch =
+        userSchedule === candidateSchedule ||
+        (userSchedule === 'morningperson' && candidateSchedule === 'morningperson') ||
+        (userSchedule === 'nightperson' && (candidateSchedule === 'nightowl' || candidateSchedule === 'nightperson')) ||
+        (userSchedule === 'flexible' && candidateSchedule === 'flexibleschedule');
+      check(scheduleMatch);
     }
     if (questionnaireStep2?.noise) {
-      check(match.traits[3].label.toLowerCase() === String(questionnaireStep2.noise).toLowerCase());
+      check(normalize(match.traits[3].label) === normalize(String(questionnaireStep2.noise)));
     }
     if (questionnaireStep2?.cleanliness) {
-      check(match.traits[4].label.toLowerCase() === String(questionnaireStep2.cleanliness).toLowerCase());
+      check(normalize(match.traits[4].label) === normalize(String(questionnaireStep2.cleanliness)));
     }
     if (Array.isArray(questionnaireStep2?.budget) && questionnaireStep2.budget.length === 2) {
       const min = Number(questionnaireStep2.budget[0]);
@@ -182,7 +192,7 @@ export default function Matches() {
       );
     }
 
-    if (total === 0) return 50;
+    if (total === 0) return null;
     return Math.round((matched / total) * 100);
   }, [match, questionnaireStep1, questionnaireStep2]);
 
@@ -345,7 +355,7 @@ export default function Matches() {
         {/* Profile Card */}
         <div className="bg-[#d9d9d9] rounded-[51px] p-6 mb-6">
           <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[20px] text-black mb-1">
-            {compatibilityScore}% compatibility
+            {compatibilityScore === null ? 'Complete questionnaire for compatibility' : `${compatibilityScore}% compatibility`}
           </p>
           <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[36px] text-black mb-4">
             {match.name}

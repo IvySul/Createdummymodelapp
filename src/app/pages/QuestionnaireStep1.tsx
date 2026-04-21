@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { ChevronDown } from 'lucide-react';
 import {
@@ -32,6 +32,10 @@ export default function QuestionnaireStep1() {
   const ethnicities = ['Asian', 'Black', 'Hispanic/Latino', 'White', 'Middle Eastern', 'Mixed', 'Other', 'Prefer not to say'];
   const religions = ['Christian', 'Muslim', 'Jewish', 'Hindu', 'Buddhist', 'Atheist', 'Agnostic', 'Other', 'Prefer not to say'];
   const politicalViews = ['Right', 'Left', 'Not political', 'Moderate'];
+
+  useEffect(() => {
+    localStorage.setItem('questionnaireStep1', JSON.stringify(formData));
+  }, [formData]);
 
   return (
     <div className="bg-white relative min-h-screen w-full overflow-y-auto pb-24">
