@@ -38,7 +38,16 @@ const lifestyleTraits = {
   noise: ['Very quiet', 'Quiet', 'Moderate', 'Loud'],
   clean: ['Very clean', 'Clean', 'Average', 'Messy', 'Very messy'],
 };
-const apartmentDurationOptions = ['3 months', '6 months', '9 months', '12 months', '18 months', '24 months'];
+const availabilityRanges = [
+  { start: '2026-08-01', end: '2027-05-31' },
+  { start: '2026-09-01', end: '2027-08-31' },
+  { start: '2026-06-01', end: '2026-12-31' },
+  { start: '2026-10-01', end: '2027-10-01' },
+  { start: '2026-07-15', end: '2027-07-15' },
+  { start: '2026-11-01', end: '2027-04-30' },
+  { start: '2026-05-01', end: '2026-11-30' },
+  { start: '2026-08-15', end: '2027-08-14' },
+];
 
 const matches = Array.from({ length: 8 }, (_, i) => ({
   id: i + 1,
@@ -47,7 +56,8 @@ const matches = Array.from({ length: 8 }, (_, i) => ({
   gender: genders[i % genders.length],
   school: knoxvilleLocations[i % knoxvilleLocations.length],
   budget: 700 + i * 100,
-  apartmentDuration: apartmentDurationOptions[i % apartmentDurationOptions.length],
+  apartmentStartDate: availabilityRanges[i % availabilityRanges.length].start,
+  apartmentEndDate: availabilityRanges[i % availabilityRanges.length].end,
   image: images[i % images.length],
   bio: bios[i % bios.length],
   traits: [
@@ -71,7 +81,8 @@ export default function Matches() {
     schedule: 'All',
     noise: 'All',
     cleanliness: 'All',
-    apartmentDuration: 'All',
+    apartmentStartDate: '',
+    apartmentEndDate: '',
     minBudget: '',
     maxBudget: '',
   });
@@ -87,7 +98,8 @@ export default function Matches() {
       if (filters.schedule !== 'All' && m.traits[0].label !== filters.schedule) return false;
       if (filters.noise !== 'All' && m.traits[3].label !== filters.noise) return false;
       if (filters.cleanliness !== 'All' && m.traits[4].label !== filters.cleanliness) return false;
-      if (filters.apartmentDuration !== 'All' && m.apartmentDuration !== filters.apartmentDuration) return false;
+      if (filters.apartmentStartDate && m.apartmentEndDate < filters.apartmentStartDate) return false;
+      if (filters.apartmentEndDate && m.apartmentStartDate > filters.apartmentEndDate) return false;
       if (budgetMin !== null && !Number.isNaN(budgetMin) && m.budget < budgetMin) return false;
       if (budgetMax !== null && !Number.isNaN(budgetMax) && m.budget > budgetMax) return false;
 
@@ -216,13 +228,22 @@ export default function Matches() {
           </select>
           </div>
           <div>
-            <p className="text-[12px] mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif]">Apartment Duration</p>
-          <select value={filters.apartmentDuration} onChange={(e) => setFilters({ ...filters, apartmentDuration: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
-            <option>All</option>
-            {apartmentDurationOptions.map((item) => (
-              <option key={item}>{item}</option>
-            ))}
-          </select>
+            <p className="text-[12px] mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif]">Need Apartment Between (Start)</p>
+          <input
+            type="date"
+            value={filters.apartmentStartDate}
+            onChange={(e) => setFilters({ ...filters, apartmentStartDate: e.target.value })}
+            className="h-[34px] rounded-[9px] px-2 bg-white text-[13px] outline-none"
+          />
+          </div>
+          <div>
+            <p className="text-[12px] mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif]">Need Apartment Between (End)</p>
+          <input
+            type="date"
+            value={filters.apartmentEndDate}
+            onChange={(e) => setFilters({ ...filters, apartmentEndDate: e.target.value })}
+            className="h-[34px] rounded-[9px] px-2 bg-white text-[13px] outline-none"
+          />
           </div>
           <div>
             <p className="text-[12px] mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif]">Min Budget</p>
@@ -300,7 +321,7 @@ export default function Matches() {
             </div>
             <div className="w-px h-[35px] bg-black shrink-0" />
             <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] shrink-0">
-              {match.apartmentDuration}
+              {match.apartmentStartDate} to {match.apartmentEndDate}
             </span>
           </div>
 

@@ -15,7 +15,6 @@ const politicalViews = ['Right', 'Left', 'Not political', 'Moderate'];
 const scheduleOptions = ['Morning person', 'Night person', 'Flexible'];
 const noiseOptions = ['Very quiet', 'Quiet', 'Moderate', 'Loud'];
 const cleanlinessOptions = ['Very clean', 'Clean', 'Average', 'Messy', 'Very messy'];
-const apartmentDurationOptions = ['3 months', '6 months', '9 months', '12 months', '18 months', '24 months'];
 
 export default function Profile() {
   const [isEditingMain, setIsEditingMain] = useState(false);
@@ -29,7 +28,8 @@ export default function Profile() {
     gender: 'Female',
     location: 'UTK',
     budget: '900',
-    apartmentDuration: '12 months',
+    apartmentStartDate: '2026-08-01',
+    apartmentEndDate: '2027-05-31',
     traits: ['Morning person', 'Not political', 'Christian', 'Moderate', 'Clean'],
   });
 
@@ -115,7 +115,7 @@ export default function Profile() {
           </button>
 
           {/* Stats Row */}
-          <div className="flex items-center border-b border-black pb-4 mb-4 gap-4 flex-wrap">
+          <div className="no-scrollbar flex items-center border-b border-black pb-4 mb-4 gap-4 overflow-x-auto whitespace-nowrap flex-nowrap">
             {isEditingDetails ? (
               <input
                 value={profile.age}
@@ -176,19 +176,24 @@ export default function Profile() {
             </div>
             <div className="w-px h-[35px] bg-black" />
             {isEditingDetails ? (
-              <Select value={profile.apartmentDuration} onValueChange={(value) => setProfile({ ...profile, apartmentDuration: value })}>
-                <SelectTrigger className="bg-transparent h-[34px] rounded-[8px] border border-black/20 w-[130px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {apartmentDurationOptions.map((option) => (
-                    <SelectItem key={option} value={option}>{option}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <div className="flex items-center gap-2">
+                <input
+                  type="date"
+                  value={profile.apartmentStartDate}
+                  onChange={(e) => setProfile({ ...profile, apartmentStartDate: e.target.value })}
+                  className="bg-transparent border-b border-black/30 px-1 py-1 w-[132px] font-['ABC_Diatype_Edu:Thin',sans-serif] text-[16px] outline-none"
+                />
+                <span className="text-[14px]">to</span>
+                <input
+                  type="date"
+                  value={profile.apartmentEndDate}
+                  onChange={(e) => setProfile({ ...profile, apartmentEndDate: e.target.value })}
+                  className="bg-transparent border-b border-black/30 px-1 py-1 w-[132px] font-['ABC_Diatype_Edu:Thin',sans-serif] text-[16px] outline-none"
+                />
+              </div>
             ) : (
               <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
-                {profile.apartmentDuration}
+                {profile.apartmentStartDate} to {profile.apartmentEndDate}
               </span>
             )}
           </div>

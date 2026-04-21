@@ -17,7 +17,8 @@ export default function QuestionnaireStep2() {
   const [formData, setFormData] = useState({
     bio: '',
     budget: [500, 2500],
-    apartmentDuration: '',
+    apartmentStartDate: '',
+    apartmentEndDate: '',
     drinking: '',
     smoking: '',
     otherSubstances: '',
@@ -42,7 +43,6 @@ export default function QuestionnaireStep2() {
   const guestOptions = ['Love guests', 'Okay with guests', 'Rarely have guests', 'No guests'];
   const scheduleOptions = ['Morning person', 'Night person', 'Flexible'];
   const noiseOptions = ['Very quiet', 'Quiet', 'Moderate', 'Loud'];
-  const apartmentDurationOptions = ['3 months', '6 months', '9 months', '12 months', '18 months', '24 months'];
 
   const commitBudgetRangeInput = (field: 'min' | 'max') => {
     const rawValue = budgetRangeInput[field];
@@ -162,21 +162,25 @@ export default function QuestionnaireStep2() {
           Living Habits
         </p>
 
-        {/* Apartment Duration */}
+        {/* Apartment Date Range */}
         <div className="mb-6">
           <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-2">
             How long do you need an apartment?
           </p>
-          <Select value={formData.apartmentDuration} onValueChange={(value) => setFormData({ ...formData, apartmentDuration: value })}>
-            <SelectTrigger className="bg-[#d9d9d9] h-[37px] rounded-[11px] border-none w-full">
-              <SelectValue placeholder="Select duration" />
-            </SelectTrigger>
-            <SelectContent>
-              {apartmentDurationOptions.map(option => (
-                <SelectItem key={option} value={option}>{option}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className="grid grid-cols-2 gap-2">
+            <Input
+              type="date"
+              value={formData.apartmentStartDate}
+              onChange={(e) => setFormData({ ...formData, apartmentStartDate: e.target.value })}
+              className="bg-[#d9d9d9] h-[37px] rounded-[11px] border-none"
+            />
+            <Input
+              type="date"
+              value={formData.apartmentEndDate}
+              onChange={(e) => setFormData({ ...formData, apartmentEndDate: e.target.value })}
+              className="bg-[#d9d9d9] h-[37px] rounded-[11px] border-none"
+            />
+          </div>
         </div>
 
         {/* Substances */}
