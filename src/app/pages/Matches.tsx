@@ -1,4 +1,4 @@
-import { type TouchEvent, useMemo, useState } from 'react';
+import { type TouchEvent, useEffect, useMemo, useState } from 'react';
 import { Menu, MapPin, DollarSign, Circle, Home, BookOpen } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
 
@@ -33,10 +33,10 @@ const bios = [
 ];
 const lifestyleTraits = {
   circle: ['Morning Person', 'Night Owl', 'Flexible Schedule'],
-  home: ['Independent', 'Collaborative', 'Balanced'],
-  book: ['Christian', 'Not Religious', 'Spiritual'],
-  noise: ['Very Quiet', 'Somewhat Noisy', 'Moderate Noise'],
-  clean: ['Likes it Clean', 'Average Cleanliness', 'Very Organized'],
+  home: ['Right', 'Left', 'Not political', 'Moderate'],
+  book: ['Christian', 'Muslim', 'Jewish', 'Hindu', 'Buddhist', 'Atheist', 'Agnostic', 'Other', 'Prefer not to say'],
+  noise: ['Very quiet', 'Quiet', 'Moderate', 'Loud'],
+  clean: ['Very clean', 'Clean', 'Average', 'Messy', 'Very messy'],
 };
 
 const matches = Array.from({ length: 8 }, (_, i) => ({
@@ -60,14 +60,54 @@ const matches = Array.from({ length: 8 }, (_, i) => ({
 export default function Matches() {
   const [matchIndex, setMatchIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
-  const match = useMemo(() => matches[matchIndex], [matchIndex]);
+  const [showFilters, setShowFilters] = useState(false);
+  const [filters, setFilters] = useState({
+    gender: 'All',
+    politics: 'All',
+    religion: 'All',
+    schedule: 'All',
+    noise: 'All',
+    cleanliness: 'All',
+    minBudget: '',
+    maxBudget: '',
+  });
+
+  const filteredMatches = useMemo(() => {
+    return matches.filter((m) => {
+      const budgetMin = filters.minBudget.trim() ? Number(filters.minBudget) : null;
+      const budgetMax = filters.maxBudget.trim() ? Number(filters.maxBudget) : null;
+
+      if (filters.gender !== 'All' && m.gender.toLowerCase() !== filters.gender.toLowerCase()) return false;
+      if (filters.politics !== 'All' && m.traits[1].label !== filters.politics) return false;
+      if (filters.religion !== 'All' && m.traits[2].label !== filters.religion) return false;
+      if (filters.schedule !== 'All' && m.traits[0].label !== filters.schedule) return false;
+      if (filters.noise !== 'All' && m.traits[3].label !== filters.noise) return false;
+      if (filters.cleanliness !== 'All' && m.traits[4].label !== filters.cleanliness) return false;
+      if (budgetMin !== null && !Number.isNaN(budgetMin) && m.budget < budgetMin) return false;
+      if (budgetMax !== null && !Number.isNaN(budgetMax) && m.budget > budgetMax) return false;
+
+      return true;
+    });
+  }, [filters]);
+
+  useEffect(() => {
+    if (filteredMatches.length === 0) {
+      setMatchIndex(0);
+      return;
+    }
+    if (matchIndex > filteredMatches.length - 1) setMatchIndex(0);
+  }, [filteredMatches, matchIndex]);
+
+  const match = filteredMatches[matchIndex];
 
   const showNextMatch = () => {
-    setMatchIndex((prev) => (prev + 1) % matches.length);
+    if (!filteredMatches.length) return;
+    setMatchIndex((prev) => (prev + 1) % filteredMatches.length);
   };
 
   const showPreviousMatch = () => {
-    setMatchIndex((prev) => (prev - 1 + matches.length) % matches.length);
+    if (!filteredMatches.length) return;
+    setMatchIndex((prev) => (prev - 1 + filteredMatches.length) % filteredMatches.length);
   };
 
   const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
@@ -89,7 +129,7 @@ export default function Matches() {
     <div className="bg-white relative min-h-screen w-full max-w-md mx-auto pb-24">
       {/* Header */}
       <div className="flex items-center justify-between px-6 pt-12 mb-8">
-        <button className="p-2">
+        <button className="p-2" onClick={() => setShowFilters((v) => !v)}>
           <Menu className="size-9" />
         </button>
         <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[48px] text-black">
@@ -98,7 +138,68 @@ export default function Matches() {
         <div className="w-9" /> {/* Spacer */}
       </div>
 
+      {showFilters ? (
+        <div className="mx-6 mb-6 bg-[#d9d9d9] rounded-[20px] p-4">
+          <div className="grid grid-cols-2 gap-2">
+            <select value={filters.gender} onChange={(e) => setFilters({ ...filters, gender: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
+              <option>All</option>
+              <option>woman</option>
+              <option>man</option>
+            </select>
+            <select value={filters.politics} onChange={(e) => setFilters({ ...filters, politics: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
+              <option>All</option>
+              <option>Right</option>
+              <option>Left</option>
+              <option>Not political</option>
+              <option>Moderate</option>
+            </select>
+            <select value={filters.religion} onChange={(e) => setFilters({ ...filters, religion: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
+              <option>All</option>
+              {lifestyleTraits.book.map((item) => (
+                <option key={item}>{item}</option>
+              ))}
+            </select>
+            <select value={filters.schedule} onChange={(e) => setFilters({ ...filters, schedule: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
+              <option>All</option>
+              {lifestyleTraits.circle.map((item) => (
+                <option key={item}>{item}</option>
+              ))}
+            </select>
+            <select value={filters.noise} onChange={(e) => setFilters({ ...filters, noise: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
+              <option>All</option>
+              {lifestyleTraits.noise.map((item) => (
+                <option key={item}>{item}</option>
+              ))}
+            </select>
+            <select value={filters.cleanliness} onChange={(e) => setFilters({ ...filters, cleanliness: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
+              <option>All</option>
+              {lifestyleTraits.clean.map((item) => (
+                <option key={item}>{item}</option>
+              ))}
+            </select>
+            <input
+              value={filters.minBudget}
+              onChange={(e) => setFilters({ ...filters, minBudget: e.target.value })}
+              placeholder="Min budget"
+              className="h-[34px] rounded-[9px] px-2 bg-white text-[13px] outline-none"
+            />
+            <input
+              value={filters.maxBudget}
+              onChange={(e) => setFilters({ ...filters, maxBudget: e.target.value })}
+              placeholder="Max budget"
+              className="h-[34px] rounded-[9px] px-2 bg-white text-[13px] outline-none"
+            />
+          </div>
+        </div>
+      ) : null}
+
       <div className="px-6" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+        {!match ? (
+          <div className="bg-[#d9d9d9] rounded-[30px] p-8 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[18px] mb-6">
+            No matches found with current filters.
+          </div>
+        ) : (
+          <>
         {/* Profile Card */}
         <div className="bg-[#d9d9d9] rounded-[51px] p-6 mb-6">
           <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[36px] text-black mb-4">
@@ -190,6 +291,8 @@ export default function Matches() {
             </div>
           </div>
         </div>
+          </>
+        )}
       </div>
 
       <BottomNav />
