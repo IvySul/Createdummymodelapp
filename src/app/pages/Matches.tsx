@@ -60,6 +60,7 @@ const matches = Array.from({ length: 8 }, (_, i) => ({
 export default function Matches() {
   const [matchIndex, setMatchIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [ignoreSwipe, setIgnoreSwipe] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({
     gender: 'All',
@@ -111,10 +112,21 @@ export default function Matches() {
   };
 
   const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+    const target = event.target as HTMLElement;
+    if (target.closest('[data-no-swipe="true"]')) {
+      setIgnoreSwipe(true);
+      setTouchStartX(null);
+      return;
+    }
+    setIgnoreSwipe(false);
     setTouchStartX(event.touches[0].clientX);
   };
 
   const handleTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
+    if (ignoreSwipe) {
+      setIgnoreSwipe(false);
+      return;
+    }
     if (touchStartX === null) return;
     const swipeDistance = event.changedTouches[0].clientX - touchStartX;
     const swipeThreshold = 50;
@@ -138,60 +150,63 @@ export default function Matches() {
         <div className="w-9" /> {/* Spacer */}
       </div>
 
-      {showFilters ? (
-        <div className="mx-6 mb-6 bg-[#d9d9d9] rounded-[20px] p-4">
-          <div className="grid grid-cols-2 gap-2">
-            <select value={filters.gender} onChange={(e) => setFilters({ ...filters, gender: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
-              <option>All</option>
-              <option>woman</option>
-              <option>man</option>
-            </select>
-            <select value={filters.politics} onChange={(e) => setFilters({ ...filters, politics: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
-              <option>All</option>
-              <option>Right</option>
-              <option>Left</option>
-              <option>Not political</option>
-              <option>Moderate</option>
-            </select>
-            <select value={filters.religion} onChange={(e) => setFilters({ ...filters, religion: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
-              <option>All</option>
-              {lifestyleTraits.book.map((item) => (
-                <option key={item}>{item}</option>
-              ))}
-            </select>
-            <select value={filters.schedule} onChange={(e) => setFilters({ ...filters, schedule: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
-              <option>All</option>
-              {lifestyleTraits.circle.map((item) => (
-                <option key={item}>{item}</option>
-              ))}
-            </select>
-            <select value={filters.noise} onChange={(e) => setFilters({ ...filters, noise: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
-              <option>All</option>
-              {lifestyleTraits.noise.map((item) => (
-                <option key={item}>{item}</option>
-              ))}
-            </select>
-            <select value={filters.cleanliness} onChange={(e) => setFilters({ ...filters, cleanliness: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
-              <option>All</option>
-              {lifestyleTraits.clean.map((item) => (
-                <option key={item}>{item}</option>
-              ))}
-            </select>
-            <input
-              value={filters.minBudget}
-              onChange={(e) => setFilters({ ...filters, minBudget: e.target.value })}
-              placeholder="Min budget"
-              className="h-[34px] rounded-[9px] px-2 bg-white text-[13px] outline-none"
-            />
-            <input
-              value={filters.maxBudget}
-              onChange={(e) => setFilters({ ...filters, maxBudget: e.target.value })}
-              placeholder="Max budget"
-              className="h-[34px] rounded-[9px] px-2 bg-white text-[13px] outline-none"
-            />
-          </div>
+      {showFilters ? <div className="fixed inset-0 bg-black/25 z-[2500]" onClick={() => setShowFilters(false)} /> : null}
+      <div className={`fixed top-0 left-0 h-full w-[280px] bg-[#d9d9d9] z-[2600] p-4 shadow-xl transition-transform duration-200 ${showFilters ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className="flex items-center justify-between mb-4">
+          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[24px]">Filters</p>
+          <button className="text-[24px] leading-none" onClick={() => setShowFilters(false)}>×</button>
         </div>
-      ) : null}
+        <div className="grid grid-cols-1 gap-2">
+          <select value={filters.gender} onChange={(e) => setFilters({ ...filters, gender: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
+            <option>All</option>
+            <option>woman</option>
+            <option>man</option>
+          </select>
+          <select value={filters.politics} onChange={(e) => setFilters({ ...filters, politics: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
+            <option>All</option>
+            <option>Right</option>
+            <option>Left</option>
+            <option>Not political</option>
+            <option>Moderate</option>
+          </select>
+          <select value={filters.religion} onChange={(e) => setFilters({ ...filters, religion: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
+            <option>All</option>
+            {lifestyleTraits.book.map((item) => (
+              <option key={item}>{item}</option>
+            ))}
+          </select>
+          <select value={filters.schedule} onChange={(e) => setFilters({ ...filters, schedule: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
+            <option>All</option>
+            {lifestyleTraits.circle.map((item) => (
+              <option key={item}>{item}</option>
+            ))}
+          </select>
+          <select value={filters.noise} onChange={(e) => setFilters({ ...filters, noise: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
+            <option>All</option>
+            {lifestyleTraits.noise.map((item) => (
+              <option key={item}>{item}</option>
+            ))}
+          </select>
+          <select value={filters.cleanliness} onChange={(e) => setFilters({ ...filters, cleanliness: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
+            <option>All</option>
+            {lifestyleTraits.clean.map((item) => (
+              <option key={item}>{item}</option>
+            ))}
+          </select>
+          <input
+            value={filters.minBudget}
+            onChange={(e) => setFilters({ ...filters, minBudget: e.target.value })}
+            placeholder="Min budget"
+            className="h-[34px] rounded-[9px] px-2 bg-white text-[13px] outline-none"
+          />
+          <input
+            value={filters.maxBudget}
+            onChange={(e) => setFilters({ ...filters, maxBudget: e.target.value })}
+            placeholder="Max budget"
+            className="h-[34px] rounded-[9px] px-2 bg-white text-[13px] outline-none"
+          />
+        </div>
+      </div>
 
       <div className="px-6" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
         {!match ? (
@@ -224,7 +239,7 @@ export default function Matches() {
         {/* Details Card */}
         <div className="bg-[#d9d9d9] rounded-[51px] p-6 shadow-lg">
           {/* Stats Row */}
-          <div className="no-scrollbar flex items-center border-b border-black pb-4 mb-4 gap-4 overflow-x-auto whitespace-nowrap flex-nowrap">
+          <div data-no-swipe="true" className="no-scrollbar flex items-center border-b border-black pb-4 mb-4 gap-4 overflow-x-auto whitespace-nowrap flex-nowrap">
             <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] shrink-0">
               {match.age}
             </span>
