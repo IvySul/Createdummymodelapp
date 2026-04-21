@@ -49,6 +49,17 @@ const availabilityRanges = [
   { start: '2026-08-15', end: '2027-08-14' },
 ];
 
+function formatDisplayDate(dateString: string): string {
+  if (!dateString) return '';
+  const date = new Date(`${dateString}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return dateString;
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
+
 const matches = Array.from({ length: 8 }, (_, i) => ({
   id: i + 1,
   name: names[i % names.length],
@@ -321,7 +332,7 @@ export default function Matches() {
             </div>
             <div className="w-px h-[35px] bg-black shrink-0" />
             <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] shrink-0">
-              {match.apartmentStartDate} to {match.apartmentEndDate}
+              {formatDisplayDate(match.apartmentStartDate)} to {formatDisplayDate(match.apartmentEndDate)}
             </span>
           </div>
 

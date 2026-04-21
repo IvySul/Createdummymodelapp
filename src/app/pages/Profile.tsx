@@ -16,6 +16,17 @@ const scheduleOptions = ['Morning person', 'Night person', 'Flexible'];
 const noiseOptions = ['Very quiet', 'Quiet', 'Moderate', 'Loud'];
 const cleanlinessOptions = ['Very clean', 'Clean', 'Average', 'Messy', 'Very messy'];
 
+function formatDisplayDate(dateString: string): string {
+  if (!dateString) return '';
+  const date = new Date(`${dateString}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return dateString;
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
+
 export default function Profile() {
   const [isEditingMain, setIsEditingMain] = useState(false);
   const [isEditingDetails, setIsEditingDetails] = useState(false);
@@ -193,7 +204,7 @@ export default function Profile() {
               </div>
             ) : (
               <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
-                {profile.apartmentStartDate} to {profile.apartmentEndDate}
+                {formatDisplayDate(profile.apartmentStartDate)} to {formatDisplayDate(profile.apartmentEndDate)}
               </span>
             )}
           </div>
