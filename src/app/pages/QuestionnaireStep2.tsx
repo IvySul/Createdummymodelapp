@@ -17,6 +17,7 @@ export default function QuestionnaireStep2() {
   const [formData, setFormData] = useState({
     bio: '',
     budget: [500, 2500],
+    apartmentDuration: '',
     drinking: '',
     smoking: '',
     otherSubstances: '',
@@ -41,6 +42,7 @@ export default function QuestionnaireStep2() {
   const guestOptions = ['Love guests', 'Okay with guests', 'Rarely have guests', 'No guests'];
   const scheduleOptions = ['Morning person', 'Night person', 'Flexible'];
   const noiseOptions = ['Very quiet', 'Quiet', 'Moderate', 'Loud'];
+  const apartmentDurationOptions = ['3 months', '6 months', '9 months', '12 months', '18 months', '24 months'];
 
   const commitBudgetRangeInput = (field: 'min' | 'max') => {
     const rawValue = budgetRangeInput[field];
@@ -159,6 +161,23 @@ export default function QuestionnaireStep2() {
         <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[24px] text-black mb-6">
           Living Habits
         </p>
+
+        {/* Apartment Duration */}
+        <div className="mb-6">
+          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-2">
+            How long do you need an apartment?
+          </p>
+          <Select value={formData.apartmentDuration} onValueChange={(value) => setFormData({ ...formData, apartmentDuration: value })}>
+            <SelectTrigger className="bg-[#d9d9d9] h-[37px] rounded-[11px] border-none w-full">
+              <SelectValue placeholder="Select duration" />
+            </SelectTrigger>
+            <SelectContent>
+              {apartmentDurationOptions.map(option => (
+                <SelectItem key={option} value={option}>{option}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
         {/* Substances */}
         <div className="mb-6">

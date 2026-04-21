@@ -15,6 +15,7 @@ const politicalViews = ['Right', 'Left', 'Not political', 'Moderate'];
 const scheduleOptions = ['Morning person', 'Night person', 'Flexible'];
 const noiseOptions = ['Very quiet', 'Quiet', 'Moderate', 'Loud'];
 const cleanlinessOptions = ['Very clean', 'Clean', 'Average', 'Messy', 'Very messy'];
+const apartmentDurationOptions = ['3 months', '6 months', '9 months', '12 months', '18 months', '24 months'];
 
 export default function Profile() {
   const [isEditingMain, setIsEditingMain] = useState(false);
@@ -25,10 +26,11 @@ export default function Profile() {
       'https://images.unsplash.com/photo-1546961329-78bef0414d7c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
     bio: "Hi, my name is___ I'm a sophomore looking for housing! I'm a quiet roommate, mostly studying in my room. I love animals, music, and TV. Looking for someone similar!",
     age: '19',
-    gender: 'woman',
+    gender: 'Female',
     location: 'UTK',
     budget: '900',
-    traits: ['Morning Person', 'Not Political', 'Not Religious', 'Not Noisy', 'Likes it Clean'],
+    apartmentDuration: '12 months',
+    traits: ['Morning person', 'Not political', 'Christian', 'Moderate', 'Clean'],
   });
 
   const updateTrait = (index: number, value: string) => {
@@ -172,6 +174,23 @@ export default function Profile() {
                 </span>
               )}
             </div>
+            <div className="w-px h-[35px] bg-black" />
+            {isEditingDetails ? (
+              <Select value={profile.apartmentDuration} onValueChange={(value) => setProfile({ ...profile, apartmentDuration: value })}>
+                <SelectTrigger className="bg-transparent h-[34px] rounded-[8px] border border-black/20 w-[130px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {apartmentDurationOptions.map((option) => (
+                    <SelectItem key={option} value={option}>{option}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            ) : (
+              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
+                {profile.apartmentDuration}
+              </span>
+            )}
           </div>
 
           {/* Traits */}

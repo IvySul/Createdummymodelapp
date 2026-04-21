@@ -38,6 +38,7 @@ const lifestyleTraits = {
   noise: ['Very quiet', 'Quiet', 'Moderate', 'Loud'],
   clean: ['Very clean', 'Clean', 'Average', 'Messy', 'Very messy'],
 };
+const apartmentDurationOptions = ['3 months', '6 months', '9 months', '12 months', '18 months', '24 months'];
 
 const matches = Array.from({ length: 8 }, (_, i) => ({
   id: i + 1,
@@ -46,6 +47,7 @@ const matches = Array.from({ length: 8 }, (_, i) => ({
   gender: genders[i % genders.length],
   school: knoxvilleLocations[i % knoxvilleLocations.length],
   budget: 700 + i * 100,
+  apartmentDuration: apartmentDurationOptions[i % apartmentDurationOptions.length],
   image: images[i % images.length],
   bio: bios[i % bios.length],
   traits: [
@@ -69,6 +71,7 @@ export default function Matches() {
     schedule: 'All',
     noise: 'All',
     cleanliness: 'All',
+    apartmentDuration: 'All',
     minBudget: '',
     maxBudget: '',
   });
@@ -84,6 +87,7 @@ export default function Matches() {
       if (filters.schedule !== 'All' && m.traits[0].label !== filters.schedule) return false;
       if (filters.noise !== 'All' && m.traits[3].label !== filters.noise) return false;
       if (filters.cleanliness !== 'All' && m.traits[4].label !== filters.cleanliness) return false;
+      if (filters.apartmentDuration !== 'All' && m.apartmentDuration !== filters.apartmentDuration) return false;
       if (budgetMin !== null && !Number.isNaN(budgetMin) && m.budget < budgetMin) return false;
       if (budgetMax !== null && !Number.isNaN(budgetMax) && m.budget > budgetMax) return false;
 
@@ -157,11 +161,16 @@ export default function Matches() {
           <button className="text-[24px] leading-none" onClick={() => setShowFilters(false)}>×</button>
         </div>
         <div className="grid grid-cols-1 gap-2">
+          <div>
+            <p className="text-[12px] mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif]">Gender</p>
           <select value={filters.gender} onChange={(e) => setFilters({ ...filters, gender: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
             <option>All</option>
             <option>woman</option>
             <option>man</option>
           </select>
+          </div>
+          <div>
+            <p className="text-[12px] mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif]">Politics</p>
           <select value={filters.politics} onChange={(e) => setFilters({ ...filters, politics: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
             <option>All</option>
             <option>Right</option>
@@ -169,42 +178,70 @@ export default function Matches() {
             <option>Not political</option>
             <option>Moderate</option>
           </select>
+          </div>
+          <div>
+            <p className="text-[12px] mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif]">Religion</p>
           <select value={filters.religion} onChange={(e) => setFilters({ ...filters, religion: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
             <option>All</option>
             {lifestyleTraits.book.map((item) => (
               <option key={item}>{item}</option>
             ))}
           </select>
+          </div>
+          <div>
+            <p className="text-[12px] mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif]">Schedule</p>
           <select value={filters.schedule} onChange={(e) => setFilters({ ...filters, schedule: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
             <option>All</option>
             {lifestyleTraits.circle.map((item) => (
               <option key={item}>{item}</option>
             ))}
           </select>
+          </div>
+          <div>
+            <p className="text-[12px] mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif]">Noise Level</p>
           <select value={filters.noise} onChange={(e) => setFilters({ ...filters, noise: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
             <option>All</option>
             {lifestyleTraits.noise.map((item) => (
               <option key={item}>{item}</option>
             ))}
           </select>
+          </div>
+          <div>
+            <p className="text-[12px] mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif]">Cleanliness</p>
           <select value={filters.cleanliness} onChange={(e) => setFilters({ ...filters, cleanliness: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
             <option>All</option>
             {lifestyleTraits.clean.map((item) => (
               <option key={item}>{item}</option>
             ))}
           </select>
+          </div>
+          <div>
+            <p className="text-[12px] mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif]">Apartment Duration</p>
+          <select value={filters.apartmentDuration} onChange={(e) => setFilters({ ...filters, apartmentDuration: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
+            <option>All</option>
+            {apartmentDurationOptions.map((item) => (
+              <option key={item}>{item}</option>
+            ))}
+          </select>
+          </div>
+          <div>
+            <p className="text-[12px] mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif]">Min Budget</p>
           <input
             value={filters.minBudget}
             onChange={(e) => setFilters({ ...filters, minBudget: e.target.value })}
             placeholder="Min budget"
             className="h-[34px] rounded-[9px] px-2 bg-white text-[13px] outline-none"
           />
+          </div>
+          <div>
+            <p className="text-[12px] mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif]">Max Budget</p>
           <input
             value={filters.maxBudget}
             onChange={(e) => setFilters({ ...filters, maxBudget: e.target.value })}
             placeholder="Max budget"
             className="h-[34px] rounded-[9px] px-2 bg-white text-[13px] outline-none"
           />
+          </div>
         </div>
       </div>
 
@@ -261,6 +298,10 @@ export default function Matches() {
                 {match.budget}
               </span>
             </div>
+            <div className="w-px h-[35px] bg-black shrink-0" />
+            <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] shrink-0">
+              {match.apartmentDuration}
+            </span>
           </div>
 
           {/* Traits */}
