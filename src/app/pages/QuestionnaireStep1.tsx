@@ -180,7 +180,10 @@ export default function QuestionnaireStep1() {
 
         {/* Next Button */}
         <button
-          onClick={() => navigate('/questionnaire/step2')}
+          onClick={() => {
+            localStorage.setItem('questionnaireStep1', JSON.stringify(formData));
+            navigate('/questionnaire/step2');
+          }}
           className="flex items-center gap-2 ml-auto mb-8"
         >
           <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black">

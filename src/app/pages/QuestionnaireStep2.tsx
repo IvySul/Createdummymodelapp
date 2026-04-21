@@ -311,7 +311,10 @@ export default function QuestionnaireStep2() {
 
         {/* Get Matching Button */}
         <button
-          onClick={() => navigate('/matches')}
+          onClick={() => {
+            localStorage.setItem('questionnaireStep2', JSON.stringify(formData));
+            navigate('/matches');
+          }}
           className="flex items-center gap-2 ml-auto mb-8"
         >
           <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black">

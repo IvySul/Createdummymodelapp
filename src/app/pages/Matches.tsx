@@ -97,6 +97,20 @@ export default function Matches() {
     minBudget: '',
     maxBudget: '',
   });
+  const [questionnaireStep1, setQuestionnaireStep1] = useState<any>(null);
+  const [questionnaireStep2, setQuestionnaireStep2] = useState<any>(null);
+
+  useEffect(() => {
+    try {
+      const step1 = localStorage.getItem('questionnaireStep1');
+      const step2 = localStorage.getItem('questionnaireStep2');
+      setQuestionnaireStep1(step1 ? JSON.parse(step1) : null);
+      setQuestionnaireStep2(step2 ? JSON.parse(step2) : null);
+    } catch {
+      setQuestionnaireStep1(null);
+      setQuestionnaireStep2(null);
+    }
+  }, []);
 
   const filteredMatches = useMemo(() => {
     return matches.filter((m) => {
@@ -127,6 +141,50 @@ export default function Matches() {
   }, [filteredMatches, matchIndex]);
 
   const match = filteredMatches[matchIndex];
+
+  const compatibilityScore = useMemo(() => {
+    if (!match) return 0;
+
+    let total = 0;
+    let matched = 0;
+
+    const check = (condition: boolean) => {
+      total += 1;
+      if (condition) matched += 1;
+    };
+
+    if (questionnaireStep1?.politics) {
+      check(match.traits[1].label.toLowerCase() === String(questionnaireStep1.politics).toLowerCase());
+    }
+    if (questionnaireStep1?.religion) {
+      check(match.traits[2].label.toLowerCase() === String(questionnaireStep1.religion).toLowerCase());
+    }
+    if (questionnaireStep2?.schedule) {
+      check(match.traits[0].label.toLowerCase() === String(questionnaireStep2.schedule).toLowerCase());
+    }
+    if (questionnaireStep2?.noise) {
+      check(match.traits[3].label.toLowerCase() === String(questionnaireStep2.noise).toLowerCase());
+    }
+    if (questionnaireStep2?.cleanliness) {
+      check(match.traits[4].label.toLowerCase() === String(questionnaireStep2.cleanliness).toLowerCase());
+    }
+    if (Array.isArray(questionnaireStep2?.budget) && questionnaireStep2.budget.length === 2) {
+      const min = Number(questionnaireStep2.budget[0]);
+      const max = Number(questionnaireStep2.budget[1]);
+      if (!Number.isNaN(min) && !Number.isNaN(max)) {
+        check(match.budget >= Math.min(min, max) && match.budget <= Math.max(min, max));
+      }
+    }
+    if (questionnaireStep2?.apartmentStartDate && questionnaireStep2?.apartmentEndDate) {
+      check(
+        !(match.apartmentEndDate < questionnaireStep2.apartmentStartDate ||
+          match.apartmentStartDate > questionnaireStep2.apartmentEndDate)
+      );
+    }
+
+    if (total === 0) return 50;
+    return Math.round((matched / total) * 100);
+  }, [match, questionnaireStep1, questionnaireStep2]);
 
   const showNextMatch = () => {
     if (!filteredMatches.length) return;
@@ -286,6 +344,9 @@ export default function Matches() {
           <>
         {/* Profile Card */}
         <div className="bg-[#d9d9d9] rounded-[51px] p-6 mb-6">
+          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[20px] text-black mb-1">
+            {compatibilityScore}% compatibility
+          </p>
           <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[36px] text-black mb-4">
             {match.name}
           </p>
