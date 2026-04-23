@@ -83,7 +83,9 @@ const matches = Array.from({ length: 8 }, (_, i) => ({
 export default function Matches() {
   const [matchIndex, setMatchIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [swipeOffsetX, setSwipeOffsetX] = useState(0);
   const [ignoreSwipe, setIgnoreSwipe] = useState(false);
+  const [isAnimatingSwipe, setIsAnimatingSwipe] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({
     gender: 'All',
@@ -207,6 +209,7 @@ export default function Matches() {
   };
 
   const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+    if (isAnimatingSwipe) return;
     const target = event.target as HTMLElement;
     if (target.closest('[data-no-swipe="true"]')) {
       setIgnoreSwipe(true);
@@ -217,6 +220,31 @@ export default function Matches() {
     setTouchStartX(event.touches[0].clientX);
   };
 
+  const handleTouchMove = (event: TouchEvent<HTMLDivElement>) => {
+    if (ignoreSwipe || touchStartX === null || isAnimatingSwipe) return;
+    const currentX = event.touches[0].clientX;
+    const deltaX = currentX - touchStartX;
+    // Cap drag distance so the card doesn't fly off while still dragging.
+    setSwipeOffsetX(Math.max(-180, Math.min(180, deltaX)));
+  };
+
+  const animateSwipe = (direction: 'left' | 'right') => {
+    if (isAnimatingSwipe) return;
+    setIsAnimatingSwipe(true);
+    setSwipeOffsetX(direction === 'left' ? -460 : 460);
+
+    window.setTimeout(() => {
+      if (direction === 'left') showNextMatch();
+      else showPreviousMatch();
+      // Bring next profile card in from opposite direction.
+      setSwipeOffsetX(direction === 'left' ? 220 : -220);
+      window.setTimeout(() => {
+        setSwipeOffsetX(0);
+        setIsAnimatingSwipe(false);
+      }, 40);
+    }, 220);
+  };
+
   const handleTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
     if (ignoreSwipe) {
       setIgnoreSwipe(false);
@@ -224,13 +252,19 @@ export default function Matches() {
     }
     if (touchStartX === null) return;
     const swipeDistance = event.changedTouches[0].clientX - touchStartX;
-    const swipeThreshold = 50;
+    const swipeThreshold = 65;
 
-    if (swipeDistance <= -swipeThreshold) showNextMatch();
-    if (swipeDistance >= swipeThreshold) showPreviousMatch();
+    if (swipeDistance <= -swipeThreshold) animateSwipe('left');
+    else if (swipeDistance >= swipeThreshold) animateSwipe('right');
+    else setSwipeOffsetX(0);
 
     setTouchStartX(null);
   };
+
+  const swipeProgress = Math.min(1, Math.abs(swipeOffsetX) / 180);
+  const cardRotate = swipeOffsetX / 26;
+  const cardScale = 1 - swipeProgress * 0.04;
+  const cardOpacity = 1 - swipeProgress * 0.18;
 
   return (
     <div className="bg-white relative min-h-screen w-full max-w-md mx-auto pb-24">
@@ -345,13 +379,22 @@ export default function Matches() {
         </div>
       </div>
 
-      <div className="px-6" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+      <div className="px-6 overflow-hidden" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
         {!match ? (
           <div className="bg-[#d9d9d9] rounded-[30px] p-8 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[18px] mb-6">
             No matches found with current filters.
           </div>
         ) : (
-          <>
+          <div
+            style={{
+              transform: `translateX(${swipeOffsetX}px) rotate(${cardRotate}deg) scale(${cardScale})`,
+              opacity: cardOpacity,
+              transition: touchStartX !== null && !isAnimatingSwipe
+                ? 'none'
+                : 'transform 260ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms ease',
+              willChange: 'transform, opacity',
+            }}
+          >
         {/* Profile Card */}
         <div className="bg-[#d9d9d9] rounded-[51px] p-6 mb-6">
           <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[20px] text-black mb-1">
@@ -450,7 +493,7 @@ export default function Matches() {
             </div>
           </div>
         </div>
-          </>
+          </div>
         )}
       </div>
 
