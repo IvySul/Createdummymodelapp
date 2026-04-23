@@ -83,6 +83,7 @@ const matches = Array.from({ length: 8 }, (_, i) => ({
 export default function Matches() {
   const [matchIndex, setMatchIndex] = useState(0);
   const [likedMatchIds, setLikedMatchIds] = useState<number[]>([]);
+  const [swipedMatchIds, setSwipedMatchIds] = useState<number[]>([]);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [swipeOffsetX, setSwipeOffsetX] = useState(0);
   const [ignoreSwipe, setIgnoreSwipe] = useState(false);
@@ -137,8 +138,8 @@ export default function Matches() {
   }, [filters]);
 
   const filteredMatches = useMemo(
-    () => baseFilteredMatches.filter((m) => !likedMatchIds.includes(m.id)),
-    [baseFilteredMatches, likedMatchIds]
+    () => baseFilteredMatches.filter((m) => !swipedMatchIds.includes(m.id)),
+    [baseFilteredMatches, swipedMatchIds]
   );
 
   useEffect(() => {
@@ -210,10 +211,13 @@ export default function Matches() {
     setMatchIndex((prev) => (prev + 1) % filteredMatches.length);
   };
 
-  const likeCurrentMatch = () => {
+  const markCurrentAsSwiped = (liked: boolean) => {
     const current = filteredMatches[matchIndex];
     if (!current) return;
-    setLikedMatchIds((prev) => (prev.includes(current.id) ? prev : [...prev, current.id]));
+    setSwipedMatchIds((prev) => (prev.includes(current.id) ? prev : [...prev, current.id]));
+    if (liked) {
+      setLikedMatchIds((prev) => (prev.includes(current.id) ? prev : [...prev, current.id]));
+    }
   };
 
   const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
@@ -242,8 +246,8 @@ export default function Matches() {
     setSwipeOffsetX(direction === 'left' ? -460 : 460);
 
     window.setTimeout(() => {
-      if (direction === 'left') showNextMatch();
-      else likeCurrentMatch();
+      if (direction === 'left') markCurrentAsSwiped(false);
+      else markCurrentAsSwiped(true);
 
       // Hard reset without transition so the new profile starts on the opposite side.
       setIsResettingSwipePosition(true);
