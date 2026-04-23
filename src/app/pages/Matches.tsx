@@ -86,6 +86,7 @@ export default function Matches() {
   const [swipeOffsetX, setSwipeOffsetX] = useState(0);
   const [ignoreSwipe, setIgnoreSwipe] = useState(false);
   const [isAnimatingSwipe, setIsAnimatingSwipe] = useState(false);
+  const [isResettingSwipePosition, setIsResettingSwipePosition] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({
     gender: 'All',
@@ -236,12 +237,21 @@ export default function Matches() {
     window.setTimeout(() => {
       if (direction === 'left') showNextMatch();
       else showPreviousMatch();
-      // Bring next profile card in from opposite direction.
-      setSwipeOffsetX(direction === 'left' ? 220 : -220);
-      window.setTimeout(() => {
-        setSwipeOffsetX(0);
-        setIsAnimatingSwipe(false);
-      }, 40);
+
+      // Hard reset without transition so the new profile starts on the opposite side.
+      setIsResettingSwipePosition(true);
+      setSwipeOffsetX(direction === 'left' ? 300 : -300);
+
+      // Next paint: animate that opposite-side card into center.
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          setIsResettingSwipePosition(false);
+          setSwipeOffsetX(0);
+          window.setTimeout(() => {
+            setIsAnimatingSwipe(false);
+          }, 260);
+        });
+      });
     }, 220);
   };
 
@@ -390,6 +400,8 @@ export default function Matches() {
               transform: `translateX(${swipeOffsetX}px) rotate(${cardRotate}deg) scale(${cardScale})`,
               opacity: cardOpacity,
               transition: touchStartX !== null && !isAnimatingSwipe
+                ? 'none'
+                : isResettingSwipePosition
                 ? 'none'
                 : 'transform 260ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms ease',
               willChange: 'transform, opacity',
