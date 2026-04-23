@@ -20,7 +20,7 @@ type RentalPlace = {
   type: string;
   position: [number, number];
   address?: string;
-  source?: 'nominatim' | 'overpass' | 'photon' | 'fallback';
+  source?: 'foursquare' | 'nominatim' | 'overpass' | 'photon' | 'fallback';
   url?: string;
 };
 
@@ -42,6 +42,7 @@ const OVERPASS_BASE_URLS = [
   'https://overpass.openstreetmap.fr/api/interpreter',
 ];
 const FETCH_TIMEOUT_MS = 12000;
+const FOURSQUARE_API_KEY = (import.meta as any).env?.VITE_FOURSQUARE_API_KEY as string | undefined;
 const LOCAL_FALLBACK_RENTALS: RentalPlace[] = [
   { id: 'local-1', name: 'The Social Grand Forest', type: 'Local fallback', position: [35.9592, -83.9292] },
   { id: 'local-2', name: 'The Standard Knoxville', type: 'Local fallback', position: [35.9624, -83.9235] },
@@ -209,6 +210,64 @@ async function fetchNominatimPlaces(center: [number, number], radiusMeters: numb
   return places;
 }
 
+async function fetchFoursquarePlaces(center: [number, number], radiusMeters: number): Promise<RentalPlace[]> {
+  if (!FOURSQUARE_API_KEY) throw new Error('foursquare key missing');
+
+  const [lat, lon] = center;
+  const queries = ['apartment', 'rental', 'student housing'];
+  const seen = new Set<string>();
+  const places: RentalPlace[] = [];
+
+  for (const query of queries) {
+    const url =
+      `https://api.foursquare.com/v3/places/search?ll=${lat},${lon}` +
+      `&radius=${Math.min(100000, radiusMeters)}&limit=50&query=${encodeURIComponent(query)}`;
+
+    const response = await fetchWithTimeout(url, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: FOURSQUARE_API_KEY,
+      },
+    });
+    if (!response.ok) continue;
+    const data = await response.json();
+    const results = Array.isArray(data?.results) ? data.results : [];
+
+    for (let i = 0; i < results.length; i++) {
+      const item = results[i];
+      const latitude = Number(item?.geocodes?.main?.latitude);
+      const longitude = Number(item?.geocodes?.main?.longitude);
+      if (Number.isNaN(latitude) || Number.isNaN(longitude)) continue;
+      const position: [number, number] = [latitude, longitude];
+      if (distanceMeters(center, position) > radiusMeters) continue;
+
+      const name = String(item?.name || 'Rental place');
+      const dedupe = `${latitude.toFixed(5)}:${longitude.toFixed(5)}:${name.toLowerCase()}`;
+      if (seen.has(dedupe)) continue;
+      seen.add(dedupe);
+
+      const categories = Array.isArray(item?.categories) ? item.categories : [];
+      const type = categories.length ? String(categories[0]?.name || 'Rental') : 'Rental';
+      const address = item?.location?.formatted_address
+        ? String(item.location.formatted_address)
+        : [item?.location?.address, item?.location?.locality].filter(Boolean).join(', ');
+
+      places.push({
+        id: `foursquare-${item?.fsq_id ?? `${latitude}-${longitude}-${i}`}`,
+        name,
+        type,
+        position,
+        address,
+        source: 'foursquare',
+        url: item?.fsq_id ? `https://foursquare.com/v/${item.fsq_id}` : undefined,
+      });
+    }
+  }
+
+  if (!places.length) throw new Error('foursquare empty');
+  return places;
+}
+
 async function fetchPhotonFallback(center: [number, number], radiusMeters: number): Promise<RentalPlace[]> {
   const [lat, lon] = center;
   const photonLimit = radiusMeters >= 16093 ? 220 : radiusMeters >= 8047 ? 160 : 100;
@@ -320,9 +379,16 @@ export default function Map() {
       let nextRentals: RentalPlace[] = [];
 
       try {
-        nextRentals = await fetchNominatimPlaces(center, radiusMeters);
+        nextRentals = await fetchFoursquarePlaces(center, radiusMeters);
       } catch {
         nextRentals = [];
+      }
+      if (!nextRentals.length) {
+        try {
+          nextRentals = await fetchNominatimPlaces(center, radiusMeters);
+        } catch {
+          nextRentals = [];
+        }
       }
 
       let data: any = null;
