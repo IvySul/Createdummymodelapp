@@ -103,39 +103,78 @@ async function fetchOverpassJson(center: [number, number], radiusMeters: number)
   throw lastError ?? new Error('overpass unavailable');
 }
 
+async function fetchOverpassDirect(center: [number, number], radiusMeters: number): Promise<any> {
+  const [lat, lon] = center;
+  const directQuery = `
+    [out:json][timeout:25];
+    (
+      node(around:${radiusMeters},${lat},${lon})["building"="apartments"];
+      way(around:${radiusMeters},${lat},${lon})["building"="apartments"];
+      node(around:${radiusMeters},${lat},${lon})["tourism"="apartment"];
+      way(around:${radiusMeters},${lat},${lon})["tourism"="apartment"];
+      node(around:${radiusMeters},${lat},${lon})["amenity"="real_estate_agent"];
+      way(around:${radiusMeters},${lat},${lon})["amenity"="real_estate_agent"];
+    );
+    out center tags;
+  `;
+
+  let lastError: unknown = null;
+  for (const baseUrl of OVERPASS_BASE_URLS) {
+    try {
+      const response = await fetchWithTimeout(baseUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+        body: directQuery,
+      });
+      if (!response.ok) throw new Error('direct overpass failed');
+      return await response.json();
+    } catch (error) {
+      lastError = error;
+    }
+  }
+  throw lastError ?? new Error('direct overpass unavailable');
+}
+
 async function fetchPhotonFallback(center: [number, number], radiusMeters: number): Promise<RentalPlace[]> {
   const [lat, lon] = center;
-  const photonLimit = radiusMeters >= 16093 ? 200 : radiusMeters >= 8047 ? 140 : 80;
-  const url = `https://photon.komoot.io/api/?q=apartment&lat=${lat}&lon=${lon}&limit=${photonLimit}&lang=en`;
-  const response = await fetchWithTimeout(url);
-  if (!response.ok) throw new Error('photon failed');
-  const data = await response.json();
+  const photonLimit = radiusMeters >= 16093 ? 220 : radiusMeters >= 8047 ? 160 : 100;
+  const queries = ['apartment', 'housing', 'rental'];
+  const seen = new Set<string>();
   const next: RentalPlace[] = [];
-  const features = data.features ?? [];
-  for (let i = 0; i < features.length; i++) {
-    const f = features[i];
-    const coords = f.geometry?.coordinates;
-    if (!Array.isArray(coords) || coords.length < 2) continue;
-    const position: [number, number] = [coords[1], coords[0]];
-    if (distanceMeters(center, position) > radiusMeters) continue;
-    const props = f.properties ?? {};
-    const name =
-      props.name ||
-      props.street ||
-      (props.city ? `Near ${props.city}` : 'Place');
-    next.push({
-      id: `photon-${i}-${props.osm_id ?? coords[0]}-${coords[1]}`,
-      name,
-      type: props.type === 'house' ? 'Housing' : 'Nearby place',
-      position,
-    });
+
+  for (const query of queries) {
+    const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&lat=${lat}&lon=${lon}&limit=${photonLimit}&lang=en`;
+    const response = await fetchWithTimeout(url);
+    if (!response.ok) continue;
+    const data = await response.json();
+    const features = data.features ?? [];
+    for (let i = 0; i < features.length; i++) {
+      const f = features[i];
+      const coords = f.geometry?.coordinates;
+      if (!Array.isArray(coords) || coords.length < 2) continue;
+      const position: [number, number] = [coords[1], coords[0]];
+      if (distanceMeters(center, position) > radiusMeters) continue;
+      const props = f.properties ?? {};
+      const name = props.name || props.street || (props.city ? `Near ${props.city}` : 'Place');
+      const dedupeKey = `${position[0].toFixed(5)}:${position[1].toFixed(5)}:${String(name).toLowerCase()}`;
+      if (seen.has(dedupeKey)) continue;
+      seen.add(dedupeKey);
+      next.push({
+        id: `photon-${query}-${i}-${props.osm_id ?? coords[0]}-${coords[1]}`,
+        name,
+        type: props.type === 'house' ? 'Housing' : 'Nearby place',
+        position,
+      });
+    }
   }
+  if (!next.length) throw new Error('photon empty');
   return next;
 }
 
 export default function Map() {
   const [userPosition, setUserPosition] = useState<[number, number]>(DEFAULT_CENTER);
   const [radius, setRadius] = useState(2500);
+  const [customMiles, setCustomMiles] = useState('');
   const [search, setSearch] = useState('');
   const [rentals, setRentals] = useState<RentalPlace[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -147,6 +186,17 @@ export default function Map() {
     const query = search.toLowerCase();
     return rentals.filter((rental) => rental.name.toLowerCase().includes(query) || rental.type.toLowerCase().includes(query));
   }, [rentals, search]);
+
+  const applyCustomMiles = () => {
+    const miles = Number(customMiles);
+    if (Number.isNaN(miles) || miles <= 0) {
+      setCustomMiles('');
+      return;
+    }
+    const clampedMiles = Math.min(50, Math.max(0.25, miles));
+    setCustomMiles(String(clampedMiles));
+    setRadius(Math.round(clampedMiles * 1609.34));
+  };
 
   const fetchNearbyRentals = async (center: [number, number], radiusMeters: number) => {
     setIsLoading(true);
@@ -190,7 +240,11 @@ export default function Map() {
       try {
         data = await fetchOverpassJson(center, radiusMeters);
       } catch {
-        data = null;
+        try {
+          data = await fetchOverpassDirect(center, radiusMeters);
+        } catch {
+          data = null;
+        }
       }
 
       let nextRentals = data ? mapElements(data) : [];
@@ -305,6 +359,22 @@ export default function Map() {
               </option>
             ))}
           </select>
+        </div>
+        <div className="flex items-center gap-2 mb-1">
+          <input
+            type="number"
+            min="0.25"
+            max="50"
+            step="0.25"
+            value={customMiles}
+            onChange={(e) => setCustomMiles(e.target.value)}
+            onBlur={applyCustomMiles}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') e.currentTarget.blur();
+            }}
+            placeholder="Custom miles (0.25 - 50)"
+            className="bg-[#f4f4f4] h-[30px] rounded-[10px] px-2 text-[12px] font-['ABC_Diatype_Edu:Regular',sans-serif] outline-none w-full no-number-spinner"
+          />
         </div>
 
         <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[11px] text-black">
