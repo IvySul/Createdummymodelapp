@@ -28,7 +28,31 @@ const DISTANCE_OPTIONS = [
   { label: '2 mi', value: 3219 },
   { label: '3 mi', value: 4828 },
   { label: '5 mi', value: 8047 },
+  { label: '8 mi', value: 12875 },
+  { label: '10 mi', value: 16093 },
+  { label: '15 mi', value: 24140 },
+  { label: '20 mi', value: 32187 },
 ];
+const OVERPASS_BASE_URLS = [
+  'https://overpass-api.de/api/interpreter',
+  'https://overpass.kumi.systems/api/interpreter',
+  'https://overpass.openstreetmap.fr/api/interpreter',
+];
+const FETCH_TIMEOUT_MS = 12000;
+
+function toCacheKey(center: [number, number], radiusMeters: number): string {
+  return `${center[0].toFixed(4)},${center[1].toFixed(4)}:${radiusMeters}`;
+}
+
+async function fetchWithTimeout(url: string, init?: RequestInit, timeoutMs = FETCH_TIMEOUT_MS): Promise<Response> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...init, signal: controller.signal });
+  } finally {
+    clearTimeout(timeout);
+  }
+}
 
 function distanceMeters(a: [number, number], b: [number, number]): number {
   const R = 6371000;
@@ -59,25 +83,31 @@ async function fetchOverpassJson(center: [number, number], radiusMeters: number)
   `;
 
   const dataParam = encodeURIComponent(overpassQuery.replace(/\s+/g, ' ').trim());
-  const overpassUrl = `https://overpass-api.de/api/interpreter?data=${dataParam}`;
+  let lastError: unknown = null;
 
-  // Browser CORS often blocks Overpass; proxy avoids that on static hosts (GitHub Pages).
-  const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(overpassUrl)}`;
-  const response = await fetch(proxyUrl);
-  if (!response.ok) throw new Error('proxy fetch failed');
-  const payload = await response.json();
-  if (typeof payload.contents !== 'string' || !payload.contents.trim()) throw new Error('invalid proxy response');
-  try {
-    return JSON.parse(payload.contents);
-  } catch {
-    throw new Error('overpass parse failed');
+  for (const baseUrl of OVERPASS_BASE_URLS) {
+    try {
+      // Browser CORS often blocks Overpass; proxy avoids that on static hosts (GitHub Pages).
+      const overpassUrl = `${baseUrl}?data=${dataParam}`;
+      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(overpassUrl)}`;
+      const response = await fetchWithTimeout(proxyUrl);
+      if (!response.ok) throw new Error('proxy fetch failed');
+      const payload = await response.json();
+      if (typeof payload.contents !== 'string' || !payload.contents.trim()) throw new Error('invalid proxy response');
+      return JSON.parse(payload.contents);
+    } catch (error) {
+      lastError = error;
+    }
   }
+
+  throw lastError ?? new Error('overpass unavailable');
 }
 
 async function fetchPhotonFallback(center: [number, number], radiusMeters: number): Promise<RentalPlace[]> {
   const [lat, lon] = center;
-  const url = `https://photon.komoot.io/api/?q=apartment&lat=${lat}&lon=${lon}&limit=80&lang=en`;
-  const response = await fetch(url);
+  const photonLimit = radiusMeters >= 16093 ? 200 : radiusMeters >= 8047 ? 140 : 80;
+  const url = `https://photon.komoot.io/api/?q=apartment&lat=${lat}&lon=${lon}&limit=${photonLimit}&lang=en`;
+  const response = await fetchWithTimeout(url);
   if (!response.ok) throw new Error('photon failed');
   const data = await response.json();
   const next: RentalPlace[] = [];
@@ -122,8 +152,9 @@ export default function Map() {
     setIsLoading(true);
     setError('');
 
-    const mapElements = (data: any): RentalPlace[] =>
-      (data.elements ?? [])
+    const mapElements = (data: any): RentalPlace[] => {
+      const seen = new Set<string>();
+      return (data.elements ?? [])
         .map((element: any) => {
           const latValue = element.lat ?? element.center?.lat;
           const lonValue = element.lon ?? element.center?.lon;
@@ -145,37 +176,38 @@ export default function Map() {
             position: [latValue, lonValue] as [number, number],
           };
         })
-        .filter(Boolean);
+        .filter((item: RentalPlace | null): item is RentalPlace => {
+          if (!item) return false;
+          const key = `${item.position[0].toFixed(5)}:${item.position[1].toFixed(5)}:${item.name.toLowerCase()}`;
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+    };
 
     try {
       let data: any;
       try {
         data = await fetchOverpassJson(center, radiusMeters);
       } catch {
-        data = await fetch('https://overpass-api.de/api/interpreter', {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
-          body: `
-            [out:json][timeout:25];
-            (
-              node(around:${radiusMeters},${center[0]},${center[1]})["building"="apartments"];
-              way(around:${radiusMeters},${center[0]},${center[1]})["building"="apartments"];
-            );
-            out center tags;
-          `,
-        }).then((r) => {
-          if (!r.ok) throw new Error('direct overpass failed');
-          return r.json();
-        });
+        data = null;
       }
 
-      let nextRentals = mapElements(data);
+      let nextRentals = data ? mapElements(data) : [];
 
       if (!nextRentals.length) {
         nextRentals = await fetchPhotonFallback(center, radiusMeters);
       }
 
       setRentals(nextRentals);
+      localStorage.setItem(
+        'mapRentalsCache',
+        JSON.stringify({
+          key: toCacheKey(center, radiusMeters),
+          rentals: nextRentals,
+          savedAt: Date.now(),
+        })
+      );
       if (!nextRentals.length) {
         setError('No rentals found in this range. Try a larger distance.');
       }
@@ -185,6 +217,19 @@ export default function Map() {
         setRentals(fallback);
         if (!fallback.length) setError('No places found nearby. Try increasing distance.');
       } catch {
+        const cacheRaw = localStorage.getItem('mapRentalsCache');
+        if (cacheRaw) {
+          try {
+            const cache = JSON.parse(cacheRaw);
+            if (cache?.key === toCacheKey(center, radiusMeters) && Array.isArray(cache.rentals)) {
+              setRentals(cache.rentals);
+              setError('Live data is unavailable right now. Showing last loaded results.');
+              return;
+            }
+          } catch {
+            // Ignore invalid cache and keep the network error.
+          }
+        }
         setError('Unable to load nearby places. Check your connection and try again.');
       }
     } finally {
@@ -267,6 +312,15 @@ export default function Map() {
         </p>
         {error ? (
           <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[11px] text-red-700 mt-1">{error}</p>
+        ) : null}
+        {!isLoading ? (
+          <button
+            type="button"
+            onClick={() => fetchNearbyRentals(userPosition, radius)}
+            className="mt-2 w-full h-[28px] rounded-[9px] bg-[#f4f4f4] text-[11px] font-['ABC_Diatype_Edu:Regular',sans-serif] hover:bg-[#e9e9e9]"
+          >
+            Retry loading places
+          </button>
         ) : null}
       </div>
 
