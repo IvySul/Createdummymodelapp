@@ -39,6 +39,16 @@ const OVERPASS_BASE_URLS = [
   'https://overpass.openstreetmap.fr/api/interpreter',
 ];
 const FETCH_TIMEOUT_MS = 12000;
+const LOCAL_FALLBACK_RENTALS: RentalPlace[] = [
+  { id: 'local-1', name: 'The Social Grand Forest', type: 'Local fallback', position: [35.9592, -83.9292] },
+  { id: 'local-2', name: 'The Standard Knoxville', type: 'Local fallback', position: [35.9624, -83.9235] },
+  { id: 'local-3', name: 'The Heights of Knoxville', type: 'Local fallback', position: [35.9518, -83.9388] },
+  { id: 'local-4', name: 'University Park', type: 'Local fallback', position: [35.9485, -83.9219] },
+  { id: 'local-5', name: 'Society 865', type: 'Local fallback', position: [35.9672, -83.9174] },
+  { id: 'local-6', name: 'South Banks Flats', type: 'Local fallback', position: [35.9449, -83.9135] },
+  { id: 'local-7', name: 'Marble Alley Lofts', type: 'Local fallback', position: [35.9675, -83.9192] },
+  { id: 'local-8', name: 'Rand Property Rentals', type: 'Local fallback', position: [35.9558, -83.9349] },
+];
 
 function toCacheKey(center: [number, number], radiusMeters: number): string {
   return `${center[0].toFixed(4)},${center[1].toFixed(4)}:${radiusMeters}`;
@@ -180,6 +190,7 @@ export default function Map() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
   const [error, setError] = useState('');
+  const [isUsingFallback, setIsUsingFallback] = useState(false);
 
   const filteredRentals = useMemo(() => {
     if (!search.trim()) return rentals;
@@ -201,6 +212,7 @@ export default function Map() {
   const fetchNearbyRentals = async (center: [number, number], radiusMeters: number) => {
     setIsLoading(true);
     setError('');
+    setIsUsingFallback(false);
 
     const mapElements = (data: any): RentalPlace[] => {
       const seen = new Set<string>();
@@ -269,6 +281,7 @@ export default function Map() {
       try {
         const fallback = await fetchPhotonFallback(center, radiusMeters);
         setRentals(fallback);
+        setIsUsingFallback(false);
         if (!fallback.length) setError('No places found nearby. Try increasing distance.');
       } catch {
         const cacheRaw = localStorage.getItem('mapRentalsCache');
@@ -278,13 +291,24 @@ export default function Map() {
             if (cache?.key === toCacheKey(center, radiusMeters) && Array.isArray(cache.rentals)) {
               setRentals(cache.rentals);
               setError('Live data is unavailable right now. Showing last loaded results.');
+              setIsUsingFallback(false);
               return;
             }
           } catch {
             // Ignore invalid cache and keep the network error.
           }
         }
-        setError('Unable to load nearby places. Check your connection and try again.');
+        const localFallback = LOCAL_FALLBACK_RENTALS.filter(
+          (rental) => distanceMeters(center, rental.position) <= radiusMeters
+        );
+        if (localFallback.length) {
+          setRentals(localFallback);
+          setIsUsingFallback(true);
+          setError('Live APIs are unavailable right now. Showing nearby fallback rentals.');
+        } else {
+          setRentals([]);
+          setError('Unable to load nearby places. Check your connection and try again.');
+        }
       }
     } finally {
       setIsLoading(false);
@@ -382,6 +406,11 @@ export default function Map() {
         </p>
         {error ? (
           <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[11px] text-red-700 mt-1">{error}</p>
+        ) : null}
+        {isUsingFallback ? (
+          <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[11px] text-black/70 mt-1">
+            Fallback data is shown until live APIs recover.
+          </p>
         ) : null}
         {!isLoading ? (
           <button
