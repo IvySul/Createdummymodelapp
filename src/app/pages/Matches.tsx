@@ -82,6 +82,7 @@ const matches = Array.from({ length: 8 }, (_, i) => ({
 
 export default function Matches() {
   const [matchIndex, setMatchIndex] = useState(0);
+  const [likedMatchIds, setLikedMatchIds] = useState<number[]>([]);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [swipeOffsetX, setSwipeOffsetX] = useState(0);
   const [ignoreSwipe, setIgnoreSwipe] = useState(false);
@@ -115,7 +116,7 @@ export default function Matches() {
     }
   }, []);
 
-  const filteredMatches = useMemo(() => {
+  const baseFilteredMatches = useMemo(() => {
     return matches.filter((m) => {
       const budgetMin = filters.minBudget.trim() ? Number(filters.minBudget) : null;
       const budgetMax = filters.maxBudget.trim() ? Number(filters.maxBudget) : null;
@@ -134,6 +135,11 @@ export default function Matches() {
       return true;
     });
   }, [filters]);
+
+  const filteredMatches = useMemo(
+    () => baseFilteredMatches.filter((m) => !likedMatchIds.includes(m.id)),
+    [baseFilteredMatches, likedMatchIds]
+  );
 
   useEffect(() => {
     if (filteredMatches.length === 0) {
@@ -204,9 +210,10 @@ export default function Matches() {
     setMatchIndex((prev) => (prev + 1) % filteredMatches.length);
   };
 
-  const showPreviousMatch = () => {
-    if (!filteredMatches.length) return;
-    setMatchIndex((prev) => (prev - 1 + filteredMatches.length) % filteredMatches.length);
+  const likeCurrentMatch = () => {
+    const current = filteredMatches[matchIndex];
+    if (!current) return;
+    setLikedMatchIds((prev) => (prev.includes(current.id) ? prev : [...prev, current.id]));
   };
 
   const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
@@ -236,7 +243,7 @@ export default function Matches() {
 
     window.setTimeout(() => {
       if (direction === 'left') showNextMatch();
-      else showPreviousMatch();
+      else likeCurrentMatch();
 
       // Hard reset without transition so the new profile starts on the opposite side.
       setIsResettingSwipePosition(true);
@@ -390,9 +397,14 @@ export default function Matches() {
       </div>
 
       <div className="px-6 overflow-hidden" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
+        {likedMatchIds.length > 0 ? (
+          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[14px] text-black mb-3">
+            Matches liked: {likedMatchIds.length}
+          </p>
+        ) : null}
         {!match ? (
           <div className="bg-[#d9d9d9] rounded-[30px] p-8 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[18px] mb-6">
-            No matches found with current filters.
+            No more matches in this lineup.
           </div>
         ) : (
           <div
