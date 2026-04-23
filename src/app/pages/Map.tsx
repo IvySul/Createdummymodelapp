@@ -19,6 +19,9 @@ type RentalPlace = {
   name: string;
   type: string;
   position: [number, number];
+  address?: string;
+  source?: 'nominatim' | 'overpass' | 'photon' | 'fallback';
+  url?: string;
 };
 
 const DEFAULT_CENTER: [number, number] = [35.9544, -83.9295];
@@ -52,6 +55,18 @@ const LOCAL_FALLBACK_RENTALS: RentalPlace[] = [
 
 function toCacheKey(center: [number, number], radiusMeters: number): string {
   return `${center[0].toFixed(4)},${center[1].toFixed(4)}:${radiusMeters}`;
+}
+
+function getBoundingBox(center: [number, number], radiusMeters: number) {
+  const [lat, lon] = center;
+  const latDelta = radiusMeters / 111320;
+  const lonDelta = radiusMeters / (111320 * Math.cos((lat * Math.PI) / 180));
+  return {
+    minLat: lat - latDelta,
+    maxLat: lat + latDelta,
+    minLon: lon - lonDelta,
+    maxLon: lon + lonDelta,
+  };
 }
 
 async function fetchWithTimeout(url: string, init?: RequestInit, timeoutMs = FETCH_TIMEOUT_MS): Promise<Response> {
@@ -145,6 +160,55 @@ async function fetchOverpassDirect(center: [number, number], radiusMeters: numbe
   throw lastError ?? new Error('direct overpass unavailable');
 }
 
+async function fetchNominatimPlaces(center: [number, number], radiusMeters: number): Promise<RentalPlace[]> {
+  const box = getBoundingBox(center, radiusMeters);
+  const queries = ['apartment', 'student housing', 'rental'];
+  const seen = new Set<string>();
+  const places: RentalPlace[] = [];
+
+  for (const query of queries) {
+    const url =
+      `https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=60` +
+      `&bounded=1&viewbox=${box.minLon},${box.maxLat},${box.maxLon},${box.minLat}` +
+      `&q=${encodeURIComponent(query)}`;
+
+    const response = await fetchWithTimeout(url, {
+      headers: {
+        Accept: 'application/json',
+      },
+    });
+    if (!response.ok) continue;
+    const data = await response.json();
+    if (!Array.isArray(data)) continue;
+
+    for (let i = 0; i < data.length; i++) {
+      const item = data[i];
+      const lat = Number(item.lat);
+      const lon = Number(item.lon);
+      if (Number.isNaN(lat) || Number.isNaN(lon)) continue;
+      const position: [number, number] = [lat, lon];
+      if (distanceMeters(center, position) > radiusMeters) continue;
+      const name = item.name || item.display_name?.split(',')[0] || 'Rental place';
+      const dedupe = `${lat.toFixed(5)}:${lon.toFixed(5)}:${String(name).toLowerCase()}`;
+      if (seen.has(dedupe)) continue;
+      seen.add(dedupe);
+
+      places.push({
+        id: `nominatim-${item.place_id ?? `${lat}-${lon}-${i}`}`,
+        name: String(name),
+        type: String(item.type || 'Rental'),
+        position,
+        address: String(item.display_name || ''),
+        source: 'nominatim',
+        url: item.osm_type && item.osm_id ? `https://www.openstreetmap.org/${item.osm_type}/${item.osm_id}` : undefined,
+      });
+    }
+  }
+
+  if (!places.length) throw new Error('nominatim empty');
+  return places;
+}
+
 async function fetchPhotonFallback(center: [number, number], radiusMeters: number): Promise<RentalPlace[]> {
   const [lat, lon] = center;
   const photonLimit = radiusMeters >= 16093 ? 220 : radiusMeters >= 8047 ? 160 : 100;
@@ -174,6 +238,8 @@ async function fetchPhotonFallback(center: [number, number], radiusMeters: numbe
         name,
         type: props.type === 'house' ? 'Housing' : 'Nearby place',
         position,
+        address: [props.street, props.city].filter(Boolean).join(', '),
+        source: 'photon',
       });
     }
   }
@@ -236,6 +302,9 @@ export default function Map() {
             name: tags.name || 'Unnamed listing',
             type,
             position: [latValue, lonValue] as [number, number],
+            address: [tags['addr:housenumber'], tags['addr:street'], tags['addr:city']].filter(Boolean).join(' '),
+            source: 'overpass',
+            url: `https://www.openstreetmap.org/${element.type}/${element.id}`,
           };
         })
         .filter((item: RentalPlace | null): item is RentalPlace => {
@@ -248,7 +317,15 @@ export default function Map() {
     };
 
     try {
-      let data: any;
+      let nextRentals: RentalPlace[] = [];
+
+      try {
+        nextRentals = await fetchNominatimPlaces(center, radiusMeters);
+      } catch {
+        nextRentals = [];
+      }
+
+      let data: any = null;
       try {
         data = await fetchOverpassJson(center, radiusMeters);
       } catch {
@@ -259,7 +336,9 @@ export default function Map() {
         }
       }
 
-      let nextRentals = data ? mapElements(data) : [];
+      if (!nextRentals.length) {
+        nextRentals = data ? mapElements(data) : [];
+      }
 
       if (!nextRentals.length) {
         nextRentals = await fetchPhotonFallback(center, radiusMeters);
@@ -300,7 +379,10 @@ export default function Map() {
         }
         const localFallback = LOCAL_FALLBACK_RENTALS.filter(
           (rental) => distanceMeters(center, rental.position) <= radiusMeters
-        );
+        ).map((rental) => ({
+          ...rental,
+          source: 'fallback' as const,
+        }));
         if (localFallback.length) {
           setRentals(localFallback);
           setIsUsingFallback(true);
@@ -437,7 +519,7 @@ export default function Map() {
         />
 
         <Marker position={userPosition} icon={icon}>
-          <Popup>
+          <Popup className="rental-popup">
             <div className="p-1">
               <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[14px]">Your location</p>
             </div>
@@ -446,14 +528,34 @@ export default function Map() {
 
         {filteredRentals.map((apartment) => (
           <Marker key={apartment.id} position={apartment.position} icon={icon}>
-            <Popup>
-              <div className="p-2">
-                <h3 className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] font-semibold mb-1">
+            <Popup className="rental-popup">
+              <div className="rental-popup-card p-2">
+                <h3 className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] font-semibold mb-1 leading-tight">
                   {apartment.name}
                 </h3>
-                <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[12px] mb-1">
+                <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[12px] mb-1 capitalize">
                   {apartment.type}
                 </p>
+                {apartment.address ? (
+                  <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[11px] text-black/75 mb-2 leading-snug">
+                    {apartment.address}
+                  </p>
+                ) : null}
+                <div className="flex items-center justify-between gap-3">
+                  <span className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[10px] uppercase tracking-wide text-black/60">
+                    {apartment.source ?? 'listing'}
+                  </span>
+                  {apartment.url ? (
+                    <a
+                      href={apartment.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[11px] underline text-black"
+                    >
+                      Open details
+                    </a>
+                  ) : null}
+                </div>
               </div>
             </Popup>
           </Marker>

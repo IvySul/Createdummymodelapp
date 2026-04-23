@@ -43,3 +43,19 @@ div {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+.rental-popup .leaflet-popup-content-wrapper {
+  border-radius: 14px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.rental-popup .leaflet-popup-content {
+  margin: 8px 10px;
+  min-width: 210px;
+}
+
+.rental-popup-card {
+  background: linear-gradient(180deg, #ffffff 0%, #f8f8f8 100%);
+  border-radius: 10px;
+}
