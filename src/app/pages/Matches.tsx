@@ -401,11 +401,6 @@ export default function Matches() {
       </div>
 
       <div className="px-6 overflow-hidden" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
-        {likedMatchIds.length > 0 ? (
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[14px] text-black mb-3">
-            Matches liked: {likedMatchIds.length}
-          </p>
-        ) : null}
         {!match ? (
           <div className="bg-[#d9d9d9] rounded-[30px] p-8 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[18px] mb-6">
             No more matches in this lineup.
