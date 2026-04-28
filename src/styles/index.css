@@ -59,9 +59,3 @@ div {
   background: linear-gradient(180deg, #ffffff 0%, #f8f8f8 100%);
   border-radius: 10px;
 }
-
-.matches-exact-font,
-.matches-exact-font * {
-  font-family: 'Open Sans', sans-serif !important;
-  font-weight: 300 !important;
-}
