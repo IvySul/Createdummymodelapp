@@ -1,7 +1,7 @@
 import { type TouchEvent, useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router';
-import { MapPin, DollarSign, Circle, Home, BookOpen } from 'lucide-react';
-import matchesReference from '../../assets/matches-reference.png';
+import { Circle, Home, BookOpen } from 'lucide-react';
+import BottomNav from '../components/BottomNav';
+import matchesWomanReference from '../../assets/matches-woman-reference.png';
 
 const names = ['Olivia', 'Maya', 'Jordan', 'Alex', 'Taylor', 'Sofia', 'Riley', 'Noah'];
 const knoxvilleLocations = [
@@ -16,7 +16,7 @@ const knoxvilleLocations = [
 ];
 const genders = ['woman', 'woman', 'man', 'man', 'woman', 'woman', 'man', 'man'];
 const images = [
-  'https://randomuser.me/api/portraits/women/44.jpg',
+  matchesWomanReference,
   'https://randomuser.me/api/portraits/women/68.jpg',
   'https://randomuser.me/api/portraits/men/32.jpg',
   'https://randomuser.me/api/portraits/men/75.jpg',
@@ -290,7 +290,23 @@ export default function Matches() {
   const cardOpacity = 1 - swipeProgress * 0.18;
 
   return (
-    <div className="matches-exact-font bg-[#dcdcdc] relative min-h-screen w-full max-w-md mx-auto">
+    <div className="matches-exact-font bg-[#dcdcdc] relative min-h-screen w-full max-w-md mx-auto pb-[72px]">
+      {/* Header */}
+      <div className="flex items-center gap-4 px-5 pt-4 mb-3">
+        <button className="p-1" onClick={() => setShowFilters((v) => !v)}>
+          <svg className="w-[28px] h-[28px]" viewBox="0 0 28 28" fill="none">
+            <path d="M2 8.5H26" stroke="black" strokeWidth="1.1" />
+            <path d="M2 14H26" stroke="black" strokeWidth="1.1" />
+            <path d="M2 19.5H26" stroke="black" strokeWidth="1.1" />
+            <path d="M8 4V12" stroke="black" strokeWidth="1.1" />
+            <path d="M20 10V18" stroke="black" strokeWidth="1.1" />
+          </svg>
+        </button>
+        <p className="text-[56px] leading-[0.88] text-[#de6f1d] bg-[#eedecb] rounded-[16px] px-3 py-[2px] font-light">
+          Matches
+        </p>
+      </div>
+
       {showFilters ? <div className="fixed inset-0 bg-black/25 z-[2500]" onClick={() => setShowFilters(false)} /> : null}
       <div className={`fixed top-0 left-0 h-full w-[280px] bg-[#d9d9d9] z-[2600] p-4 shadow-xl transition-transform duration-200 ${showFilters ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex items-center justify-between mb-4">
@@ -391,7 +407,7 @@ export default function Matches() {
         </div>
       </div>
 
-      <div className="relative overflow-hidden" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
+      <div className="px-5 overflow-hidden" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
         <div
           style={{
             transform: `translateX(${swipeOffsetX}px) rotate(${cardRotate}deg) scale(${cardScale})`,
@@ -404,22 +420,79 @@ export default function Matches() {
             willChange: 'transform, opacity',
           }}
         >
-          <img src={matchesReference} alt="Matches design reference" className="w-full h-auto select-none pointer-events-none" />
+          {!match ? (
+            <div className="bg-[#d9d9d9] rounded-[20px] p-8 text-center text-[18px] mb-4">
+              No more matches in this lineup.
+            </div>
+          ) : (
+            <>
+              <div className="bg-[#d0d0d0] rounded-[22px] border border-black/10 shadow-[0_1px_1px_rgba(0,0,0,0.08)] overflow-hidden">
+                <div className="relative h-[360px]">
+                  <img src={match.image} alt={match.name} className="absolute inset-0 w-full h-full object-cover object-center" />
+                  <p className="absolute top-[10px] left-[10px] text-[44px] leading-none text-black font-light">{match.name}</p>
+                </div>
+                <div className="relative -mt-[18px] px-[6px] pb-[8px]">
+                  <div className="bg-[#ebebeb] border border-black/20 rounded-[24px] min-h-[84px] px-4 py-3 pr-[90px] shadow-[0_2px_4px_rgba(0,0,0,0.12)]">
+                    <p className="text-[14px] leading-[1.35] text-black/65 font-light">{match.bio}</p>
+                  </div>
+                  <div className="absolute right-[12px] -top-[30px] flex items-center">
+                    <span className="size-[50px] rounded-full border border-[#d87014]" />
+                    <span className="-ml-[19px] size-[50px] rounded-full border border-[#d87014] flex items-center justify-center text-[13px] text-[#d87014] font-light">
+                      {compatibilityScore === null ? '--' : `${compatibilityScore}%`}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-4 bg-[#e8e8e8] rounded-[24px] border border-black/20 px-3 py-3 shadow-[0_1px_2px_rgba(0,0,0,0.08)]">
+                <div data-no-swipe="true" className="no-scrollbar flex items-center gap-2 overflow-x-auto whitespace-nowrap border-b border-black/45 pb-2 mb-2">
+                  <span className="text-[32px] leading-none font-light shrink-0">{match.age}</span>
+                  <div className="w-px h-[30px] bg-black/55 shrink-0" />
+                  <span className="text-[32px] leading-none font-light shrink-0">{match.gender}</span>
+                  <div className="w-px h-[30px] bg-black/55 shrink-0" />
+                  <span className="text-[25px] leading-none font-light shrink-0">16 miles away</span>
+                  <div className="w-px h-[30px] bg-black/55 shrink-0" />
+                  <span className="text-[32px] leading-none font-light shrink-0">${match.budget}</span>
+                </div>
+
+                <div className="space-y-[6px]">
+                  <div className="flex items-center gap-3">
+                    <Circle className="size-[20px] stroke-[1.1] fill-transparent" />
+                    <span className="text-[18px] leading-none font-light">{match.traits[0].label}</span>
+                  </div>
+                  <div className="border-t border-black/35" />
+                  <div className="flex items-center gap-3">
+                    <Home className="size-[20px] stroke-[1.1]" />
+                    <span className="text-[18px] leading-none font-light">Independent</span>
+                  </div>
+                  <div className="border-t border-black/35" />
+                  <div className="flex items-center gap-3">
+                    <BookOpen className="size-[20px] stroke-[1.1]" />
+                    <span className="text-[18px] leading-none font-light">{match.traits[2].label}</span>
+                  </div>
+                  <div className="border-t border-black/35" />
+                  <div className="flex items-center gap-3">
+                    <svg className="size-[20px]" viewBox="0 0 24 24" fill="none">
+                      <path d="M12 3L15 9L12 15L9 9L12 3Z" stroke="currentColor" strokeWidth="1.2" />
+                      <line x1="9" y1="12" x2="15" y2="12" stroke="currentColor" strokeWidth="1.2" />
+                    </svg>
+                    <span className="text-[18px] leading-none font-light">Somewhat Noisy</span>
+                  </div>
+                  <div className="border-t border-black/35" />
+                  <div className="flex items-center gap-3">
+                    <svg className="size-[20px]" viewBox="0 0 24 24" fill="none">
+                      <path d="M12 3L12 21M6 9L18 9M9 15L15 15" stroke="currentColor" strokeWidth="1.2" />
+                    </svg>
+                    <span className="text-[18px] leading-none font-light">Likes it Clean</span>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
         </div>
-
-        {/* functional tap zones over exact visual nav/icons */}
-        <button aria-label="Open filters" className="absolute left-[14px] top-[26px] h-[36px] w-[36px]" onClick={() => setShowFilters((v) => !v)} />
-        <button aria-label="Matches" className="absolute left-[16px] bottom-[8px] h-[58px] w-[64px]" onClick={() => navigate('/matches')} />
-        <button aria-label="Map" className="absolute left-[110px] bottom-[8px] h-[58px] w-[64px]" onClick={() => navigate('/map')} />
-        <button aria-label="Messages" className="absolute left-[202px] bottom-[8px] h-[58px] w-[64px]" onClick={() => navigate('/messages')} />
-        <button aria-label="Profile" className="absolute left-[290px] bottom-[8px] h-[58px] w-[64px]" onClick={() => navigate('/profile')} />
-
-        {!match ? (
-          <div className="absolute inset-0 bg-black/35 flex items-center justify-center px-10">
-            <p className="text-white text-[20px] text-center font-light">No more matches in this lineup.</p>
-          </div>
-        ) : null}
       </div>
+
+      <BottomNav />
     </div>
   );
 }
