@@ -1,5 +1,5 @@
 import { type TouchEvent, useEffect, useMemo, useState } from 'react';
-import { Menu, MapPin, DollarSign, Circle, Home, BookOpen } from 'lucide-react';
+import { MapPin, DollarSign, Circle, Home, BookOpen } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
 
 const names = ['Olivia', 'Maya', 'Jordan', 'Alex', 'Taylor', 'Sofia', 'Riley', 'Noah'];
@@ -288,13 +288,19 @@ export default function Matches() {
   const cardOpacity = 1 - swipeProgress * 0.18;
 
   return (
-    <div className="matches-exact-font bg-white relative min-h-screen w-full max-w-md mx-auto pb-24">
+    <div className="matches-exact-font bg-[#dcdcdc] relative min-h-screen w-full max-w-md mx-auto pb-24">
       {/* Header */}
-      <div className="flex items-center justify-start gap-3 px-4 pt-4 mb-4">
+      <div className="flex items-center justify-start gap-4 px-[20px] pt-[18px] mb-[18px]">
         <button className="p-1" onClick={() => setShowFilters((v) => !v)}>
-          <Menu className="size-5" strokeWidth={1.3} />
+          <svg className="w-[28px] h-[28px]" viewBox="0 0 28 28" fill="none">
+            <path d="M2 8.5H26" stroke="black" strokeWidth="1.1" />
+            <path d="M2 14H26" stroke="black" strokeWidth="1.1" />
+            <path d="M2 19.5H26" stroke="black" strokeWidth="1.1" />
+            <path d="M8 4V12" stroke="black" strokeWidth="1.1" />
+            <path d="M20 10V18" stroke="black" strokeWidth="1.1" />
+          </svg>
         </button>
-        <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[42px] leading-none text-[#e4873c] bg-[#efe6dc] rounded-[11px] px-3 py-[2px]">
+        <p className="text-[56px] leading-[0.9] text-[#de6f1d] bg-[#eedecb] rounded-[16px] px-[14px] py-[4px] font-light">
           Matches
         </p>
       </div>
@@ -399,7 +405,7 @@ export default function Matches() {
         </div>
       </div>
 
-      <div className="px-3 overflow-hidden" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
+      <div className="px-[24px] overflow-hidden" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
         {!match ? (
           <div className="bg-[#d9d9d9] rounded-[20px] p-8 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[18px] mb-4">
             No more matches in this lineup.
@@ -418,13 +424,13 @@ export default function Matches() {
             }}
           >
         {/* Profile Card */}
-        <div className="bg-[#d0d0d2] rounded-[18px] px-2 pt-2 pb-3 mb-4 relative overflow-hidden">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[40px] leading-none text-black mb-1 ml-1">
+        <div className="bg-[#d0d0d0] rounded-[22px] px-0 pt-0 pb-[2px] mb-[14px] relative overflow-hidden border border-black/10 shadow-[0_1px_1px_rgba(0,0,0,0.08)]">
+          <p className="text-[46px] leading-none text-black absolute top-[12px] left-[12px] z-10 font-light">
             {match.name}
           </p>
           
           {/* Image */}
-          <div className="relative w-full aspect-square rounded-[12px] overflow-hidden mb-0 bg-[#c7c7c9]">
+          <div className="relative w-full h-[360px] rounded-[22px] overflow-hidden mb-0 bg-[#c7c7c9]">
             <img
               src={match.image}
               alt={match.name}
@@ -433,15 +439,15 @@ export default function Matches() {
           </div>
 
           {/* Bio */}
-          <div className="relative -mt-4">
-            <div className="bg-[#efefef] border border-black/15 rounded-[16px] min-h-[54px] px-3 py-2 pr-14">
-              <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[13px] leading-tight text-black">
+          <div className="relative -mt-[24px] px-[6px] pb-[6px]">
+            <div className="bg-[#eaeaea] border border-black/15 rounded-[24px] min-h-[84px] px-[18px] py-[14px] pr-[92px] shadow-[0_2px_4px_rgba(0,0,0,0.12)]">
+              <p className="text-[16px] leading-[1.28] text-black/65 font-light">
                 {match.bio}
               </p>
             </div>
-            <div className="absolute right-1 -top-8 flex items-center">
-              <span className="size-[42px] rounded-full border border-black/60 bg-[#d7d7d7] block" />
-              <span className="-ml-4 size-[42px] rounded-full border border-black/60 bg-[#d7d7d7] flex items-center justify-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[11px] text-black">
+            <div className="absolute right-[14px] -top-[34px] flex items-center">
+              <span className="size-[52px] rounded-full border border-[#d87014] bg-transparent block" />
+              <span className="-ml-[20px] size-[52px] rounded-full border border-[#d87014] bg-transparent flex items-center justify-center text-[14px] text-[#d87014] font-light">
                 {compatibilityScore === null ? '--' : `${compatibilityScore}%`}
               </span>
             </div>
@@ -449,74 +455,74 @@ export default function Matches() {
         </div>
 
         {/* Details Card */}
-        <div className="bg-[#efefef] rounded-[22px] p-3 border border-black/20 shadow-sm">
+        <div className="bg-[#e6e6e6] rounded-[26px] px-[14px] pt-[14px] pb-[10px] border border-black/20 shadow-[0_1px_2px_rgba(0,0,0,0.08)]">
           {/* Stats Row */}
-          <div data-no-swipe="true" className="no-scrollbar flex items-center border-b border-black/45 pb-2 mb-2 gap-3 overflow-x-auto whitespace-nowrap flex-nowrap">
-            <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] shrink-0">
+          <div data-no-swipe="true" className="no-scrollbar flex items-center border-b border-black/45 pb-[10px] mb-[10px] gap-[10px] overflow-x-auto whitespace-nowrap flex-nowrap">
+            <span className="text-[30px] shrink-0 leading-none font-light">
               {match.age}
             </span>
-            <div className="w-px h-[22px] bg-black/50 shrink-0" />
-            <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] shrink-0">
+            <div className="w-px h-[34px] bg-black/55 shrink-0" />
+            <span className="text-[30px] shrink-0 leading-none font-light">
               {match.gender}
             </span>
-            <div className="w-px h-[22px] bg-black/50 shrink-0" />
+            <div className="w-px h-[34px] bg-black/55 shrink-0" />
             <div className="flex items-center gap-1 shrink-0">
-              <MapPin className="size-5" />
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
+              <MapPin className="size-5 stroke-[1.2]" />
+              <span className="text-[24px] leading-none font-light">
                 16 miles away
               </span>
             </div>
-            <div className="w-px h-[22px] bg-black/50 shrink-0" />
+            <div className="w-px h-[34px] bg-black/55 shrink-0" />
             <div className="flex items-center gap-1 shrink-0">
-              <DollarSign className="size-5" />
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
+              <DollarSign className="size-5 stroke-[1.2]" />
+              <span className="text-[30px] leading-none font-light">
                 ${match.budget}
               </span>
             </div>
           </div>
 
           {/* Traits */}
-          <div className="space-y-2">
+          <div className="space-y-[6px]">
             <div className="flex items-center gap-3">
-              <Circle className="size-6 fill-[#d9d9d9]" />
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[19px]">
+              <Circle className="size-[22px] fill-transparent stroke-[1.15]" />
+              <span className="text-[18px] leading-none font-light">
                 {match.traits[0].label}
               </span>
             </div>
             <div className="border-t border-black/35" />
             
             <div className="flex items-center gap-3">
-              <Home className="size-6" />
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[19px]">
+              <Home className="size-[22px] stroke-[1.15]" />
+              <span className="text-[18px] leading-none font-light">
                 Independent
               </span>
             </div>
             <div className="border-t border-black/35" />
             
             <div className="flex items-center gap-3">
-              <BookOpen className="size-6" />
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[19px]">
+              <BookOpen className="size-[22px] stroke-[1.15]" />
+              <span className="text-[18px] leading-none font-light">
                 {match.traits[2].label}
               </span>
             </div>
             <div className="border-t border-black/35" />
             
             <div className="flex items-center gap-3">
-              <svg className="size-6" viewBox="0 0 24 24" fill="none">
-                <path d="M12 3L15 9L12 15L9 9L12 3Z" stroke="currentColor" strokeWidth="2" />
-                <line x1="9" y1="12" x2="15" y2="12" stroke="currentColor" strokeWidth="2" />
+              <svg className="size-[22px]" viewBox="0 0 24 24" fill="none">
+                <path d="M12 3L15 9L12 15L9 9L12 3Z" stroke="currentColor" strokeWidth="1.2" />
+                <line x1="9" y1="12" x2="15" y2="12" stroke="currentColor" strokeWidth="1.2" />
               </svg>
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[19px]">
+              <span className="text-[18px] leading-none font-light">
                 Somewhat Noisy
               </span>
             </div>
             <div className="border-t border-black/35" />
             
             <div className="flex items-center gap-3">
-              <svg className="size-6" viewBox="0 0 24 24" fill="none">
-                <path d="M12 3L12 21M6 9L18 9M9 15L15 15" stroke="currentColor" strokeWidth="2" />
+              <svg className="size-[22px]" viewBox="0 0 24 24" fill="none">
+                <path d="M12 3L12 21M6 9L18 9M9 15L15 15" stroke="currentColor" strokeWidth="1.2" />
               </svg>
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[19px]">
+              <span className="text-[18px] leading-none font-light">
                 Likes it Clean
               </span>
             </div>
