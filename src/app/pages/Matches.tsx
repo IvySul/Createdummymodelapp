@@ -288,7 +288,7 @@ export default function Matches() {
   const cardOpacity = 1 - swipeProgress * 0.18;
 
   return (
-    <div className="bg-white relative min-h-screen w-full max-w-md mx-auto pb-24">
+    <div className="matches-exact-font bg-white relative min-h-screen w-full max-w-md mx-auto pb-24">
       {/* Header */}
       <div className="flex items-center justify-start gap-3 px-4 pt-4 mb-4">
         <button className="p-1" onClick={() => setShowFilters((v) => !v)}>
