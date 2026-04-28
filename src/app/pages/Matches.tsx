@@ -290,14 +290,13 @@ export default function Matches() {
   return (
     <div className="bg-white relative min-h-screen w-full max-w-md mx-auto pb-24">
       {/* Header */}
-      <div className="flex items-center justify-between px-6 pt-12 mb-8">
-        <button className="p-2" onClick={() => setShowFilters((v) => !v)}>
-          <Menu className="size-9" />
+      <div className="flex items-center justify-start gap-3 px-4 pt-4 mb-4">
+        <button className="p-1" onClick={() => setShowFilters((v) => !v)}>
+          <Menu className="size-5" strokeWidth={1.3} />
         </button>
-        <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[48px] text-black">
+        <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[42px] leading-none text-[#e4873c] bg-[#efe6dc] rounded-[11px] px-3 py-[2px]">
           Matches
         </p>
-        <div className="w-9" /> {/* Spacer */}
       </div>
 
       {showFilters ? <div className="fixed inset-0 bg-black/25 z-[2500]" onClick={() => setShowFilters(false)} /> : null}
@@ -400,9 +399,9 @@ export default function Matches() {
         </div>
       </div>
 
-      <div className="px-6 overflow-hidden" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
+      <div className="px-3 overflow-hidden" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
         {!match ? (
-          <div className="bg-[#d9d9d9] rounded-[30px] p-8 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[18px] mb-6">
+          <div className="bg-[#d9d9d9] rounded-[20px] p-8 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[18px] mb-4">
             No more matches in this lineup.
           </div>
         ) : (
@@ -419,99 +418,106 @@ export default function Matches() {
             }}
           >
         {/* Profile Card */}
-        <div className="bg-[#d9d9d9] rounded-[51px] p-6 mb-6">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[20px] text-black mb-1">
-            {compatibilityScore === null ? 'Complete questionnaire for compatibility' : `${compatibilityScore}% compatibility`}
-          </p>
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[36px] text-black mb-4">
+        <div className="bg-[#d0d0d2] rounded-[18px] px-2 pt-2 pb-3 mb-4 relative overflow-hidden">
+          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[40px] leading-none text-black mb-1 ml-1">
             {match.name}
           </p>
           
           {/* Image */}
-          <div className="relative w-full aspect-square rounded-[20px] overflow-hidden mb-4">
+          <div className="relative w-full aspect-square rounded-[12px] overflow-hidden mb-0 bg-[#c7c7c9]">
             <img
               src={match.image}
               alt={match.name}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-center"
             />
           </div>
 
           {/* Bio */}
-          <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[14px] text-black mb-6">
-            {match.bio}
-          </p>
+          <div className="relative -mt-4">
+            <div className="bg-[#efefef] border border-black/15 rounded-[16px] min-h-[54px] px-3 py-2 pr-14">
+              <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[13px] leading-tight text-black">
+                {match.bio}
+              </p>
+            </div>
+            <div className="absolute right-1 -top-8 flex items-center">
+              <span className="size-[42px] rounded-full border border-black/60 bg-[#d7d7d7] block" />
+              <span className="-ml-4 size-[42px] rounded-full border border-black/60 bg-[#d7d7d7] flex items-center justify-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[11px] text-black">
+                {compatibilityScore === null ? '--' : `${compatibilityScore}%`}
+              </span>
+            </div>
+          </div>
         </div>
 
         {/* Details Card */}
-        <div className="bg-[#d9d9d9] rounded-[51px] p-6 shadow-lg">
+        <div className="bg-[#efefef] rounded-[22px] p-3 border border-black/20 shadow-sm">
           {/* Stats Row */}
-          <div data-no-swipe="true" className="no-scrollbar flex items-center border-b border-black pb-4 mb-4 gap-4 overflow-x-auto whitespace-nowrap flex-nowrap">
+          <div data-no-swipe="true" className="no-scrollbar flex items-center border-b border-black/45 pb-2 mb-2 gap-3 overflow-x-auto whitespace-nowrap flex-nowrap">
             <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] shrink-0">
               {match.age}
             </span>
-            <div className="w-px h-[35px] bg-black shrink-0" />
+            <div className="w-px h-[22px] bg-black/50 shrink-0" />
             <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] shrink-0">
               {match.gender}
             </span>
-            <div className="w-px h-[35px] bg-black shrink-0" />
+            <div className="w-px h-[22px] bg-black/50 shrink-0" />
             <div className="flex items-center gap-1 shrink-0">
               <MapPin className="size-5" />
               <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
-                {match.school}
+                16 miles away
               </span>
             </div>
-            <div className="w-px h-[35px] bg-black shrink-0" />
+            <div className="w-px h-[22px] bg-black/50 shrink-0" />
             <div className="flex items-center gap-1 shrink-0">
               <DollarSign className="size-5" />
               <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
-                {match.budget}
+                ${match.budget}
               </span>
             </div>
-            <div className="w-px h-[35px] bg-black shrink-0" />
-            <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] shrink-0">
-              {formatDisplayDate(match.apartmentStartDate)} to {formatDisplayDate(match.apartmentEndDate)}
-            </span>
           </div>
 
           {/* Traits */}
-          <div className="space-y-4">
+          <div className="space-y-2">
             <div className="flex items-center gap-3">
               <Circle className="size-6 fill-[#d9d9d9]" />
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
+              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[19px]">
                 {match.traits[0].label}
               </span>
             </div>
+            <div className="border-t border-black/35" />
             
             <div className="flex items-center gap-3">
               <Home className="size-6" />
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
-                {match.traits[1].label}
+              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[19px]">
+                Independent
               </span>
             </div>
+            <div className="border-t border-black/35" />
             
             <div className="flex items-center gap-3">
               <BookOpen className="size-6" />
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
+              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[19px]">
                 {match.traits[2].label}
               </span>
             </div>
+            <div className="border-t border-black/35" />
             
             <div className="flex items-center gap-3">
               <svg className="size-6" viewBox="0 0 24 24" fill="none">
                 <path d="M12 3L15 9L12 15L9 9L12 3Z" stroke="currentColor" strokeWidth="2" />
                 <line x1="9" y1="12" x2="15" y2="12" stroke="currentColor" strokeWidth="2" />
               </svg>
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
-                {match.traits[3].label}
+              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[19px]">
+                Somewhat Noisy
               </span>
             </div>
+            <div className="border-t border-black/35" />
             
             <div className="flex items-center gap-3">
               <svg className="size-6" viewBox="0 0 24 24" fill="none">
                 <path d="M12 3L12 21M6 9L18 9M9 15L15 15" stroke="currentColor" strokeWidth="2" />
               </svg>
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
-                {match.traits[4].label}
+              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[19px]">
+                Likes it Clean
               </span>
             </div>
           </div>
