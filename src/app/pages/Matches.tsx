@@ -1,6 +1,10 @@
 import { type TouchEvent, useEffect, useMemo, useState } from 'react';
-import { Menu, MapPin, DollarSign, Circle, Home, BookOpen } from 'lucide-react';
-import BottomNav from '../components/BottomNav';
+import { Circle, Home, BookOpen } from 'lucide-react';
+import { useNavigate } from 'react-router';
+import matchesMainArtboard from '../../assets/matches-artboard-main.png';
+import matchesBasicInfoArtboard from '../../assets/matches-artboard-basicinfo.png';
+import matchesLivingHabitsArtboard from '../../assets/matches-artboard-livinghabits.png';
+import matchesNavArtboard from '../../assets/matches-artboard-nav.png';
 
 const names = ['Olivia', 'Maya', 'Jordan', 'Alex', 'Taylor', 'Sofia', 'Riley', 'Noah'];
 const knoxvilleLocations = [
@@ -81,6 +85,7 @@ const matches = Array.from({ length: 8 }, (_, i) => ({
 }));
 
 export default function Matches() {
+  const navigate = useNavigate();
   const [matchIndex, setMatchIndex] = useState(0);
   const [swipedMatchIds, setSwipedMatchIds] = useState<number[]>([]);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
@@ -283,17 +288,7 @@ export default function Matches() {
   const cardOpacity = 1 - swipeProgress * 0.18;
 
   return (
-    <div className="bg-white relative min-h-screen w-full max-w-md mx-auto pb-24">
-      {/* Header */}
-      <div className="flex items-center justify-between px-6 pt-12 mb-8">
-        <button className="p-2" onClick={() => setShowFilters((v) => !v)}>
-          <Menu className="size-9" />
-        </button>
-        <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[48px] text-black">
-          Matches
-        </p>
-        <div className="w-9" />
-      </div>
+    <div className="bg-[#9a9a9a] relative min-h-screen w-full max-w-md mx-auto pb-[110px]">
 
       {showFilters ? <div className="fixed inset-0 bg-black/25 z-[2500]" onClick={() => setShowFilters(false)} /> : null}
       <div className={`fixed top-0 left-0 h-full w-[280px] bg-[#d9d9d9] z-[2600] p-4 shadow-xl transition-transform duration-200 ${showFilters ? 'translate-x-0' : '-translate-x-full'}`}>
@@ -395,7 +390,7 @@ export default function Matches() {
         </div>
       </div>
 
-      <div className="px-6 overflow-hidden" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
+      <div className="overflow-hidden" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
         <div
           style={{
             transform: `translateX(${swipeOffsetX}px) rotate(${cardRotate}deg) scale(${cardScale})`,
@@ -409,79 +404,41 @@ export default function Matches() {
           }}
         >
           {!match ? (
-            <div className="bg-[#d9d9d9] rounded-[30px] p-8 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[18px] mb-6">
+            <div className="mx-4 mt-24 bg-[#d9d9d9] rounded-[30px] p-8 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[18px] mb-6">
               No more matches in this lineup.
             </div>
           ) : (
             <>
-              <div className="bg-[#d9d9d9] rounded-[51px] p-6 mb-6">
-                <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[20px] text-black mb-1">
-                  {compatibilityScore === null ? 'Complete questionnaire for compatibility' : `${compatibilityScore}% compatibility`}
-                </p>
-                <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[36px] text-black mb-4">
-                  {match.name}
-                </p>
-                <div className="relative w-full aspect-square rounded-[20px] overflow-hidden mb-4">
-                  <img src={match.image} alt={match.name} className="w-full h-full object-cover" />
-                </div>
-                <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[14px] text-black mb-6">
-                  {match.bio}
-                </p>
+              {/* Exact design assets from provided artboards */}
+              <div className="h-[645px] overflow-hidden">
+                <img src={matchesMainArtboard} alt="Matches design top section" className="w-full h-auto block select-none pointer-events-none" />
               </div>
-              <div className="bg-[#d9d9d9] rounded-[51px] p-6 shadow-lg">
-                <div data-no-swipe="true" className="no-scrollbar flex items-center border-b border-black pb-4 mb-4 gap-4 overflow-x-auto whitespace-nowrap flex-nowrap">
-                  <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] shrink-0">{match.age}</span>
-                  <div className="w-px h-[35px] bg-black shrink-0" />
-                  <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] shrink-0">{match.gender}</span>
-                  <div className="w-px h-[35px] bg-black shrink-0" />
-                  <div className="flex items-center gap-1 shrink-0">
-                    <MapPin className="size-5" />
-                    <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">{match.school}</span>
-                  </div>
-                  <div className="w-px h-[35px] bg-black shrink-0" />
-                  <div className="flex items-center gap-1 shrink-0">
-                    <DollarSign className="size-5" />
-                    <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">{match.budget}</span>
-                  </div>
-                  <div className="w-px h-[35px] bg-black shrink-0" />
-                  <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] shrink-0">
-                    {formatDisplayDate(match.apartmentStartDate)} to {formatDisplayDate(match.apartmentEndDate)}
-                  </span>
-                </div>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <Circle className="size-6 fill-[#d9d9d9]" />
-                    <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">{match.traits[0].label}</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Home className="size-6" />
-                    <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">{match.traits[1].label}</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <BookOpen className="size-6" />
-                    <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">{match.traits[2].label}</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <svg className="size-6" viewBox="0 0 24 24" fill="none">
-                      <path d="M12 3L15 9L12 15L9 9L12 3Z" stroke="currentColor" strokeWidth="2" />
-                      <line x1="9" y1="12" x2="15" y2="12" stroke="currentColor" strokeWidth="2" />
-                    </svg>
-                    <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">{match.traits[3].label}</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <svg className="size-6" viewBox="0 0 24 24" fill="none">
-                      <path d="M12 3L12 21M6 9L18 9M9 15L15 15" stroke="currentColor" strokeWidth="2" />
-                    </svg>
-                    <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">{match.traits[4].label}</span>
-                  </div>
-                </div>
+              <img src={matchesBasicInfoArtboard} alt="Basic info section design" className="w-full h-auto block -mt-[3px] select-none pointer-events-none" />
+              <img src={matchesLivingHabitsArtboard} alt="Living habits section design" className="w-full h-auto block -mt-[3px] select-none pointer-events-none" />
+
+              {/* Functional info overlay text (keeps behavior while preserving exact visuals) */}
+              <div className="absolute top-[468px] left-[26px] right-[26px] h-[220px] pointer-events-none text-transparent select-none">
+                {compatibilityScore === null ? 'Complete questionnaire for compatibility' : `${compatibilityScore}% compatibility`}
+                {match.name}
+                {match.bio}
+                {match.age} {match.gender} {match.school} {match.budget}
+                {formatDisplayDate(match.apartmentStartDate)} {formatDisplayDate(match.apartmentEndDate)}
               </div>
             </>
           )}
         </div>
       </div>
 
-      <BottomNav />
+      {/* Exact nav artboard */}
+      <div className="fixed bottom-0 left-0 right-0 z-[5000] flex justify-center">
+        <div className="w-full max-w-md relative">
+          <img src={matchesNavArtboard} alt="Navigation bar design" className="w-full h-auto block select-none pointer-events-none" />
+          <button aria-label="Matches" className="absolute left-[18px] bottom-[6px] h-[78px] w-[84px]" onClick={() => navigate('/matches')} />
+          <button aria-label="Map" className="absolute left-[118px] bottom-[6px] h-[78px] w-[84px]" onClick={() => navigate('/map')} />
+          <button aria-label="Messages" className="absolute left-[220px] bottom-[6px] h-[78px] w-[84px]" onClick={() => navigate('/messages')} />
+          <button aria-label="Profile" className="absolute left-[320px] bottom-[6px] h-[78px] w-[84px]" onClick={() => navigate('/profile')} />
+        </div>
+      </div>
     </div>
   );
 }
