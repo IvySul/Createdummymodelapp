@@ -362,7 +362,7 @@ export default function Matches() {
             </p>
           </div>
           <div
-            className="relative z-10 -mt-16 w-full rounded-[22px] bg-white px-4 py-3 font-['Open_Sans',sans-serif] text-[14px] font-normal leading-snug text-neutral-900 shadow-[0_4px_18px_rgba(0,0,0,0.12)]"
+            className="relative z-10 -mt-20 w-full min-h-[7.75rem] rounded-[22px] bg-white px-6 py-5 font-['Open_Sans',sans-serif] text-[14px] font-normal leading-relaxed text-neutral-900 shadow-[0_4px_18px_rgba(0,0,0,0.12)]"
           >
             {match.bio}
           </div>
