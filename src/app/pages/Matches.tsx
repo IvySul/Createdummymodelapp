@@ -350,7 +350,7 @@ export default function Matches() {
               willChange: 'transform, opacity',
             }}
           >
-        <div className="relative w-full aspect-square rounded-[51px] overflow-hidden mb-6">
+        <div className="relative w-full aspect-[3/4] rounded-[51px] overflow-hidden mb-7">
           <img
             src={match.image}
             alt={match.name}
@@ -359,9 +359,9 @@ export default function Matches() {
         </div>
 
         {/* Details Card */}
-        <div className="bg-[#d9d9d9] rounded-[51px] p-6 shadow-lg">
+        <div className="bg-[#d9d9d9] rounded-[51px] p-8 shadow-lg">
           {/* Stats Row */}
-          <div data-no-swipe="true" className="no-scrollbar flex items-center border-b border-black pb-4 mb-4 gap-4 overflow-x-auto whitespace-nowrap flex-nowrap">
+          <div data-no-swipe="true" className="no-scrollbar flex items-center border-b border-black pb-5 mb-5 gap-4 overflow-x-auto whitespace-nowrap flex-nowrap">
             <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] shrink-0">
               {match.age}
             </span>
@@ -390,7 +390,7 @@ export default function Matches() {
           </div>
 
           {/* Traits */}
-          <div className="space-y-4">
+          <div className="space-y-5">
             <div className="flex items-center gap-3">
               <Circle className="size-6 fill-[#d9d9d9]" />
               <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
