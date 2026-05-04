@@ -1,5 +1,14 @@
 import { type TouchEvent, useEffect, useMemo, useState } from 'react';
-import { Menu, MapPin, DollarSign, Circle, Home, BookOpen } from 'lucide-react';
+import {
+  Menu,
+  Circle,
+  Home,
+  BookOpen,
+  Calendar,
+  Landmark,
+  GraduationCap,
+  Briefcase,
+} from 'lucide-react';
 import BottomNav from '../components/BottomNav';
 
 const names = ['Olivia', 'Maya', 'Jordan', 'Alex', 'Taylor', 'Sofia', 'Riley', 'Noah'];
@@ -49,6 +58,8 @@ const availabilityRanges = [
   { start: '2026-05-01', end: '2026-11-30' },
   { start: '2026-08-15', end: '2027-08-14' },
 ];
+const educations = ['Undergraduate', 'Sophomore', 'Junior', 'Senior', 'Graduate student'];
+const occupations = ['Student', 'Part-time retail', 'Campus dining', 'Intern', 'Tutor', 'Barista', 'Research assistant'];
 
 function formatDisplayDate(dateString: string): string {
   if (!dateString) return '';
@@ -72,6 +83,8 @@ const matches = Array.from({ length: 8 }, (_, i) => ({
   apartmentEndDate: availabilityRanges[i % availabilityRanges.length].end,
   image: images[i % images.length],
   bio: bios[i % bios.length],
+  education: educations[i % educations.length],
+  occupation: occupations[i % occupations.length],
   traits: [
     { icon: Circle, label: lifestyleTraits.circle[i % lifestyleTraits.circle.length] },
     { icon: Home, label: lifestyleTraits.home[i % lifestyleTraits.home.length] },
@@ -366,77 +379,99 @@ export default function Matches() {
           </div>
         </div>
 
-        {/* Details Card */}
-        <div className="bg-[#d9d9d9] rounded-[51px] p-8 shadow-lg">
-          {/* Stats Row */}
-          <div data-no-swipe="true" className="no-scrollbar flex items-center border-b border-black pb-5 mb-5 gap-4 overflow-x-auto whitespace-nowrap flex-nowrap">
-            <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] shrink-0">
-              {match.age}
-            </span>
-            <div className="w-px h-[35px] bg-black shrink-0" />
-            <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] shrink-0">
-              {match.gender}
-            </span>
-            <div className="w-px h-[35px] bg-black shrink-0" />
-            <div className="flex items-center gap-1 shrink-0">
-              <MapPin className="size-5" />
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
-                {match.school}
-              </span>
-            </div>
-            <div className="w-px h-[35px] bg-black shrink-0" />
-            <div className="flex items-center gap-1 shrink-0">
-              <DollarSign className="size-5" />
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
-                {match.budget}
-              </span>
-            </div>
-            <div className="w-px h-[35px] bg-black shrink-0" />
-            <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] shrink-0">
-              {formatDisplayDate(match.apartmentStartDate)} to {formatDisplayDate(match.apartmentEndDate)}
-            </span>
+        {/* Basic info */}
+        <div
+          data-no-swipe="true"
+          className="rounded-[22px] bg-white px-5 py-5 font-['Open_Sans',sans-serif] shadow-[0_4px_18px_rgba(0,0,0,0.12)]"
+        >
+          <p className="mb-4 text-left text-[12px] font-semibold uppercase tracking-[0.14em] text-black">
+            Basic info
+          </p>
+
+          <div className="grid grid-cols-4 border-b border-black/25">
+            {(
+              [
+                { label: 'Age', value: String(match.age) },
+                {
+                  label: 'Gender',
+                  value: match.gender.charAt(0).toUpperCase() + match.gender.slice(1),
+                },
+                { label: 'Location', value: match.school },
+                { label: '$Price range', value: `$${match.budget}` },
+              ] as const
+            ).map((col, idx) => (
+              <div
+                key={col.label}
+                className={`min-w-0 px-2 py-3 ${idx < 3 ? 'border-r border-black/25' : ''}`}
+              >
+                <p className="text-[10px] font-normal uppercase leading-tight tracking-[0.1em] text-black">
+                  {col.label}
+                </p>
+                <p
+                  className="mt-2 text-left text-[13px] font-normal leading-snug text-black"
+                  title={col.value}
+                >
+                  <span className="line-clamp-3 break-words">{col.value}</span>
+                </p>
+              </div>
+            ))}
           </div>
 
-          {/* Traits */}
-          <div className="space-y-5">
-            <div className="flex items-center gap-3">
-              <Circle className="size-6 fill-[#d9d9d9]" />
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
-                {match.traits[0].label}
-              </span>
+          <div className="divide-y divide-black/25">
+            <div data-no-swipe="true" className="flex gap-3 py-3.5">
+              <Calendar className="mt-0.5 size-5 shrink-0 text-black" strokeWidth={1.35} />
+              <div className="min-w-0 flex-1">
+                <p className="text-[10px] font-normal uppercase tracking-[0.1em] text-black">
+                  Time range needed
+                </p>
+                <p className="mt-1.5 text-left text-[13px] font-normal leading-snug text-black">
+                  {formatDisplayDate(match.apartmentStartDate)} – {formatDisplayDate(match.apartmentEndDate)}
+                </p>
+              </div>
             </div>
-            
-            <div className="flex items-center gap-3">
-              <Home className="size-6" />
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
-                {match.traits[1].label}
-              </span>
+            <div data-no-swipe="true" className="flex gap-3 py-3.5">
+              <Landmark className="mt-0.5 size-5 shrink-0 text-black" strokeWidth={1.35} />
+              <div className="min-w-0 flex-1">
+                <p className="text-[10px] font-normal uppercase tracking-[0.1em] text-black">
+                  Political affiliation
+                </p>
+                <p className="mt-1.5 text-left text-[13px] font-normal leading-snug text-black">
+                  {match.traits[1].label}
+                </p>
+              </div>
             </div>
-            
-            <div className="flex items-center gap-3">
-              <BookOpen className="size-6" />
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
-                {match.traits[2].label}
-              </span>
+            <div data-no-swipe="true" className="flex gap-3 py-3.5">
+              <GraduationCap className="mt-0.5 size-5 shrink-0 text-black" strokeWidth={1.35} />
+              <div className="min-w-0 flex-1">
+                <p className="text-[10px] font-normal uppercase tracking-[0.1em] text-black">
+                  Education level
+                </p>
+                <p className="mt-1.5 text-left text-[13px] font-normal leading-snug text-black">
+                  {match.education}
+                </p>
+              </div>
             </div>
-            
-            <div className="flex items-center gap-3">
-              <svg className="size-6" viewBox="0 0 24 24" fill="none">
-                <path d="M12 3L15 9L12 15L9 9L12 3Z" stroke="currentColor" strokeWidth="2" />
-                <line x1="9" y1="12" x2="15" y2="12" stroke="currentColor" strokeWidth="2" />
-              </svg>
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
-                {match.traits[3].label}
-              </span>
+            <div data-no-swipe="true" className="flex gap-3 py-3.5">
+              <Briefcase className="mt-0.5 size-5 shrink-0 text-black" strokeWidth={1.35} />
+              <div className="min-w-0 flex-1">
+                <p className="text-[10px] font-normal uppercase tracking-[0.1em] text-black">
+                  Occupation
+                </p>
+                <p className="mt-1.5 text-left text-[13px] font-normal leading-snug text-black">
+                  {match.occupation}
+                </p>
+              </div>
             </div>
-            
-            <div className="flex items-center gap-3">
-              <svg className="size-6" viewBox="0 0 24 24" fill="none">
-                <path d="M12 3L12 21M6 9L18 9M9 15L15 15" stroke="currentColor" strokeWidth="2" />
-              </svg>
-              <span className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px]">
-                {match.traits[4].label}
-              </span>
+            <div data-no-swipe="true" className="flex gap-3 py-3.5">
+              <BookOpen className="mt-0.5 size-5 shrink-0 text-black" strokeWidth={1.35} />
+              <div className="min-w-0 flex-1">
+                <p className="text-[10px] font-normal uppercase tracking-[0.1em] text-black">
+                  Religion
+                </p>
+                <p className="mt-1.5 text-left text-[13px] font-normal leading-snug text-black">
+                  {match.traits[2].label}
+                </p>
+              </div>
             </div>
           </div>
         </div>
