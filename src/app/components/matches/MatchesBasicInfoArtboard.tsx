@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import basicInfoBlank from '../../../assets/matches-basic-info-blank.png';
+import basicInfoBlank from '../../../assets/matches-basic-info-artboard.svg';
 
 /** matches-basic-info-blank.png (427×402). Overlay positions as % of rendered box. */
 // Tuned to sit visually centered between the top-row divider lines.
