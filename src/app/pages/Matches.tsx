@@ -103,21 +103,6 @@ export default function Matches() {
     minBudget: '',
     maxBudget: '',
   });
-  const [questionnaireStep1, setQuestionnaireStep1] = useState<any>(null);
-  const [questionnaireStep2, setQuestionnaireStep2] = useState<any>(null);
-
-  useEffect(() => {
-    try {
-      const step1 = localStorage.getItem('questionnaireStep1');
-      const step2 = localStorage.getItem('questionnaireStep2');
-      setQuestionnaireStep1(step1 ? JSON.parse(step1) : null);
-      setQuestionnaireStep2(step2 ? JSON.parse(step2) : null);
-    } catch {
-      setQuestionnaireStep1(null);
-      setQuestionnaireStep2(null);
-    }
-  }, []);
-
   const baseFilteredMatches = useMemo(() => {
     return matches.filter((m) => {
       const budgetMin = filters.minBudget.trim() ? Number(filters.minBudget) : null;
@@ -152,60 +137,6 @@ export default function Matches() {
   }, [filteredMatches, matchIndex]);
 
   const match = filteredMatches[matchIndex];
-
-  const normalize = (value: string) =>
-    value.toLowerCase().replace(/[^a-z0-9]/g, '');
-
-  const compatibilityScore = useMemo(() => {
-    if (!match) return 0;
-
-    let total = 0;
-    let matched = 0;
-
-    const check = (condition: boolean) => {
-      total += 1;
-      if (condition) matched += 1;
-    };
-
-    if (questionnaireStep1?.politics) {
-      check(normalize(match.traits[1].label) === normalize(String(questionnaireStep1.politics)));
-    }
-    if (questionnaireStep1?.religion) {
-      check(normalize(match.traits[2].label) === normalize(String(questionnaireStep1.religion)));
-    }
-    if (questionnaireStep2?.schedule) {
-      const userSchedule = normalize(String(questionnaireStep2.schedule));
-      const candidateSchedule = normalize(match.traits[0].label);
-      const scheduleMatch =
-        userSchedule === candidateSchedule ||
-        (userSchedule === 'morningperson' && candidateSchedule === 'morningperson') ||
-        (userSchedule === 'nightperson' && (candidateSchedule === 'nightowl' || candidateSchedule === 'nightperson')) ||
-        (userSchedule === 'flexible' && candidateSchedule === 'flexibleschedule');
-      check(scheduleMatch);
-    }
-    if (questionnaireStep2?.noise) {
-      check(normalize(match.traits[3].label) === normalize(String(questionnaireStep2.noise)));
-    }
-    if (questionnaireStep2?.cleanliness) {
-      check(normalize(match.traits[4].label) === normalize(String(questionnaireStep2.cleanliness)));
-    }
-    if (Array.isArray(questionnaireStep2?.budget) && questionnaireStep2.budget.length === 2) {
-      const min = Number(questionnaireStep2.budget[0]);
-      const max = Number(questionnaireStep2.budget[1]);
-      if (!Number.isNaN(min) && !Number.isNaN(max)) {
-        check(match.budget >= Math.min(min, max) && match.budget <= Math.max(min, max));
-      }
-    }
-    if (questionnaireStep2?.apartmentStartDate && questionnaireStep2?.apartmentEndDate) {
-      check(
-        !(match.apartmentEndDate < questionnaireStep2.apartmentStartDate ||
-          match.apartmentStartDate > questionnaireStep2.apartmentEndDate)
-      );
-    }
-
-    if (total === 0) return null;
-    return Math.round((matched / total) * 100);
-  }, [match, questionnaireStep1, questionnaireStep2]);
 
   const showNextMatch = () => {
     if (!filteredMatches.length) return;
@@ -419,28 +350,12 @@ export default function Matches() {
               willChange: 'transform, opacity',
             }}
           >
-        {/* Profile Card */}
-        <div className="bg-[#d9d9d9] rounded-[51px] p-6 mb-6">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[20px] text-black mb-1">
-            {compatibilityScore === null ? 'Complete questionnaire for compatibility' : `${compatibilityScore}% compatibility`}
-          </p>
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[36px] text-black mb-4">
-            {match.name}
-          </p>
-          
-          {/* Image */}
-          <div className="relative w-full aspect-square rounded-[20px] overflow-hidden mb-4">
-            <img
-              src={match.image}
-              alt={match.name}
-              className="w-full h-full object-cover"
-            />
-          </div>
-
-          {/* Bio */}
-          <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[14px] text-black mb-6">
-            {match.bio}
-          </p>
+        <div className="relative w-full aspect-square rounded-[51px] overflow-hidden mb-6">
+          <img
+            src={match.image}
+            alt={match.name}
+            className="w-full h-full object-cover"
+          />
         </div>
 
         {/* Details Card */}
