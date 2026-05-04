@@ -2,6 +2,7 @@ import { type TouchEvent, useEffect, useMemo, useState } from 'react';
 import { Menu, Circle, Home, BookOpen } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
 import { MatchesBasicInfoArtboard } from '../components/matches/MatchesBasicInfoArtboard';
+import { MatchesLivingHabitsArtboard } from '../components/matches/MatchesLivingHabitsArtboard';
 
 const names = ['Olivia', 'Maya', 'Jordan', 'Alex', 'Taylor', 'Sofia', 'Riley', 'Noah'];
 const distanceFromYou = [
@@ -52,6 +53,9 @@ const availabilityRanges = [
 ];
 const educations = ['Undergraduate', 'Sophomore', 'Junior', 'Senior', 'Graduate student'];
 const occupations = ['Student', 'Part-time retail', 'Campus dining', 'Intern', 'Tutor', 'Barista', 'Research assistant'];
+const petsOptions = ['No pets', 'Cat', 'Dog', 'Cat and dog', 'Other pets', 'Open to pets', 'Allergic to pets'];
+const guestPolicyOptions = ['Rarely', 'Occasionally', 'Often', 'Open house', 'No overnight guests', 'Weekends only'];
+const substanceUseOptions = ['Non-smoker', '420 friendly', 'Social drinking', 'No drinking', 'No substances in unit', 'Prefer not to say'];
 
 function formatDisplayDate(dateString: string): string {
   if (!dateString) return '';
@@ -88,6 +92,9 @@ const matches = Array.from({ length: 8 }, (_, i) => {
     { icon: 'noise', label: lifestyleTraits.noise[i % lifestyleTraits.noise.length] },
     { icon: 'clean', label: lifestyleTraits.clean[i % lifestyleTraits.clean.length] },
   ],
+  pets: petsOptions[i % petsOptions.length],
+  guestPolicy: guestPolicyOptions[i % guestPolicyOptions.length],
+  substanceUse: substanceUseOptions[i % substanceUseOptions.length],
 };
 });
 
@@ -386,6 +393,15 @@ export default function Matches() {
           education={match.education}
           occupation={match.occupation}
           religion={match.traits[2].label}
+        />
+
+        <MatchesLivingHabitsArtboard
+          schedule={match.traits[0].label}
+          noise={match.traits[3].label}
+          cleanliness={match.traits[4].label}
+          pets={match.pets}
+          guestPolicy={match.guestPolicy}
+          substanceUse={match.substanceUse}
         />
           </div>
         )}
