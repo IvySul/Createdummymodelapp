@@ -64,13 +64,17 @@ function formatDisplayDate(dateString: string): string {
   });
 }
 
-const matches = Array.from({ length: 8 }, (_, i) => ({
+const matches = Array.from({ length: 8 }, (_, i) => {
+  const budget = 700 + i * 100;
+  return {
   id: i + 1,
   name: names[i % names.length],
   age: 19 + (i % 5),
   gender: genders[i % genders.length],
   distanceLabel: distanceFromYou[i % distanceFromYou.length],
-  budget: 700 + i * 100,
+  budget,
+  budgetLow: Math.max(200, budget - 200),
+  budgetHigh: budget + 200,
   apartmentStartDate: availabilityRanges[i % availabilityRanges.length].start,
   apartmentEndDate: availabilityRanges[i % availabilityRanges.length].end,
   image: images[i % images.length],
@@ -84,7 +88,8 @@ const matches = Array.from({ length: 8 }, (_, i) => ({
     { icon: 'noise', label: lifestyleTraits.noise[i % lifestyleTraits.noise.length] },
     { icon: 'clean', label: lifestyleTraits.clean[i % lifestyleTraits.clean.length] },
   ],
-}));
+};
+});
 
 export default function Matches() {
   const [matchIndex, setMatchIndex] = useState(0);
@@ -375,7 +380,7 @@ export default function Matches() {
           age={match.age}
           genderDisplay={match.gender.charAt(0).toUpperCase() + match.gender.slice(1)}
           location={match.distanceLabel}
-          price={`$${match.budget}`}
+          priceRange={`$${match.budgetLow}–$${match.budgetHigh}`}
           timeRange={`${formatDisplayDate(match.apartmentStartDate)} – ${formatDisplayDate(match.apartmentEndDate)}`}
           politics={match.traits[1].label}
           education={match.education}
