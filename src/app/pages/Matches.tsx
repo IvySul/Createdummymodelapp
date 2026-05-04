@@ -356,6 +356,11 @@ export default function Matches() {
             alt={match.name}
             className="w-full h-full object-cover"
           />
+          <p
+            className="pointer-events-none absolute left-5 top-5 text-[28px] font-light leading-none text-white font-['Open_Sans',sans-serif]"
+          >
+            {match.name}
+          </p>
         </div>
 
         {/* Details Card */}
