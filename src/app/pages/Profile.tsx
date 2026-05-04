@@ -70,10 +70,10 @@ export default function Profile() {
           <input
             value={profile.name}
             onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-            className="bg-transparent border-b border-black/30 px-1 py-1 font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] text-black w-full outline-none"
+            className="bg-transparent border-b border-black/30 px-1 py-1 font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] uppercase text-black w-full outline-none"
           />
         ) : (
-          <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] text-black">
+          <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[20px] uppercase text-black">
             {profile.name}
           </p>
         )}
