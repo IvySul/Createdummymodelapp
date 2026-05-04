@@ -1,4 +1,5 @@
 import basicInfoBlank from '../../../assets/matches-basic-info-artboard.svg';
+import { MatchArtboardFrame } from './MatchArtboardFrame';
 
 export type MatchesBasicInfoArtboardProps = {
   age: number;
@@ -50,6 +51,7 @@ export function MatchesBasicInfoArtboard({
 }: MatchesBasicInfoArtboardProps) {
   return (
     <div data-no-swipe="true" className="w-full">
+      <MatchArtboardFrame>
       <svg
         viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
         className="pointer-events-none block h-auto w-full select-none"
@@ -81,6 +83,7 @@ export function MatchesBasicInfoArtboard({
           <text x="92.53" y="322.24">{toCaps(religion)}</text>
         </g>
       </svg>
+      </MatchArtboardFrame>
     </div>
   );
 }

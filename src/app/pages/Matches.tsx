@@ -345,7 +345,7 @@ export default function Matches() {
         </div>
       </div>
 
-      <div className="px-6 overflow-hidden" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
+      <div className="px-6 overflow-x-hidden overflow-y-visible" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
         {!match ? (
           <div className="bg-[#d9d9d9] rounded-[30px] p-8 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[18px] mb-6">
             No more matches in this lineup.

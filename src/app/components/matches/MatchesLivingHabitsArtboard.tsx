@@ -1,4 +1,5 @@
 import livingHabitsBlank from '../../../assets/matches-living-habits-artboard.svg';
+import { MatchArtboardFrame } from './MatchArtboardFrame';
 
 export type MatchesLivingHabitsArtboardProps = {
   schedule: string;
@@ -12,15 +13,15 @@ export type MatchesLivingHabitsArtboardProps = {
 const VIEWBOX_WIDTH = 426.1;
 const VIEWBOX_HEIGHT = 401.03;
 
-/** Original `Artboard 3.svg` text anchor points (same viewBox). */
+/** Same header slot and list baselines as `MatchesBasicInfoArtboard` for matched vertical rhythm. */
 const TEXT = {
-  title: { x: 33.42, y: 62.69 },
-  schedule: { x: 83.22, y: 102.1 },
-  noise: { x: 85.6, y: 147.01 },
-  cleanliness: { x: 87.79, y: 192.32 },
-  pets: { x: 88.14, y: 236.42 },
-  guestPolicy: { x: 87.52, y: 278.93 },
-  substanceUse: { x: 89.46, y: 321.17 },
+  title: { x: 36.64, y: 60.76 },
+  schedule: { x: 88.67, y: 102.96 },
+  noise: { x: 88.67, y: 148.08 },
+  cleanliness: { x: 90.86, y: 193.39 },
+  pets: { x: 91.2, y: 237.49 },
+  guestPolicy: { x: 90.58, y: 280 },
+  substanceUse: { x: 92.53, y: 322.24 },
 } as const;
 
 function toCaps(value: string | number) {
@@ -37,6 +38,7 @@ export function MatchesLivingHabitsArtboard({
 }: MatchesLivingHabitsArtboardProps) {
   return (
     <div data-no-swipe="true" className="mt-5 w-full">
+      <MatchArtboardFrame>
       <svg
         viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
         className="pointer-events-none block h-auto w-full select-none"
@@ -68,6 +70,7 @@ export function MatchesLivingHabitsArtboard({
           </text>
         </g>
       </svg>
+      </MatchArtboardFrame>
     </div>
   );
 }
