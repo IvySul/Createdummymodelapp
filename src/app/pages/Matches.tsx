@@ -346,8 +346,8 @@ export default function Matches() {
               willChange: 'transform, opacity',
             }}
           >
-        <div className="mb-7 flex w-full flex-col items-center">
-          <div className="relative z-0 aspect-[3/4] w-full max-w-full rounded-[51px] overflow-hidden">
+        <div className="mb-7 flex w-full flex-col">
+          <div className="relative z-0 aspect-[3/4] w-full rounded-[51px] overflow-hidden">
             <img
               src={match.image}
               alt={match.name}
@@ -358,9 +358,9 @@ export default function Matches() {
             </p>
           </div>
           <div
-            className="relative z-10 -mt-20 flex w-full min-h-[7.75rem] max-w-full items-center justify-center rounded-[22px] bg-white px-6 py-5 shadow-[0_4px_18px_rgba(0,0,0,0.12)]"
+            className="relative z-10 -mt-20 flex w-full min-h-[7.75rem] items-center rounded-[22px] bg-white px-6 py-5 shadow-[0_4px_18px_rgba(0,0,0,0.12)]"
           >
-            <p className="w-full text-center font-['Open_Sans',sans-serif] text-[14px] font-normal leading-relaxed text-neutral-900">
+            <p className="w-full text-left font-['Open_Sans',sans-serif] text-[14px] font-normal leading-relaxed text-neutral-900">
               {match.bio}
             </p>
           </div>
