@@ -2,31 +2,41 @@ import type { ReactNode } from 'react';
 import basicInfoBlank from '../../../assets/matches-basic-info-blank.png';
 
 /** matches-basic-info-blank.png (427×402). Overlay positions as % of rendered box. */
+const TOP_BAND = { top: '18%', height: '14%' } as const;
+
 const SLOT = {
-  age: { top: '20.5%', left: '3.5%', width: '20.5%' },
-  gender: { top: '20.5%', left: '26.5%', width: '21%' },
-  location: { top: '20.5%', left: '50%', width: '21%' },
-  price: { top: '20.5%', left: '73.5%', width: '23%' },
-  timeRange: { top: '32%', left: '13%', width: '82%' },
-  politics: { top: '44.5%', left: '13%', width: '82%' },
-  education: { top: '57%', left: '13%', width: '82%' },
-  occupation: { top: '69.5%', left: '13%', width: '82%' },
-  religion: { top: '82%', left: '13%', width: '82%' },
+  age: { ...TOP_BAND, left: '3.5%', width: '20.5%' },
+  gender: { ...TOP_BAND, left: '26.5%', width: '21%' },
+  location: { ...TOP_BAND, left: '50%', width: '21%' },
+  price: { ...TOP_BAND, left: '73.5%', width: '23%' },
+  timeRange: { top: '32%', height: '12.5%', left: '13%', width: '82%', listPad: true },
+  politics: { top: '44.5%', height: '12.5%', left: '13%', width: '82%', listPad: true },
+  education: { top: '57%', height: '12.5%', left: '13%', width: '82%', listPad: true },
+  occupation: { top: '69.5%', height: '12.5%', left: '13%', width: '82%', listPad: true },
+  religion: { top: '82%', height: '13%', left: '13%', width: '82%', listPad: true },
 } as const;
 
 function ValueSlot({
   slot,
   children,
 }: {
-  slot: { top: string; left: string; width: string };
+  slot: {
+    top: string;
+    left: string;
+    width: string;
+    height: string;
+    listPad?: boolean;
+  };
   children: ReactNode;
 }) {
   return (
     <div
-      className="pointer-events-none absolute text-left font-['Open_Sans',sans-serif] text-[11px] font-light leading-snug text-black"
-      style={{ top: slot.top, left: slot.left, width: slot.width }}
+      className={`pointer-events-none absolute box-border flex items-center text-left font-['Open_Sans',sans-serif] text-[14px] font-normal uppercase leading-tight tracking-normal text-black ${
+        slot.listPad ? 'pl-11 pr-1' : 'px-0.5'
+      }`}
+      style={{ top: slot.top, left: slot.left, width: slot.width, height: slot.height }}
     >
-      {children}
+      <span className="block min-h-0 w-full hyphens-auto break-words">{children}</span>
     </div>
   );
 }
@@ -67,7 +77,7 @@ export function MatchesBasicInfoArtboard({
         <ValueSlot slot={SLOT.age}>{age}</ValueSlot>
         <ValueSlot slot={SLOT.gender}>{genderDisplay}</ValueSlot>
         <ValueSlot slot={SLOT.location}>
-          <span className="line-clamp-3 break-words">{location}</span>
+          <span className="line-clamp-3">{location}</span>
         </ValueSlot>
         <ValueSlot slot={SLOT.price}>{price}</ValueSlot>
         <ValueSlot slot={SLOT.timeRange}>{timeRange}</ValueSlot>

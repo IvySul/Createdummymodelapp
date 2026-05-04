@@ -4,15 +4,16 @@ import BottomNav from '../components/BottomNav';
 import { MatchesBasicInfoArtboard } from '../components/matches/MatchesBasicInfoArtboard';
 
 const names = ['Olivia', 'Maya', 'Jordan', 'Alex', 'Taylor', 'Sofia', 'Riley', 'Noah'];
-const knoxvilleLocations = [
-  'Downtown Knoxville',
-  'Old City',
-  'Bearden',
-  'Fort Sanders',
-  'North Knoxville',
-  'South Knoxville',
-  'Sequoyah Hills',
-  'Market Square',
+/** Placeholder “distance from you” copy for the basic-info artboard (varies per card). */
+const distanceFromYou = [
+  '15 miles away',
+  '10 miles away',
+  '8 miles away',
+  '22 miles away',
+  '5 miles away',
+  '18 miles away',
+  '3 miles away',
+  '12 miles away',
 ];
 const genders = ['woman', 'woman', 'man', 'man', 'woman', 'woman', 'man', 'man'];
 /** Unsplash — real portraits, high resolution (object-cover in UI). */
@@ -69,7 +70,7 @@ const matches = Array.from({ length: 8 }, (_, i) => ({
   name: names[i % names.length],
   age: 19 + (i % 5),
   gender: genders[i % genders.length],
-  school: knoxvilleLocations[i % knoxvilleLocations.length],
+  distanceLabel: distanceFromYou[i % distanceFromYou.length],
   budget: 700 + i * 100,
   apartmentStartDate: availabilityRanges[i % availabilityRanges.length].start,
   apartmentEndDate: availabilityRanges[i % availabilityRanges.length].end,
@@ -374,7 +375,7 @@ export default function Matches() {
         <MatchesBasicInfoArtboard
           age={match.age}
           genderDisplay={match.gender.charAt(0).toUpperCase() + match.gender.slice(1)}
-          location={match.school}
+          location={match.distanceLabel}
           price={`$${match.budget}`}
           timeRange={`${formatDisplayDate(match.apartmentStartDate)} – ${formatDisplayDate(match.apartmentEndDate)}`}
           politics={match.traits[1].label}
