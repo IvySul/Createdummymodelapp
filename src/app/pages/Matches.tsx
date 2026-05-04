@@ -350,17 +350,22 @@ export default function Matches() {
               willChange: 'transform, opacity',
             }}
           >
-        <div className="relative w-full aspect-[3/4] rounded-[51px] overflow-hidden mb-7">
-          <img
-            src={match.image}
-            alt={match.name}
-            className="w-full h-full object-cover"
-          />
-          <p
-            className="pointer-events-none absolute left-5 top-5 text-[28px] font-light leading-none text-white font-['Open_Sans',sans-serif]"
+        <div className="mb-7">
+          <div className="relative w-full aspect-[3/4] rounded-[51px] overflow-hidden">
+            <img
+              src={match.image}
+              alt={match.name}
+              className="w-full h-full object-cover"
+            />
+            <p className="pointer-events-none absolute left-5 top-5 font-['Open_Sans',sans-serif] text-[28px] font-light leading-none text-white">
+              {match.name}
+            </p>
+          </div>
+          <div
+            className="mt-4 w-full rounded-[22px] bg-white px-4 py-3 font-['Open_Sans',sans-serif] text-[14px] font-normal leading-snug text-neutral-900 shadow-[0_4px_18px_rgba(0,0,0,0.12)]"
           >
-            {match.name}
-          </p>
+            {match.bio}
+          </div>
         </div>
 
         {/* Details Card */}
