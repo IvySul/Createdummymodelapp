@@ -222,14 +222,10 @@ export default function Matches() {
   return (
     <div className="bg-white relative min-h-screen w-full max-w-md mx-auto pb-24">
       {/* Header */}
-      <div className="flex items-center justify-between px-6 pt-12 mb-8">
+      <div className="flex items-center px-6 pt-12 mb-8">
         <button className="p-2" onClick={() => setShowFilters((v) => !v)}>
           <Menu className="size-9" />
         </button>
-        <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[48px] text-black">
-          Matches
-        </p>
-        <div className="w-9" /> {/* Spacer */}
       </div>
 
       {showFilters ? <div className="fixed inset-0 bg-black/25 z-[2500]" onClick={() => setShowFilters(false)} /> : null}
@@ -350,21 +346,23 @@ export default function Matches() {
               willChange: 'transform, opacity',
             }}
           >
-        <div className="mb-7">
-          <div className="relative z-0 w-full aspect-[3/4] rounded-[51px] overflow-hidden">
+        <div className="mb-7 flex w-full flex-col items-center">
+          <div className="relative z-0 aspect-[3/4] w-full max-w-full rounded-[51px] overflow-hidden">
             <img
               src={match.image}
               alt={match.name}
               className="w-full h-full object-cover"
             />
-            <p className="pointer-events-none absolute left-5 top-5 font-['Open_Sans',sans-serif] text-[28px] font-light leading-none text-white">
+            <p className="pointer-events-none absolute inset-x-0 top-5 px-4 text-center font-['Open_Sans',sans-serif] text-[28px] font-light leading-none text-white">
               {match.name}
             </p>
           </div>
           <div
-            className="relative z-10 -mt-20 w-full min-h-[7.75rem] rounded-[22px] bg-white px-6 py-5 font-['Open_Sans',sans-serif] text-[14px] font-normal leading-relaxed text-neutral-900 shadow-[0_4px_18px_rgba(0,0,0,0.12)]"
+            className="relative z-10 -mt-20 flex w-full min-h-[7.75rem] max-w-full items-center justify-center rounded-[22px] bg-white px-6 py-5 shadow-[0_4px_18px_rgba(0,0,0,0.12)]"
           >
-            {match.bio}
+            <p className="w-full text-center font-['Open_Sans',sans-serif] text-[14px] font-normal leading-relaxed text-neutral-900">
+              {match.bio}
+            </p>
           </div>
         </div>
 
