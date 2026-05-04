@@ -1,15 +1,13 @@
 import { type TouchEvent, useEffect, useMemo, useState } from 'react';
-import {
-  Menu,
-  Circle,
-  Home,
-  BookOpen,
-  Calendar,
-  Landmark,
-  GraduationCap,
-  Briefcase,
-} from 'lucide-react';
+import { Menu, Circle, Home, BookOpen } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
+import {
+  BasicInfoBriefcaseIcon,
+  BasicInfoBuildingIcon,
+  BasicInfoCalendarIcon,
+  BasicInfoGradCapIcon,
+  BasicInfoOpenBookIcon,
+} from '../components/matches/BasicInfoArtboardIcons';
 
 const names = ['Olivia', 'Maya', 'Jordan', 'Alex', 'Taylor', 'Sofia', 'Riley', 'Noah'];
 const knoxvilleLocations = [
@@ -379,16 +377,16 @@ export default function Matches() {
           </div>
         </div>
 
-        {/* Basic info */}
+        {/* Basic info — layout & custom line icons match src/assets/matches-artboard-basicinfo.png */}
         <div
           data-no-swipe="true"
-          className="rounded-[22px] bg-white px-5 py-5 font-['Open_Sans',sans-serif] shadow-[0_4px_18px_rgba(0,0,0,0.12)]"
+          className="rounded-[22px] bg-white px-5 pb-4 pt-5 font-['Open_Sans',sans-serif] shadow-[0_4px_18px_rgba(0,0,0,0.12)]"
         >
-          <p className="mb-4 text-left text-[12px] font-semibold uppercase tracking-[0.14em] text-black">
+          <p className="border-b border-[#d4d4d4] pb-3 text-left text-[20px] font-light uppercase leading-none tracking-[0.2em] text-black">
             Basic info
           </p>
 
-          <div className="grid grid-cols-4 border-b border-black/25">
+          <div className="grid grid-cols-4 border-b border-[#d4d4d4]">
             {(
               [
                 { label: 'Age', value: String(match.age) },
@@ -402,13 +400,13 @@ export default function Matches() {
             ).map((col, idx) => (
               <div
                 key={col.label}
-                className={`min-w-0 px-2 py-3 ${idx < 3 ? 'border-r border-black/25' : ''}`}
+                className={`min-w-0 px-2 py-3 ${idx < 3 ? 'border-r border-[#d4d4d4]' : ''}`}
               >
-                <p className="text-[10px] font-normal uppercase leading-tight tracking-[0.1em] text-black">
+                <p className="text-[10px] font-light uppercase leading-tight tracking-[0.12em] text-black">
                   {col.label}
                 </p>
                 <p
-                  className="mt-2 text-left text-[13px] font-normal leading-snug text-black"
+                  className="mt-2 text-left text-[12px] font-light leading-snug text-black"
                   title={col.value}
                 >
                   <span className="line-clamp-3 break-words">{col.value}</span>
@@ -417,58 +415,68 @@ export default function Matches() {
             ))}
           </div>
 
-          <div className="divide-y divide-black/25">
-            <div data-no-swipe="true" className="flex gap-3 py-3.5">
-              <Calendar className="mt-0.5 size-5 shrink-0 text-black" strokeWidth={1.35} />
+          <div className="divide-y divide-[#d4d4d4]">
+            <div data-no-swipe="true" className="flex gap-3.5 py-3.5">
+              <div className="flex w-7 shrink-0 justify-start pt-0.5">
+                <BasicInfoCalendarIcon className="h-6 w-6 text-black" />
+              </div>
               <div className="min-w-0 flex-1">
-                <p className="text-[10px] font-normal uppercase tracking-[0.1em] text-black">
-                  Time range needed
+                <p className="text-[11px] font-light tracking-[0.12em] text-black">
+                  TIME RANGE NEEDED
                 </p>
-                <p className="mt-1.5 text-left text-[13px] font-normal leading-snug text-black">
+                <p className="mt-1.5 text-left text-[12px] font-light leading-snug text-black">
                   {formatDisplayDate(match.apartmentStartDate)} – {formatDisplayDate(match.apartmentEndDate)}
                 </p>
               </div>
             </div>
-            <div data-no-swipe="true" className="flex gap-3 py-3.5">
-              <Landmark className="mt-0.5 size-5 shrink-0 text-black" strokeWidth={1.35} />
+            <div data-no-swipe="true" className="flex gap-3.5 py-3.5">
+              <div className="flex w-7 shrink-0 justify-start pt-0.5">
+                <BasicInfoBuildingIcon className="h-6 w-6 text-black" />
+              </div>
               <div className="min-w-0 flex-1">
-                <p className="text-[10px] font-normal uppercase tracking-[0.1em] text-black">
-                  Political affiliation
+                <p className="text-[11px] font-light tracking-[0.12em] text-black">
+                  POLITICAL OFFILIATION
                 </p>
-                <p className="mt-1.5 text-left text-[13px] font-normal leading-snug text-black">
+                <p className="mt-1.5 text-left text-[12px] font-light leading-snug text-black">
                   {match.traits[1].label}
                 </p>
               </div>
             </div>
-            <div data-no-swipe="true" className="flex gap-3 py-3.5">
-              <GraduationCap className="mt-0.5 size-5 shrink-0 text-black" strokeWidth={1.35} />
+            <div data-no-swipe="true" className="flex gap-3.5 py-3.5">
+              <div className="flex w-7 shrink-0 justify-start pt-0.5">
+                <BasicInfoGradCapIcon className="h-6 w-6 text-black" />
+              </div>
               <div className="min-w-0 flex-1">
-                <p className="text-[10px] font-normal uppercase tracking-[0.1em] text-black">
-                  Education level
+                <p className="text-[11px] font-light tracking-[0.12em] text-black">
+                  EDUCATION LEVEL
                 </p>
-                <p className="mt-1.5 text-left text-[13px] font-normal leading-snug text-black">
+                <p className="mt-1.5 text-left text-[12px] font-light leading-snug text-black">
                   {match.education}
                 </p>
               </div>
             </div>
-            <div data-no-swipe="true" className="flex gap-3 py-3.5">
-              <Briefcase className="mt-0.5 size-5 shrink-0 text-black" strokeWidth={1.35} />
+            <div data-no-swipe="true" className="flex gap-3.5 py-3.5">
+              <div className="flex w-7 shrink-0 justify-start pt-0.5">
+                <BasicInfoBriefcaseIcon className="h-6 w-6 text-black" />
+              </div>
               <div className="min-w-0 flex-1">
-                <p className="text-[10px] font-normal uppercase tracking-[0.1em] text-black">
-                  Occupation
+                <p className="text-[11px] font-light tracking-[0.12em] text-black">
+                  OCCUPATION
                 </p>
-                <p className="mt-1.5 text-left text-[13px] font-normal leading-snug text-black">
+                <p className="mt-1.5 text-left text-[12px] font-light leading-snug text-black">
                   {match.occupation}
                 </p>
               </div>
             </div>
-            <div data-no-swipe="true" className="flex gap-3 py-3.5">
-              <BookOpen className="mt-0.5 size-5 shrink-0 text-black" strokeWidth={1.35} />
+            <div data-no-swipe="true" className="flex gap-3.5 py-3.5">
+              <div className="flex w-7 shrink-0 justify-start pt-0.5">
+                <BasicInfoOpenBookIcon className="h-6 w-6 text-black" />
+              </div>
               <div className="min-w-0 flex-1">
-                <p className="text-[10px] font-normal uppercase tracking-[0.1em] text-black">
-                  Religion
+                <p className="text-[11px] font-light tracking-[0.12em] text-black">
+                  RELIGION
                 </p>
-                <p className="mt-1.5 text-left text-[13px] font-normal leading-snug text-black">
+                <p className="mt-1.5 text-left text-[12px] font-light leading-snug text-black">
                   {match.traits[2].label}
                 </p>
               </div>
