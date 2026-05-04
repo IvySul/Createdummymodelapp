@@ -353,7 +353,7 @@ export default function Matches() {
               alt={match.name}
               className="w-full h-full object-cover"
             />
-            <p className="pointer-events-none absolute inset-x-0 top-5 px-4 text-center font-['Open_Sans',sans-serif] text-[28px] font-light leading-none text-white">
+            <p className="pointer-events-none absolute left-5 top-5 font-['Open_Sans',sans-serif] text-[28px] font-light leading-none text-white">
               {match.name}
             </p>
           </div>
