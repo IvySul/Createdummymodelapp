@@ -351,7 +351,7 @@ export default function Matches() {
             }}
           >
         <div className="mb-7">
-          <div className="relative w-full aspect-[3/4] rounded-[51px] overflow-hidden">
+          <div className="relative z-0 w-full aspect-[3/4] rounded-[51px] overflow-hidden">
             <img
               src={match.image}
               alt={match.name}
@@ -362,7 +362,7 @@ export default function Matches() {
             </p>
           </div>
           <div
-            className="mt-4 w-full rounded-[22px] bg-white px-4 py-3 font-['Open_Sans',sans-serif] text-[14px] font-normal leading-snug text-neutral-900 shadow-[0_4px_18px_rgba(0,0,0,0.12)]"
+            className="relative z-10 -mt-16 mx-4 rounded-[22px] bg-white px-4 py-3 font-['Open_Sans',sans-serif] text-[14px] font-normal leading-snug text-neutral-900 shadow-[0_4px_18px_rgba(0,0,0,0.12)]"
           >
             {match.bio}
           </div>
