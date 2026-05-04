@@ -33,7 +33,7 @@ export default function Profile() {
   const [profile, setProfile] = useState({
     name: 'Your Name',
     image:
-      'https://images.unsplash.com/photo-1546961329-78bef0414d7c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
+      'https://images.unsplash.com/photo-1546961329-78bef0414d7c?auto=format&fit=crop&w=2400&q=90',
     bio: "Hi, my name is___ I'm a sophomore looking for housing! I'm a quiet roommate, mostly studying in my room. I love animals, music, and TV. Looking for someone similar!",
     age: '19',
     gender: 'Female',
