@@ -1,14 +1,6 @@
 const PEACH = '#ffd4ae';
 const STROKE = '#000';
 
-/** Peach meets a horizontal band here (pillar × roof intersections), not sloped wedges to the outer eaves. */
-const ROOF_UNDER_Y =
-  (72.23 +
-    ((51.08 - 72.23) * (76.25 - 66.11)) / (90.01 - 66.11) +
-    72.23 +
-    ((51.08 - 72.23) * (104.36 - 114.49)) / (90.6 - 114.49)) /
-  2;
-
 export type BottomNavRoute = 'matches' | 'messages' | 'map' | 'profile';
 
 type Props = {
@@ -60,20 +52,12 @@ export default function BottomNavArtboard({ active }: Props) {
       </g>
       <g strokeMiterlimit={10}>
         {matches ? (
-          <g>
-            <polygon
-              fill={PEACH}
-              stroke="none"
-              strokeMiterlimit={10}
-              points={`90.01,51.08 90.6,51.08 104.36,${ROOF_UNDER_Y} 76.25,${ROOF_UNDER_Y}`}
-            />
-            <polygon
-              fill={PEACH}
-              stroke="none"
-              strokeMiterlimit={10}
-              points={`66.11,${ROOF_UNDER_Y} 114.49,${ROOF_UNDER_Y} 114.49,72.23 104.36,86.66 76.25,86.82 66.11,72.23`}
-            />
-          </g>
+          <polygon
+            fill={PEACH}
+            stroke="none"
+            strokeMiterlimit={10}
+            points="90.01,51.08 90.6,51.08 114.49,72.23 66.11,72.23"
+          />
         ) : null}
         <g stroke={STROKE} strokeWidth={0.77} fill="none">
           <polyline points="114.49 72.23 90.6 51.08 90.01 51.08 66.11 72.23" />
