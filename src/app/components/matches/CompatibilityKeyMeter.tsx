@@ -1,6 +1,13 @@
 import { useId, useMemo } from 'react';
 import { motion } from 'motion/react';
 
+/** Soft panel tint used across Occumate (`#ebeff5`) with a slightly warmer companion for the fill gradient. */
+const FILL_GRADIENT_STOPS = [
+  { offset: '0%', color: '#dfe5f0' },
+  { offset: '48%', color: '#ebeff5' },
+  { offset: '100%', color: '#f4ece8' },
+] as const;
+
 export type CompatibilityKeyMeterProps = {
   /** 0–100 compatibility score. */
   value: number;
@@ -8,8 +15,8 @@ export type CompatibilityKeyMeterProps = {
 };
 
 /**
- * Key-shaped meter: a gradient fill rises inside the key silhouette (clipped),
- * with a spring animation when `value` changes.
+ * Horizontal key-shaped meter: fill grows left → right inside the key silhouette,
+ * with a slow ease (Occumate panel / peachy neutrals).
  */
 export function CompatibilityKeyMeter({ value, className }: CompatibilityKeyMeterProps) {
   const reactId = useId();
@@ -17,16 +24,16 @@ export function CompatibilityKeyMeter({ value, className }: CompatibilityKeyMete
   const gradId = useMemo(() => `key-meter-grad-${reactId.replace(/:/g, '')}`, [reactId]);
 
   const pct = Math.max(0, Math.min(100, value));
-  const vbW = 56;
-  const vbH = 80;
+  const vbW = 76;
+  const vbH = 42;
 
-  // Bow + shaft + bit; single closed region for clip-path fill.
+  // Lying-down key (bow left, bit right); same topology as the vertical key, coords swapped + shifted.
   const keyPath =
-    'M 28 5 C 17 5 9 13 9 22 C 9 31 15 38 24 39 L 24 58 L 15 58 L 15 68 L 24 68 L 24 78 L 32 78 L 32 50 L 39 50 L 39 39 C 41 38 47 31 47 22 C 47 13 39 5 28 5 Z';
+    'M 0 19 C 0 8 8 0 17 0 C 26 0 33 6 34 15 L 53 15 L 53 6 L 63 6 L 63 15 L 73 15 L 73 23 L 45 23 L 45 30 L 34 30 C 33 32 26 38 17 38 C 8 38 0 30 0 19 Z';
 
   return (
     <div
-      className={className ? `flex flex-col items-stretch ${className}` : 'flex flex-col items-stretch'}
+      className={className ? `flex w-full flex-col items-stretch ${className}` : 'flex w-full flex-col items-stretch'}
       role="progressbar"
       aria-valuemin={0}
       aria-valuemax={100}
@@ -35,38 +42,35 @@ export function CompatibilityKeyMeter({ value, className }: CompatibilityKeyMete
     >
       <svg
         viewBox={`0 0 ${vbW} ${vbH}`}
-        className="mx-auto block h-full w-auto max-w-full drop-shadow-[0_1px_4px_rgba(0,0,0,0.12)]"
+        preserveAspectRatio="xMidYMid meet"
+        className="mx-auto block h-auto w-full max-w-full drop-shadow-[0_1px_4px_rgba(0,0,0,0.1)]"
         aria-hidden
       >
         <defs>
-          <linearGradient id={gradId} x1="0%" y1="100%" x2="0%" y2="0%">
-            <stop offset="0%" stopColor="#22c55e" />
-            <stop offset="55%" stopColor="#4ade80" />
-            <stop offset="100%" stopColor="#a7f3d0" />
+          <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="0%">
+            {FILL_GRADIENT_STOPS.map((s) => (
+              <stop key={s.offset} offset={s.offset} stopColor={s.color} />
+            ))}
           </linearGradient>
           <clipPath id={clipId}>
             <path d={keyPath} />
           </clipPath>
         </defs>
 
-        {/* Dim track inside key */}
-        <path d={keyPath} fill="rgba(0,0,0,0.06)" />
+        <path d={keyPath} fill="rgba(0,0,0,0.05)" />
 
         <g clipPath={`url(#${clipId})`}>
           <motion.rect
             x={0}
-            width={vbW}
+            y={0}
+            height={vbH}
             fill={`url(#${gradId})`}
-            initial={{ y: vbH, height: 0 }}
-            animate={{
-              y: vbH * (1 - pct / 100),
-              height: vbH * (pct / 100),
-            }}
+            initial={{ width: 0 }}
+            animate={{ width: vbW * (pct / 100) }}
             transition={{
-              type: 'spring',
-              stiffness: 70,
-              damping: 16,
-              mass: 0.85,
+              type: 'tween',
+              duration: 2.35,
+              ease: [0.22, 0.94, 0.36, 1],
             }}
           />
         </g>
@@ -74,13 +78,13 @@ export function CompatibilityKeyMeter({ value, className }: CompatibilityKeyMete
         <path
           d={keyPath}
           fill="none"
-          stroke="rgba(64,64,64,0.88)"
-          strokeWidth={1.75}
+          stroke="rgba(64,64,64,0.82)"
+          strokeWidth={1.35}
           strokeLinejoin="round"
           strokeLinecap="round"
         />
       </svg>
-      <p className="mt-1 text-center text-[11px] font-medium tabular-nums tracking-tight text-neutral-800">
+      <p className="mt-2 text-center text-[13px] font-medium tabular-nums tracking-tight text-neutral-800">
         {Math.round(pct)}%
       </p>
     </div>
