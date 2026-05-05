@@ -52,7 +52,7 @@ export default function BottomNavArtboard({ active }: Props) {
       </g>
       <g strokeMiterlimit={10}>
         {matches ? (
-          <>
+          <g>
             <polygon
               fill={PEACH}
               stroke="none"
@@ -65,7 +65,7 @@ export default function BottomNavArtboard({ active }: Props) {
               strokeMiterlimit={10}
               points="66.11,72.23 114.49,72.23 104.36,86.66 76.25,86.82"
             />
-          </>
+          </g>
         ) : null}
         <g stroke={STROKE} strokeWidth={0.77} fill="none">
           <polyline points="114.49 72.23 90.6 51.08 90.01 51.08 66.11 72.23" />

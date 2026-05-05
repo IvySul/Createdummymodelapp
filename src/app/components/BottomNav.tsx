@@ -2,10 +2,11 @@ import { useLocation, useNavigate } from 'react-router';
 import BottomNavArtboard from './BottomNavArtboard';
 
 function activeRoute(pathname: string): 'matches' | 'messages' | 'map' | 'profile' | null {
-  if (pathname === '/matches') return 'matches';
-  if (pathname === '/messages' || pathname.startsWith('/messages/chat')) return 'messages';
-  if (pathname === '/map') return 'map';
-  if (pathname === '/profile') return 'profile';
+  const path = pathname.replace(/\/+$/, '') || '/';
+  if (path === '/matches') return 'matches';
+  if (path === '/messages' || path.startsWith('/messages/chat')) return 'messages';
+  if (path === '/map') return 'map';
+  if (path === '/profile') return 'profile';
   return null;
 }
 
