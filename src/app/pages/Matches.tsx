@@ -233,7 +233,7 @@ export default function Matches() {
         overlayTimeoutRef.current = window.setTimeout(() => {
           setShowMatchOverlay(false);
           overlayTimeoutRef.current = null;
-        }, 3900);
+        }, 3200);
       }
 
       // Hard reset without transition so the new profile starts on the opposite side.

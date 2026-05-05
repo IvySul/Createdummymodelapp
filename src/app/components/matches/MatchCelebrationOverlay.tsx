@@ -18,7 +18,7 @@ export function MatchCelebrationOverlay({ visible }: MatchCelebrationOverlayProp
 
   return (
     <div className="fixed inset-0 z-[4000] flex justify-center pointer-events-auto">
-      <section className="w-full max-w-md min-h-dvh bg-[#ffd4ae] flex flex-col items-center justify-center gap-6 px-5 py-8 overflow-hidden">
+      <section className="w-full max-w-md min-h-dvh bg-[#ffd4ae] flex flex-col items-center justify-center -translate-y-12 gap-6 px-5 py-8 overflow-hidden">
         <h1
           className="title-reveal font-semibold text-zinc-900 text-center leading-[1.05] uppercase"
           style={{ fontFamily: "'Open Sans', sans-serif", fontSize: "clamp(2.2rem, 8vw, 4.2rem)" }}
@@ -49,22 +49,22 @@ export function MatchCelebrationOverlay({ visible }: MatchCelebrationOverlayProp
         }
 
         .draw-m {
-          animation: draw-stroke 1.3s cubic-bezier(0.2, 0.8, 0.22, 1) forwards;
+          animation: draw-stroke 0.82s cubic-bezier(0.2, 0.8, 0.22, 1) forwards;
         }
 
         .draw-roof {
-          animation: draw-stroke 1.05s cubic-bezier(0.2, 0.8, 0.22, 1) 1.45s forwards;
+          animation: draw-stroke 0.62s cubic-bezier(0.2, 0.8, 0.22, 1) 0.9s forwards;
         }
 
         .roof-group {
           transform: translateY(-44px) scale(0.96);
-          animation: roof-drop 1.05s cubic-bezier(0.18, 0.95, 0.2, 1) 2.62s forwards;
+          animation: roof-drop 0.62s cubic-bezier(0.18, 0.95, 0.2, 1) 1.55s forwards;
         }
 
         .title-reveal {
           opacity: 0;
           transform: translateY(8px);
-          animation: title-in 420ms ease-out 3.72s forwards;
+          animation: title-in 250ms ease-out 2.18s forwards;
         }
 
         @keyframes draw-stroke {
