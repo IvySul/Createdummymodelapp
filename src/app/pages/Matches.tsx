@@ -245,102 +245,148 @@ export default function Matches() {
         </button>
       </div>
 
-      {showFilters ? <div className="fixed inset-0 bg-black/25 z-[2500]" onClick={() => setShowFilters(false)} /> : null}
-      <div className={`fixed top-0 left-0 h-full w-[280px] bg-[#ebeff5] z-[2600] p-4 shadow-xl transition-transform duration-200 ${showFilters ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="flex items-center justify-between mb-4">
-          <p className="text-[24px]">Filters</p>
-          <button className="text-[24px] leading-none" onClick={() => setShowFilters(false)}>×</button>
-        </div>
-        <div className="grid grid-cols-1 gap-2">
-          <div>
-            <p className="text-[12px] mb-1 ">Gender</p>
-          <select value={filters.gender} onChange={(e) => setFilters({ ...filters, gender: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
-            <option>All</option>
-            <option>woman</option>
-            <option>man</option>
-          </select>
-          </div>
-          <div>
-            <p className="text-[12px] mb-1 ">Politics</p>
-          <select value={filters.politics} onChange={(e) => setFilters({ ...filters, politics: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
-            <option>All</option>
-            <option>Right</option>
-            <option>Left</option>
-            <option>Not political</option>
-            <option>Moderate</option>
-          </select>
-          </div>
-          <div>
-            <p className="text-[12px] mb-1 ">Religion</p>
-          <select value={filters.religion} onChange={(e) => setFilters({ ...filters, religion: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
-            <option>All</option>
-            {lifestyleTraits.book.map((item) => (
-              <option key={item}>{item}</option>
-            ))}
-          </select>
-          </div>
-          <div>
-            <p className="text-[12px] mb-1 ">Schedule</p>
-          <select value={filters.schedule} onChange={(e) => setFilters({ ...filters, schedule: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
-            <option>All</option>
-            {lifestyleTraits.circle.map((item) => (
-              <option key={item}>{item}</option>
-            ))}
-          </select>
-          </div>
-          <div>
-            <p className="text-[12px] mb-1 ">Noise Level</p>
-          <select value={filters.noise} onChange={(e) => setFilters({ ...filters, noise: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
-            <option>All</option>
-            {lifestyleTraits.noise.map((item) => (
-              <option key={item}>{item}</option>
-            ))}
-          </select>
-          </div>
-          <div>
-            <p className="text-[12px] mb-1 ">Cleanliness</p>
-          <select value={filters.cleanliness} onChange={(e) => setFilters({ ...filters, cleanliness: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
-            <option>All</option>
-            {lifestyleTraits.clean.map((item) => (
-              <option key={item}>{item}</option>
-            ))}
-          </select>
-          </div>
-          <div>
-            <p className="text-[12px] mb-1 ">Need Apartment Between (Start)</p>
-          <input
-            type="date"
-            value={filters.apartmentStartDate}
-            onChange={(e) => setFilters({ ...filters, apartmentStartDate: e.target.value })}
-            className="h-[34px] rounded-[9px] px-2 bg-white text-[13px] outline-none"
-          />
-          </div>
-          <div>
-            <p className="text-[12px] mb-1 ">Need Apartment Between (End)</p>
-          <input
-            type="date"
-            value={filters.apartmentEndDate}
-            onChange={(e) => setFilters({ ...filters, apartmentEndDate: e.target.value })}
-            className="h-[34px] rounded-[9px] px-2 bg-white text-[13px] outline-none"
-          />
-          </div>
-          <div>
-            <p className="text-[12px] mb-1 ">Min Budget</p>
-          <input
-            value={filters.minBudget}
-            onChange={(e) => setFilters({ ...filters, minBudget: e.target.value })}
-            placeholder="Min budget"
-            className="h-[34px] rounded-[9px] px-2 bg-white text-[13px] outline-none"
-          />
-          </div>
-          <div>
-            <p className="text-[12px] mb-1 ">Max Budget</p>
-          <input
-            value={filters.maxBudget}
-            onChange={(e) => setFilters({ ...filters, maxBudget: e.target.value })}
-            placeholder="Max budget"
-            className="h-[34px] rounded-[9px] px-2 bg-white text-[13px] outline-none"
-          />
+      {showFilters ? (
+        <button
+          type="button"
+          className="fixed inset-0 z-[2500] cursor-default bg-black/25"
+          aria-label="Close filters"
+          onClick={() => setShowFilters(false)}
+        />
+      ) : null}
+
+      {/* Drawer shares the same centered max-w-md column as the match card (not viewport-left). */}
+      <div
+        className="pointer-events-none fixed inset-x-0 top-0 z-[2600] flex h-full justify-center"
+        aria-hidden={!showFilters}
+      >
+        <div className="relative h-full w-full max-w-md">
+          <div
+            className={`absolute left-0 top-0 flex h-full w-[min(280px,100%)] flex-col overflow-y-auto bg-[#ebeff5] p-4 shadow-xl transition-transform duration-200 ${
+              showFilters ? 'translate-x-0 pointer-events-auto' : '-translate-x-full pointer-events-none'
+            }`}
+          >
+            <div className="flex shrink-0 items-center justify-between mb-4">
+              <p className="text-[24px]">Filters</p>
+              <button type="button" className="text-[24px] leading-none" onClick={() => setShowFilters(false)}>
+                ×
+              </button>
+            </div>
+            <div className="grid shrink-0 grid-cols-1 gap-2 pb-4">
+              <div>
+                <p className="mb-1 text-[12px]">Gender</p>
+                <select
+                  value={filters.gender}
+                  onChange={(e) => setFilters({ ...filters, gender: e.target.value })}
+                  className="h-[34px] w-full rounded-[9px] bg-white px-2 text-[13px]"
+                >
+                  <option>All</option>
+                  <option>woman</option>
+                  <option>man</option>
+                </select>
+              </div>
+              <div>
+                <p className="mb-1 text-[12px]">Politics</p>
+                <select
+                  value={filters.politics}
+                  onChange={(e) => setFilters({ ...filters, politics: e.target.value })}
+                  className="h-[34px] w-full rounded-[9px] bg-white px-2 text-[13px]"
+                >
+                  <option>All</option>
+                  <option>Right</option>
+                  <option>Left</option>
+                  <option>Not political</option>
+                  <option>Moderate</option>
+                </select>
+              </div>
+              <div>
+                <p className="mb-1 text-[12px]">Religion</p>
+                <select
+                  value={filters.religion}
+                  onChange={(e) => setFilters({ ...filters, religion: e.target.value })}
+                  className="h-[34px] w-full rounded-[9px] bg-white px-2 text-[13px]"
+                >
+                  <option>All</option>
+                  {lifestyleTraits.book.map((item) => (
+                    <option key={item}>{item}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <p className="mb-1 text-[12px]">Schedule</p>
+                <select
+                  value={filters.schedule}
+                  onChange={(e) => setFilters({ ...filters, schedule: e.target.value })}
+                  className="h-[34px] w-full rounded-[9px] bg-white px-2 text-[13px]"
+                >
+                  <option>All</option>
+                  {lifestyleTraits.circle.map((item) => (
+                    <option key={item}>{item}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <p className="mb-1 text-[12px]">Noise Level</p>
+                <select
+                  value={filters.noise}
+                  onChange={(e) => setFilters({ ...filters, noise: e.target.value })}
+                  className="h-[34px] w-full rounded-[9px] bg-white px-2 text-[13px]"
+                >
+                  <option>All</option>
+                  {lifestyleTraits.noise.map((item) => (
+                    <option key={item}>{item}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <p className="mb-1 text-[12px]">Cleanliness</p>
+                <select
+                  value={filters.cleanliness}
+                  onChange={(e) => setFilters({ ...filters, cleanliness: e.target.value })}
+                  className="h-[34px] w-full rounded-[9px] bg-white px-2 text-[13px]"
+                >
+                  <option>All</option>
+                  {lifestyleTraits.clean.map((item) => (
+                    <option key={item}>{item}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <p className="mb-1 text-[12px]">Need Apartment Between (Start)</p>
+                <input
+                  type="date"
+                  value={filters.apartmentStartDate}
+                  onChange={(e) => setFilters({ ...filters, apartmentStartDate: e.target.value })}
+                  className="h-[34px] w-full rounded-[9px] bg-white px-2 text-[13px] outline-none"
+                />
+              </div>
+              <div>
+                <p className="mb-1 text-[12px]">Need Apartment Between (End)</p>
+                <input
+                  type="date"
+                  value={filters.apartmentEndDate}
+                  onChange={(e) => setFilters({ ...filters, apartmentEndDate: e.target.value })}
+                  className="h-[34px] w-full rounded-[9px] bg-white px-2 text-[13px] outline-none"
+                />
+              </div>
+              <div>
+                <p className="mb-1 text-[12px]">Min Budget</p>
+                <input
+                  value={filters.minBudget}
+                  onChange={(e) => setFilters({ ...filters, minBudget: e.target.value })}
+                  placeholder="Min budget"
+                  className="h-[34px] w-full rounded-[9px] bg-white px-2 text-[13px] outline-none"
+                />
+              </div>
+              <div>
+                <p className="mb-1 text-[12px]">Max Budget</p>
+                <input
+                  value={filters.maxBudget}
+                  onChange={(e) => setFilters({ ...filters, maxBudget: e.target.value })}
+                  placeholder="Max budget"
+                  className="h-[34px] w-full rounded-[9px] bg-white px-2 text-[13px] outline-none"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>

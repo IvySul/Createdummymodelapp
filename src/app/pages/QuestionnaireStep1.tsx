@@ -51,8 +51,8 @@ export default function QuestionnaireStep1() {
   }, [formData]);
 
   return (
-    <div className="bg-white relative min-h-screen w-full overflow-y-auto pb-24">
-      <div className="max-w-md mx-auto px-8 pt-12">
+    <div className="bg-white relative min-h-screen w-full max-w-md mx-auto pb-24">
+      <div className="px-6 pt-12">
         <p className="text-[40px] text-black mb-12">
           Hello! tell us a little about yourself
         </p>

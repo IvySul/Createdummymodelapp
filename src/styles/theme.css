@@ -137,6 +137,9 @@
 
   html {
     font-size: var(--font-size);
+    /* Keeps viewport width stable when overflow scrollbars appear/disappear so centered shells + fixed nav align. */
+    scrollbar-gutter: stable;
+    overflow-x: hidden;
   }
 
   h1 {
