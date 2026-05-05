@@ -46,44 +46,47 @@ export function CompatibilityKeyMeter({ value, className }: CompatibilityKeyMete
       aria-valuenow={Math.round(pct)}
       aria-label={`Compatibility ${Math.round(pct)} percent`}
     >
-      <svg
-        viewBox={`${-pad} ${-pad} ${viewW} ${viewH}`}
-        preserveAspectRatio="xMidYMid meet"
-        className="block w-full overflow-visible"
-        style={{ aspectRatio: `${viewW} / ${viewH}` }}
-        aria-hidden
-      >
-        <defs>
-          <clipPath id={clipId}>
-            <path d={keyPath} />
-          </clipPath>
-        </defs>
+      <div className="rounded-[22px] bg-white px-6 py-5 shadow-[0_3px_14px_rgba(0,0,0,0.06)]">
+        <p className="mb-3 text-[16px] font-light uppercase leading-none text-neutral-900">COMPATIBILITY</p>
+        <svg
+          viewBox={`${-pad} ${-pad} ${viewW} ${viewH}`}
+          preserveAspectRatio="xMidYMid meet"
+          className="block w-full overflow-visible"
+          style={{ aspectRatio: `${viewW} / ${viewH}` }}
+          aria-hidden
+        >
+          <defs>
+            <clipPath id={clipId}>
+              <path d={keyPath} />
+            </clipPath>
+          </defs>
 
-        <g clipPath={`url(#${clipId})`}>
-          <motion.rect
-            x={0}
-            y={0}
-            height={pathH}
-            fill={KEY_FILL}
-            initial={{ width: 0 }}
-            animate={{ width: pathW * (displayPct / 100) }}
-            transition={{
-              type: 'tween',
-              duration: 2.8,
-              ease: [0.22, 0.94, 0.36, 1],
-            }}
+          <g clipPath={`url(#${clipId})`}>
+            <motion.rect
+              x={0}
+              y={0}
+              height={pathH}
+              fill={KEY_FILL}
+              initial={{ width: 0 }}
+              animate={{ width: pathW * (displayPct / 100) }}
+              transition={{
+                type: 'tween',
+                duration: 2.8,
+                ease: [0.22, 0.94, 0.36, 1],
+              }}
+            />
+          </g>
+
+          <path
+            d={keyPath}
+            fill="none"
+            stroke={KEY_FILL}
+            strokeWidth={0.9}
+            strokeLinejoin="round"
+            strokeLinecap="round"
           />
-        </g>
-
-        <path
-          d={keyPath}
-          fill="none"
-          stroke={KEY_FILL}
-          strokeWidth={0.9}
-          strokeLinejoin="round"
-          strokeLinecap="round"
-        />
-      </svg>
+        </svg>
+      </div>
     </div>
   );
 }
