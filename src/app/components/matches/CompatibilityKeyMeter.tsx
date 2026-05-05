@@ -1,12 +1,8 @@
 import { useEffect, useId, useMemo, useState } from 'react';
 import { motion } from 'motion/react';
 
-/** Soft panel tint used across Occumate (`#ebeff5`) with a slightly warmer companion for the fill gradient. */
-const FILL_GRADIENT_STOPS = [
-  { offset: '0%', color: '#dfe5f0' },
-  { offset: '48%', color: '#ebeff5' },
-  { offset: '100%', color: '#f4ece8' },
-] as const;
+/** Fill inside the key (matches design request). */
+const KEY_FILL = '#ffd4ae';
 
 export type CompatibilityKeyMeterProps = {
   /** 0–100 compatibility score. */
@@ -15,18 +11,21 @@ export type CompatibilityKeyMeterProps = {
 };
 
 /**
- * Horizontal key-shaped meter: fill grows left → right inside the key silhouette,
- * with a slow ease (Occumate panel / peachy neutrals).
+ * Horizontal key-shaped meter: fill grows left → right inside the key silhouette.
  */
 export function CompatibilityKeyMeter({ value, className }: CompatibilityKeyMeterProps) {
   const reactId = useId();
   const clipId = useMemo(() => `key-meter-clip-${reactId.replace(/:/g, '')}`, [reactId]);
-  const gradId = useMemo(() => `key-meter-grad-${reactId.replace(/:/g, '')}`, [reactId]);
 
   const pct = Math.max(0, Math.min(100, value));
   const [displayPct, setDisplayPct] = useState(0);
-  const vbW = 76;
-  const vbH = 42;
+  /** Path extents (horizontal key); fill animates along this span. */
+  const pathW = 73;
+  const pathH = 42;
+  /** Padding so stroke is not clipped at the SVG edges. */
+  const pad = 5;
+  const viewW = pathW + pad * 2;
+  const viewH = pathH + pad * 2;
 
   useEffect(() => {
     setDisplayPct(0);
@@ -40,7 +39,7 @@ export function CompatibilityKeyMeter({ value, className }: CompatibilityKeyMete
 
   return (
     <div
-      className={className ? `flex w-full flex-col items-stretch ${className}` : 'flex w-full flex-col items-stretch'}
+      className={className ? `flex w-full flex-col items-stretch overflow-visible ${className}` : 'flex w-full flex-col items-stretch overflow-visible'}
       role="progressbar"
       aria-valuemin={0}
       aria-valuemax={100}
@@ -48,17 +47,13 @@ export function CompatibilityKeyMeter({ value, className }: CompatibilityKeyMete
       aria-label={`Compatibility ${Math.round(pct)} percent`}
     >
       <svg
-        viewBox={`0 0 ${vbW} ${vbH}`}
+        viewBox={`${-pad} ${-pad} ${viewW} ${viewH}`}
         preserveAspectRatio="xMidYMid meet"
-        className="mx-auto block h-auto w-full max-w-full drop-shadow-[0_1px_4px_rgba(0,0,0,0.1)]"
+        className="block w-full overflow-visible"
+        style={{ aspectRatio: `${viewW} / ${viewH}` }}
         aria-hidden
       >
         <defs>
-          <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="0%">
-            {FILL_GRADIENT_STOPS.map((s) => (
-              <stop key={s.offset} offset={s.offset} stopColor={s.color} />
-            ))}
-          </linearGradient>
           <clipPath id={clipId}>
             <path d={keyPath} />
           </clipPath>
@@ -68,10 +63,10 @@ export function CompatibilityKeyMeter({ value, className }: CompatibilityKeyMete
           <motion.rect
             x={0}
             y={0}
-            height={vbH}
-            fill={`url(#${gradId})`}
+            height={pathH}
+            fill={KEY_FILL}
             initial={{ width: 0 }}
-            animate={{ width: vbW * (displayPct / 100) }}
+            animate={{ width: pathW * (displayPct / 100) }}
             transition={{
               type: 'tween',
               duration: 2.8,

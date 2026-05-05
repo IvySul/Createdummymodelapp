@@ -455,8 +455,8 @@ export default function Matches() {
           </div>
         </div>
 
-        <div className="mb-6 w-full px-6">
-          <CompatibilityKeyMeter key={match.id} value={match.compatibilityScore} className="mx-auto max-w-[12.5rem] min-h-[4.5rem]" />
+        <div className="mb-6 w-full">
+          <CompatibilityKeyMeter key={match.id} value={match.compatibilityScore} />
         </div>
 
         <MatchesBasicInfoArtboard
