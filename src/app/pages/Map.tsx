@@ -496,7 +496,7 @@ export default function Map() {
   }, [userPosition, radius]);
 
   return (
-    <div className="bg-white relative h-screen w-full max-w-md mx-auto">
+    <div className="relative isolate mx-auto h-screen w-full max-w-md overflow-x-hidden overflow-y-hidden bg-white">
       {/* Top-left Controls */}
       <div className="absolute top-6 left-6 z-[1000] w-[230px] bg-white/95 rounded-[15px] px-3 py-3 shadow-md">
         <div className="flex items-center justify-end mb-2">
@@ -574,9 +574,10 @@ export default function Map() {
       {/* Map */}
       <MapContainer
         key={`${userPosition[0]}-${userPosition[1]}`}
+        className="z-0 h-full w-full max-w-full border-0 shadow-none outline-none focus:outline-none"
         center={userPosition}
         zoom={14}
-        style={{ height: '100%', width: '100%' }}
+        style={{ height: '100%', width: '100%', maxWidth: '100%' }}
         zoomControl={false}
       >
         <TileLayer

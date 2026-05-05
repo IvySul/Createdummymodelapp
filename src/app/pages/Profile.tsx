@@ -123,7 +123,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="relative min-h-screen w-full max-w-md mx-auto bg-white pb-24">
+    <div className="relative isolate mx-auto min-h-screen w-full max-w-md overflow-x-hidden bg-white pb-24">
       <div className="flex items-center gap-4 px-6 pt-12 mb-8">
         <div className="size-[58px] flex-shrink-0 overflow-hidden rounded-full bg-[#eaddff] ring-1 ring-black/10">
           <img
@@ -137,7 +137,7 @@ export default function Profile() {
         <div className="flex-1" aria-hidden />
       </div>
 
-      <div className="px-6 overflow-x-hidden overflow-y-visible">
+      <div className="overflow-x-hidden overflow-y-visible px-0">
         <div className="mb-7 flex w-full flex-col">
           <div className="relative z-0 aspect-[3/4] w-full rounded-[51px] overflow-hidden">
             <button

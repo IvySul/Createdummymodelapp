@@ -18,7 +18,7 @@ export default function Messages() {
   }, [query]);
 
   return (
-    <div className="bg-white relative min-h-screen w-full max-w-md mx-auto pb-24">
+    <div className="relative isolate mx-auto min-h-screen w-full max-w-md overflow-x-hidden bg-white pb-24">
       <div className="px-6 pt-12 mb-8">
         <div className="bg-[#ebeff5] h-[43px] rounded-[11px] px-4 flex items-center w-full">
           <input

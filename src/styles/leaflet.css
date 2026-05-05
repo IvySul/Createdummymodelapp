@@ -1,2 +1,8 @@
 /* Leaflet CSS */
 @import 'leaflet/dist/leaflet.css';
+
+/* Pin the map canvas to the app shell so tiles can’t spill wider than max-w-md. */
+.leaflet-container {
+  width: 100% !important;
+  max-width: 100%;
+}

@@ -17,7 +17,7 @@ export default function BottomNav() {
   const active = activeRoute(pathname);
 
   return (
-    <div className="pointer-events-auto fixed bottom-0 left-1/2 z-[5000] w-full max-w-md -translate-x-1/2 px-6 pb-3">
+    <div className="pointer-events-auto fixed bottom-0 left-1/2 z-[5000] w-full max-w-md -translate-x-1/2 px-0 pb-3">
       <div className="relative w-full">
         <BottomNavArtboard active={active} />
 

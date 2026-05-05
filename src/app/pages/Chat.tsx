@@ -31,7 +31,7 @@ export default function Chat() {
   };
 
   return (
-    <div className="bg-white relative min-h-screen w-full max-w-md mx-auto flex flex-col pb-24">
+    <div className="relative isolate mx-auto flex min-h-screen w-full max-w-md flex-col overflow-x-hidden bg-white pb-24">
       <div className="flex items-center gap-3 px-6 pt-12 pb-4 border-b border-[#e5e5e5]">
         <button type="button" onClick={() => navigate('/messages')} className="p-1 -ml-1">
           <ChevronLeft className="size-8" />
