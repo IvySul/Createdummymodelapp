@@ -35,7 +35,7 @@ export function CompatibilityKeyMeter({ value, className }: CompatibilityKeyMete
 
   // Lying-down key (bow left, bit right); same topology as the vertical key, coords swapped + shifted.
   const keyPath =
-    'M 0 15 C 0 8 6 2 13 2 C 21 2 27 7 28 12 L 68 12 L 68 6 L 77 6 L 77 12 L 86 12 L 86 18 L 58 18 L 58 23 L 28 23 C 27 25 21 28 13 28 C 6 28 0 22 0 15 Z';
+    'M 3 15 A 13 13 0 1 1 29 15 L 67 15 L 67 10 L 76 10 L 76 15 L 88 15 L 88 21 L 58 21 L 58 24 L 49 24 L 49 19 L 29 19 A 13 13 0 0 1 3 15 Z';
 
   return (
     <div
