@@ -47,7 +47,7 @@ export function CompatibilityKeyMeter({ value, className }: CompatibilityKeyMete
       aria-label={`Compatibility ${Math.round(pct)} percent`}
     >
       <div className="rounded-[22px] bg-white px-6 py-5 shadow-[0_3px_14px_rgba(0,0,0,0.06)]">
-        <p className="mb-3 text-[16px] font-light uppercase leading-none text-neutral-900">COMPATIBILITY</p>
+        <p className="mb-3 text-[28px] font-light uppercase leading-none text-neutral-900">COMPATIBILITY</p>
         <svg
           viewBox={`${-pad} ${-pad} ${viewW} ${viewH}`}
           preserveAspectRatio="xMidYMid meet"
