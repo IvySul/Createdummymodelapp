@@ -1,4 +1,4 @@
-import { useId, useMemo } from 'react';
+import { useEffect, useId, useMemo, useState } from 'react';
 import { motion } from 'motion/react';
 
 /** Soft panel tint used across Occumate (`#ebeff5`) with a slightly warmer companion for the fill gradient. */
@@ -24,8 +24,15 @@ export function CompatibilityKeyMeter({ value, className }: CompatibilityKeyMete
   const gradId = useMemo(() => `key-meter-grad-${reactId.replace(/:/g, '')}`, [reactId]);
 
   const pct = Math.max(0, Math.min(100, value));
+  const [displayPct, setDisplayPct] = useState(0);
   const vbW = 76;
   const vbH = 42;
+
+  useEffect(() => {
+    setDisplayPct(0);
+    const timerId = window.setTimeout(() => setDisplayPct(pct), 120);
+    return () => window.clearTimeout(timerId);
+  }, [pct]);
 
   // Lying-down key (bow left, bit right); same topology as the vertical key, coords swapped + shifted.
   const keyPath =
@@ -57,8 +64,6 @@ export function CompatibilityKeyMeter({ value, className }: CompatibilityKeyMete
           </clipPath>
         </defs>
 
-        <path d={keyPath} fill="rgba(0,0,0,0.05)" />
-
         <g clipPath={`url(#${clipId})`}>
           <motion.rect
             x={0}
@@ -66,10 +71,10 @@ export function CompatibilityKeyMeter({ value, className }: CompatibilityKeyMete
             height={vbH}
             fill={`url(#${gradId})`}
             initial={{ width: 0 }}
-            animate={{ width: vbW * (pct / 100) }}
+            animate={{ width: vbW * (displayPct / 100) }}
             transition={{
               type: 'tween',
-              duration: 2.35,
+              duration: 2.8,
               ease: [0.22, 0.94, 0.36, 1],
             }}
           />
