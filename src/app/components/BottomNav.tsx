@@ -28,13 +28,6 @@ export default function BottomNav() {
 
             <button
               type="button"
-              onClick={() => navigate('/map')}
-              className={`min-h-0 min-w-0 ${location.pathname === '/map' ? 'opacity-100' : 'opacity-70'}`}
-              aria-label="Map"
-            />
-
-            <button
-              type="button"
               onClick={() => navigate('/messages')}
               className={`min-h-0 min-w-0 ${
                 location.pathname === '/messages' || location.pathname.startsWith('/messages/chat')
@@ -42,6 +35,13 @@ export default function BottomNav() {
                   : 'opacity-70'
               }`}
               aria-label="Messages"
+            />
+
+            <button
+              type="button"
+              onClick={() => navigate('/map')}
+              className={`min-h-0 min-w-0 ${location.pathname === '/map' ? 'opacity-100' : 'opacity-70'}`}
+              aria-label="Map"
             />
 
             <button
