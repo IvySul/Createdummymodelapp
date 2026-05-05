@@ -18,10 +18,10 @@ export function MatchCelebrationOverlay({ visible }: MatchCelebrationOverlayProp
 
   return (
     <div className="fixed inset-0 z-[4000] flex justify-center pointer-events-auto">
-      <section className="w-full max-w-md min-h-dvh bg-[#ffd4ae] flex flex-col items-center justify-center -translate-y-12 gap-6 px-5 py-8 overflow-hidden">
+      <section className="w-full max-w-md min-h-dvh bg-[#ffd4ae] flex flex-col items-center justify-center -translate-y-20 gap-5 px-5 py-8 overflow-hidden">
         <h1
           className="title-reveal font-semibold text-zinc-900 text-center leading-[1.05] uppercase"
-          style={{ fontFamily: "'Open Sans', sans-serif", fontSize: "clamp(2.2rem, 8vw, 4.2rem)" }}
+          style={{ fontFamily: "'Open Sans', sans-serif", fontSize: "clamp(1.8rem, 6.6vw, 3.4rem)" }}
         >
           You Matched!
         </h1>
