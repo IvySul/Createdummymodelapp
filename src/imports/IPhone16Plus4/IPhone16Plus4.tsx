@@ -94,13 +94,13 @@ export default function IPhone16Plus() {
       <div className="-translate-x-1/2 absolute bg-[#d9d9d9] h-[380px] left-[calc(50%-0.5px)] rounded-[51px] top-[136px] w-[387px]" />
       <div className="-translate-x-1/2 absolute bg-[#d9d9d9] h-[435px] left-[calc(50%-0.5px)] rounded-[51px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] top-[552px] w-[387px]" />
       <Group />
-      <p className="absolute font-['ABC_Diatype_Edu:Regular',sans-serif] h-[47px] leading-[normal] left-[39px] not-italic text-[36px] text-black top-[89px] w-[159px]">Olivia</p>
+      <p className="absolute h-[47px] leading-[normal] left-[39px] not-italic text-[36px] text-black top-[89px] w-[159px]">Olivia</p>
       <div className="absolute bg-white border-[0.5px] border-black border-solid h-[92px] left-[-26px] top-[844px] w-[481px]" />
       <Group1 />
       <Group3 />
       <Group2 />
-      <p className="absolute font-['ABC_Diatype_Edu:Thin',sans-serif] h-[66px] leading-[normal] left-[30px] not-italic text-[64px] text-black top-[851px] w-[46px]">R</p>
-      <p className="absolute font-['ABC_Diatype_Edu:Regular',sans-serif] h-[69px] leading-[normal] left-[85px] not-italic text-[48px] text-black top-[18px] w-[290px]">Matches</p>
+      <p className="absolute font-light h-[66px] leading-[normal] left-[30px] not-italic text-[64px] text-black top-[851px] w-[46px]">R</p>
+      <p className="absolute h-[69px] leading-[normal] left-[85px] not-italic text-[48px] text-black top-[18px] w-[290px]">Matches</p>
       <div className="absolute left-[46px] overflow-clip size-[328px] top-[139px]" data-name="Image">
         <div className="absolute inset-[12.5%]" data-name="Icon">
           <div className="absolute inset-[-0.41%]">
@@ -110,7 +110,7 @@ export default function IPhone16Plus() {
           </div>
         </div>
       </div>
-      <p className="absolute font-['ABC_Diatype_Edu:Thin',sans-serif] h-[64px] leading-[normal] left-[46px] not-italic text-[14px] text-black top-[437px] w-[349px]">Hi, my name is___ I’m a sophomore looking for housing! I’m a quiet roommate, mostly studying in my room. I love animals, music, and TV. Looking for someone similar!</p>
+      <p className="absolute font-light h-[64px] leading-[normal] left-[46px] not-italic text-[14px] text-black top-[437px] w-[349px]">Hi, my name is___ I’m a sophomore looking for housing! I’m a quiet roommate, mostly studying in my room. I love animals, music, and TV. Looking for someone similar!</p>
       <div className="absolute flex h-[1.065px] items-center justify-center left-[36px] top-[604.93px] w-[359px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "21" } as React.CSSProperties}>
         <div className="flex-none rotate-[-0.17deg]">
           <div className="h-0 relative w-[359.001px]">
@@ -177,12 +177,12 @@ export default function IPhone16Plus() {
           </div>
         </div>
       </div>
-      <p className="absolute font-['ABC_Diatype_Edu:Thin',sans-serif] leading-[normal] left-[76px] not-italic size-[26px] text-[20px] text-black top-[572px]">20</p>
-      <p className="absolute font-['ABC_Diatype_Edu:Thin',sans-serif] h-[26px] leading-[normal] left-[116px] not-italic text-[20px] text-black top-[570px] w-[68px]">woman</p>
-      <p className="absolute font-['ABC_Diatype_Edu:Thin',sans-serif] h-[31px] leading-[normal] left-[84px] not-italic text-[20px] text-black top-[631px] w-[143px]">Morning Person</p>
-      <p className="absolute font-['ABC_Diatype_Edu:Thin',sans-serif] h-[31px] leading-[normal] left-[84px] not-italic text-[20px] text-black top-[670px] w-[143px]">Independent</p>
-      <p className="absolute font-['ABC_Diatype_Edu:Thin',sans-serif] h-[26px] leading-[normal] left-[223px] not-italic text-[20px] text-black top-[572px] w-[68px]">UTK</p>
-      <p className="absolute font-['ABC_Diatype_Edu:Thin',sans-serif] h-[26px] leading-[normal] left-[299px] not-italic text-[20px] text-black top-[571px] w-[44px]">1000</p>
+      <p className="absolute font-light leading-[normal] left-[76px] not-italic size-[26px] text-[20px] text-black top-[572px]">20</p>
+      <p className="absolute font-light h-[26px] leading-[normal] left-[116px] not-italic text-[20px] text-black top-[570px] w-[68px]">woman</p>
+      <p className="absolute font-light h-[31px] leading-[normal] left-[84px] not-italic text-[20px] text-black top-[631px] w-[143px]">Morning Person</p>
+      <p className="absolute font-light h-[31px] leading-[normal] left-[84px] not-italic text-[20px] text-black top-[670px] w-[143px]">Independent</p>
+      <p className="absolute font-light h-[26px] leading-[normal] left-[223px] not-italic text-[20px] text-black top-[572px] w-[68px]">UTK</p>
+      <p className="absolute font-light h-[26px] leading-[normal] left-[299px] not-italic text-[20px] text-black top-[571px] w-[44px]">1000</p>
       <div className="absolute left-[197px] overflow-clip size-[20px] top-[573px]" data-name="Map pin">
         <div className="absolute inset-[4.17%_12.5%]" data-name="Icon">
           <div className="absolute inset-[-5.45%_-6.67%]">
@@ -260,9 +260,9 @@ export default function IPhone16Plus() {
           </div>
         </div>
       </div>
-      <p className="absolute font-['ABC_Diatype_Edu:Thin',sans-serif] h-[31px] leading-[normal] left-[84px] not-italic text-[20px] text-black top-[707px] w-[143px]">Christian</p>
-      <p className="absolute font-['ABC_Diatype_Edu:Thin',sans-serif] h-[31px] leading-[normal] left-[84px] not-italic text-[20px] text-black top-[749px] w-[180px]">Somewhat Noisy</p>
-      <p className="absolute font-['ABC_Diatype_Edu:Thin',sans-serif] h-[31px] leading-[normal] left-[84px] not-italic text-[20px] text-black top-[789px] w-[143px]">Likes it Clean</p>
+      <p className="absolute font-light h-[31px] leading-[normal] left-[84px] not-italic text-[20px] text-black top-[707px] w-[143px]">Christian</p>
+      <p className="absolute font-light h-[31px] leading-[normal] left-[84px] not-italic text-[20px] text-black top-[749px] w-[180px]">Somewhat Noisy</p>
+      <p className="absolute font-light h-[31px] leading-[normal] left-[84px] not-italic text-[20px] text-black top-[789px] w-[143px]">Likes it Clean</p>
       <div className="absolute left-[45px] overflow-clip size-[24px] top-[708px]" data-name="Book open">
         <div className="absolute inset-[12.5%_8.33%]" data-name="Icon">
           <div className="absolute inset-[-4.44%_-4%]">

@@ -13,25 +13,25 @@ function Group() {
 export default function IPhone16Plus() {
   return (
     <div className="bg-white relative size-full" data-name="iPhone 16 Plus - 2">
-      <p className="absolute font-['ABC_Diatype_Edu:Regular',sans-serif] h-[95px] leading-[normal] left-[48px] not-italic text-[40px] text-black top-[45px] w-[330px]">Hello! tell us a little about yourself</p>
+      <p className="absolute h-[95px] leading-[normal] left-[48px] not-italic text-[40px] text-black top-[45px] w-[330px]">Hello! tell us a little about yourself</p>
       <div className="absolute bg-[#d9d9d9] h-[38px] left-[37px] rounded-[11px] top-[209px] w-[352px]" />
       <div className="absolute bg-[#d9d9d9] h-[38px] left-[37px] rounded-[11px] top-[402px] w-[352px]" />
       <Group />
-      <p className="-translate-x-1/2 absolute font-['ABC_Diatype_Edu:Regular',sans-serif] h-[31px] leading-[normal] left-[86px] not-italic text-[16px] text-black text-center top-[186px] w-[124px]">Your Name</p>
-      <p className="absolute font-['ABC_Diatype_Edu:Regular',sans-serif] h-[31px] leading-[normal] left-[45px] not-italic text-[16px] text-black top-[278px] w-[124px]">Birthday</p>
-      <p className="absolute font-['ABC_Diatype_Edu:Regular',sans-serif] h-[31px] leading-[normal] left-[45px] not-italic text-[16px] text-black top-[378px] w-[124px]">Gender</p>
+      <p className="-translate-x-1/2 absolute h-[31px] leading-[normal] left-[86px] not-italic text-[16px] text-black text-center top-[186px] w-[124px]">Your Name</p>
+      <p className="absolute h-[31px] leading-[normal] left-[45px] not-italic text-[16px] text-black top-[278px] w-[124px]">Birthday</p>
+      <p className="absolute h-[31px] leading-[normal] left-[45px] not-italic text-[16px] text-black top-[378px] w-[124px]">Gender</p>
       <div className="absolute bg-[#d9d9d9] h-[38px] left-[37px] rounded-[11px] top-[494px] w-[352px]" />
-      <p className="absolute font-['ABC_Diatype_Edu:Regular',sans-serif] h-[31px] leading-[normal] left-[45px] not-italic text-[16px] text-black top-[470px] w-[124px]">Ethnicity</p>
+      <p className="absolute h-[31px] leading-[normal] left-[45px] not-italic text-[16px] text-black top-[470px] w-[124px]">Ethnicity</p>
       <div className="absolute bg-[#d9d9d9] h-[38px] left-[37px] rounded-[11px] top-[582px] w-[352px]" />
-      <p className="absolute font-['ABC_Diatype_Edu:Regular',sans-serif] h-[31px] leading-[normal] left-[45px] not-italic text-[16px] text-black top-[558px] w-[124px]">Occupation</p>
+      <p className="absolute h-[31px] leading-[normal] left-[45px] not-italic text-[16px] text-black top-[558px] w-[124px]">Occupation</p>
       <div className="absolute bg-[#d9d9d9] h-[38px] left-[37px] rounded-[11px] top-[671px] w-[352px]" />
-      <p className="absolute font-['ABC_Diatype_Edu:Regular',sans-serif] h-[31px] leading-[normal] left-[45px] not-italic text-[16px] text-black top-[647px] w-[124px]">Religion</p>
+      <p className="absolute h-[31px] leading-[normal] left-[45px] not-italic text-[16px] text-black top-[647px] w-[124px]">Religion</p>
       <div className="absolute bg-[#d9d9d9] h-[38px] left-[37px] rounded-[11px] top-[763px] w-[69px]" />
       <div className="absolute bg-[#d9d9d9] h-[38px] left-[132px] rounded-[11px] top-[763px] w-[69px]" />
       <div className="absolute bg-[#d9d9d9] h-[38px] left-[227px] rounded-[11px] top-[763px] w-[69px]" />
       <div className="absolute bg-[#d9d9d9] h-[38px] left-[322px] rounded-[11px] top-[763px] w-[69px]" />
-      <p className="absolute font-['ABC_Diatype_Edu:Regular',sans-serif] h-[31px] leading-[normal] left-[45px] not-italic text-[16px] text-black top-[739px] w-[124px]">Politics</p>
-      <p className="absolute font-['ABC_Diatype_Edu:Regular',sans-serif] h-[31px] leading-[normal] left-[132px] not-italic text-[16px] text-black top-[852px] w-[226px]">Roommate Matching Questions</p>
+      <p className="absolute h-[31px] leading-[normal] left-[45px] not-italic text-[16px] text-black top-[739px] w-[124px]">Politics</p>
+      <p className="absolute h-[31px] leading-[normal] left-[132px] not-italic text-[16px] text-black top-[852px] w-[226px]">Roommate Matching Questions</p>
       <div className="absolute flex items-center justify-center left-[360px] size-[29px] top-[848px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "21" } as React.CSSProperties}>
         <div className="flex-none rotate-90">
           <div className="relative size-[29px]">

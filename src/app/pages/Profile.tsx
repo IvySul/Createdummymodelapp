@@ -153,11 +153,11 @@ export default function Profile() {
               <input
                 value={profile.name}
                 onChange={(e) => setNameAndSyncQuestionnaire(e.target.value)}
-                className="absolute left-5 top-5 max-w-[calc(100%-5rem)] bg-transparent font-['Open_Sans',sans-serif] text-[28px] font-light uppercase leading-none text-white outline-none placeholder:text-white/70 drop-shadow-[0_1px_8px_rgba(0,0,0,0.45)]"
+                className="absolute left-5 top-5 max-w-[calc(100%-5rem)] bg-transparent text-[28px] font-light uppercase leading-none text-white outline-none placeholder:text-white/70 drop-shadow-[0_1px_8px_rgba(0,0,0,0.45)]"
                 placeholder={DEFAULT_NAME}
               />
             ) : (
-              <p className="pointer-events-none absolute left-5 top-5 font-['Open_Sans',sans-serif] text-[28px] font-light uppercase leading-none text-white drop-shadow-[0_1px_8px_rgba(0,0,0,0.45)]">
+              <p className="pointer-events-none absolute left-5 top-5 text-[28px] font-light uppercase leading-none text-white drop-shadow-[0_1px_8px_rgba(0,0,0,0.45)]">
                 {resolvedName}
               </p>
             )}
@@ -171,16 +171,16 @@ export default function Profile() {
                   value={profile.image}
                   onChange={(e) => setProfile({ ...profile, image: e.target.value })}
                   placeholder="Paste image URL"
-                  className="mb-3 w-full border-b border-black/25 bg-transparent font-['Open_Sans',sans-serif] text-[13px] text-neutral-800 outline-none"
+                  className="mb-3 w-full border-b border-black/25 bg-transparent text-[13px] text-neutral-800 outline-none"
                 />
                 <textarea
                   value={profile.bio}
                   onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
-                  className="min-h-[7rem] w-full resize-none border border-black/15 bg-transparent px-1 py-2 font-['Open_Sans',sans-serif] text-[14px] font-normal leading-relaxed text-neutral-900 outline-none"
+                  className="min-h-[7rem] w-full resize-none border border-black/15 bg-transparent px-1 py-2 text-[14px] font-normal leading-relaxed text-neutral-900 outline-none"
                 />
               </>
             ) : (
-              <p className="w-full text-left font-['Open_Sans',sans-serif] text-[14px] font-normal leading-relaxed text-neutral-900">
+              <p className="w-full text-left text-[14px] font-normal leading-relaxed text-neutral-900">
                 {profile.bio}
               </p>
             )}
@@ -231,19 +231,19 @@ export default function Profile() {
         {isEditing ? (
           <div className="relative mt-8 flex w-full flex-col rounded-[22px] bg-[#ebeff5] p-6 shadow-[0_4px_18px_rgba(0,0,0,0.08)]">
             <div ref={basicFieldsRef}>
-              <p className="mb-4 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black">Basic info</p>
+              <p className="mb-4 text-[16px] text-black">Basic info</p>
               <div className="grid grid-cols-1 gap-4 pb-8">
                 <div>
-                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Age</p>
+                  <p className="mb-1 text-[12px]">Age</p>
                   <input
                     value={profile.age}
                     onChange={(e) => setProfile({ ...profile, age: e.target.value })}
                     inputMode="numeric"
-                    className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white px-3 font-['Open_Sans',sans-serif] text-[14px] outline-none"
+                    className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white px-3 text-[14px] outline-none"
                   />
                 </div>
                 <div>
-                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Gender</p>
+                  <p className="mb-1 text-[12px]">Gender</p>
                   <Select value={profile.gender} onValueChange={(value) => setProfile({ ...profile, gender: value })}>
                     <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
                       <SelectValue />
@@ -258,30 +258,30 @@ export default function Profile() {
                   </Select>
                 </div>
                 <div>
-                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">
+                  <p className="mb-1 text-[12px]">
                     Distance label (shows on card)
                   </p>
                   <input
                     value={profile.distanceLabel}
                     onChange={(e) => setProfile({ ...profile, distanceLabel: e.target.value })}
-                    className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white px-3 font-['Open_Sans',sans-serif] text-[14px] outline-none"
+                    className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white px-3 text-[14px] outline-none"
                     placeholder='e.g. "12 miles away"'
                   />
                 </div>
                 <div>
-                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">
+                  <p className="mb-1 text-[12px]">
                     Budget midpoint ($)
                   </p>
                   <input
                     value={profile.budget}
                     onChange={(e) => setProfile({ ...profile, budget: e.target.value })}
                     inputMode="numeric"
-                    className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white px-3 font-['Open_Sans',sans-serif] text-[14px] outline-none"
+                    className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white px-3 text-[14px] outline-none"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Lease start</p>
+                    <p className="mb-1 text-[12px]">Lease start</p>
                     <input
                       type="date"
                       value={profile.apartmentStartDate}
@@ -290,7 +290,7 @@ export default function Profile() {
                     />
                   </div>
                   <div>
-                    <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Lease end</p>
+                    <p className="mb-1 text-[12px]">Lease end</p>
                     <input
                       type="date"
                       value={profile.apartmentEndDate}
@@ -300,7 +300,7 @@ export default function Profile() {
                   </div>
                 </div>
                 <div>
-                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Education</p>
+                  <p className="mb-1 text-[12px]">Education</p>
                   <Select value={profile.education} onValueChange={(value) => setProfile({ ...profile, education: value })}>
                     <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
                       <SelectValue />
@@ -315,7 +315,7 @@ export default function Profile() {
                   </Select>
                 </div>
                 <div>
-                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Occupation</p>
+                  <p className="mb-1 text-[12px]">Occupation</p>
                   <Select value={profile.occupation} onValueChange={(value) => setProfile({ ...profile, occupation: value })}>
                     <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
                       <SelectValue />
@@ -330,7 +330,7 @@ export default function Profile() {
                   </Select>
                 </div>
                 <div>
-                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Politics</p>
+                  <p className="mb-1 text-[12px]">Politics</p>
                   <Select value={profile.traits[1]} onValueChange={(value) => updateTrait(1, value)}>
                     <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
                       <SelectValue />
@@ -345,7 +345,7 @@ export default function Profile() {
                   </Select>
                 </div>
                 <div>
-                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Religion</p>
+                  <p className="mb-1 text-[12px]">Religion</p>
                   <Select value={profile.traits[2]} onValueChange={(value) => updateTrait(2, value)}>
                     <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
                       <SelectValue />
@@ -363,10 +363,10 @@ export default function Profile() {
             </div>
 
             <div ref={livingFieldsRef} className="border-t border-black/10 pt-6">
-              <p className="mb-4 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black">Living habits</p>
+              <p className="mb-4 text-[16px] text-black">Living habits</p>
               <div className="grid grid-cols-1 gap-4">
                 <div>
-                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Schedule</p>
+                  <p className="mb-1 text-[12px]">Schedule</p>
                   <Select value={profile.traits[0]} onValueChange={(value) => updateTrait(0, value)}>
                     <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
                       <SelectValue />
@@ -381,7 +381,7 @@ export default function Profile() {
                   </Select>
                 </div>
                 <div>
-                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Noise level</p>
+                  <p className="mb-1 text-[12px]">Noise level</p>
                   <Select value={profile.traits[3]} onValueChange={(value) => updateTrait(3, value)}>
                     <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
                       <SelectValue />
@@ -396,7 +396,7 @@ export default function Profile() {
                   </Select>
                 </div>
                 <div>
-                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Cleanliness</p>
+                  <p className="mb-1 text-[12px]">Cleanliness</p>
                   <Select value={profile.traits[4]} onValueChange={(value) => updateTrait(4, value)}>
                     <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
                       <SelectValue />
@@ -411,7 +411,7 @@ export default function Profile() {
                   </Select>
                 </div>
                 <div>
-                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Pets</p>
+                  <p className="mb-1 text-[12px]">Pets</p>
                   <Select value={profile.pets} onValueChange={(value) => setProfile({ ...profile, pets: value })}>
                     <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
                       <SelectValue />
@@ -426,7 +426,7 @@ export default function Profile() {
                   </Select>
                 </div>
                 <div>
-                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Guest policy</p>
+                  <p className="mb-1 text-[12px]">Guest policy</p>
                   <Select
                     value={profile.guestPolicy}
                     onValueChange={(value) => setProfile({ ...profile, guestPolicy: value })}
@@ -444,7 +444,7 @@ export default function Profile() {
                   </Select>
                 </div>
                 <div>
-                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Substance use</p>
+                  <p className="mb-1 text-[12px]">Substance use</p>
                   <Select
                     value={profile.substanceUse}
                     onValueChange={(value) => setProfile({ ...profile, substanceUse: value })}

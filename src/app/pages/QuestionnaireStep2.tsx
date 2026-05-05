@@ -98,26 +98,26 @@ export default function QuestionnaireStep2() {
   return (
     <div className="bg-white relative min-h-screen w-full overflow-y-auto pb-24">
       <div className="max-w-md mx-auto px-8 pt-12">
-        <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[40px] text-black mb-8">
+        <p className="text-[40px] text-black mb-8">
           Questionnaire
         </p>
 
         {/* Bio */}
         <div className="mb-8">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[24px] text-black mb-2">
+          <p className="text-[24px] text-black mb-2">
             Bio
           </p>
           <Textarea
             value={formData.bio}
             onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
             placeholder="Tell us about yourself..."
-            className="bg-[#ebeff5] min-h-[95px] rounded-[11px] border-none font-['ABC_Diatype_Edu:Regular',sans-serif] resize-none"
+            className="bg-[#ebeff5] min-h-[95px] rounded-[11px] border-none resize-none"
           />
         </div>
 
         {/* Budget */}
         <div className="mb-8">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-4">
+          <p className="text-[16px] text-black mb-4">
             Budget
           </p>
           <div className="flex items-center gap-4">
@@ -131,7 +131,7 @@ export default function QuestionnaireStep2() {
                   e.currentTarget.blur();
                 }
               }}
-              className="no-number-spinner bg-[#ebeff5] h-[30px] rounded-[11px] border-none px-2 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] min-w-[60px] w-[60px]"
+              className="no-number-spinner bg-[#ebeff5] h-[30px] rounded-[11px] border-none px-2 text-center text-[16px] min-w-[60px] w-[60px]"
             />
             <Slider
               value={formData.budget}
@@ -151,24 +151,24 @@ export default function QuestionnaireStep2() {
                   e.currentTarget.blur();
                 }
               }}
-              className="no-number-spinner bg-[#ebeff5] h-[30px] rounded-[11px] border-none px-2 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] min-w-[60px] w-[60px]"
+              className="no-number-spinner bg-[#ebeff5] h-[30px] rounded-[11px] border-none px-2 text-center text-[16px] min-w-[60px] w-[60px]"
             />
           </div>
           <div className="mt-2 text-center">
-            <span className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[20px]">
+            <span className="text-[20px]">
               ${formData.budget[0]} - ${formData.budget[1]}
             </span>
           </div>
         </div>
 
         {/* Living Habits Section */}
-        <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[24px] text-black mb-6">
+        <p className="text-[24px] text-black mb-6">
           Living Habits
         </p>
 
         {/* Apartment Date Range */}
         <div className="mb-6">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-2">
+          <p className="text-[16px] text-black mb-2">
             How long do you need an apartment?
           </p>
           <div className="grid grid-cols-2 gap-2">
@@ -189,7 +189,7 @@ export default function QuestionnaireStep2() {
 
         {/* Substances */}
         <div className="mb-6">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-3">
+          <p className="text-[16px] text-black mb-3">
             Drinking / Smoking / Other substances
           </p>
           <div className="grid grid-cols-3 gap-2">
@@ -230,7 +230,7 @@ export default function QuestionnaireStep2() {
 
         {/* Pets */}
         <div className="mb-6">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-2">
+          <p className="text-[16px] text-black mb-2">
             Do you have any pets?
           </p>
           <Select value={formData.pets} onValueChange={(value) => setFormData({ ...formData, pets: value })}>
@@ -247,7 +247,7 @@ export default function QuestionnaireStep2() {
 
         {/* Cleanliness */}
         <div className="mb-6">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-2">
+          <p className="text-[16px] text-black mb-2">
             How clean do you keep your space?
           </p>
           <Select value={formData.cleanliness} onValueChange={(value) => setFormData({ ...formData, cleanliness: value })}>
@@ -264,7 +264,7 @@ export default function QuestionnaireStep2() {
 
         {/* Guests */}
         <div className="mb-6">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-2">
+          <p className="text-[16px] text-black mb-2">
             Thoughts on guests?
           </p>
           <Select value={formData.guests} onValueChange={(value) => setFormData({ ...formData, guests: value })}>
@@ -281,7 +281,7 @@ export default function QuestionnaireStep2() {
 
         {/* Schedule */}
         <div className="mb-6">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-2">
+          <p className="text-[16px] text-black mb-2">
             Morning or night person?
           </p>
           <Select value={formData.schedule} onValueChange={(value) => setFormData({ ...formData, schedule: value })}>
@@ -298,7 +298,7 @@ export default function QuestionnaireStep2() {
 
         {/* Noise */}
         <div className="mb-12">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-2">
+          <p className="text-[16px] text-black mb-2">
             Noise level
           </p>
           <Select value={formData.noise} onValueChange={(value) => setFormData({ ...formData, noise: value })}>
@@ -321,7 +321,7 @@ export default function QuestionnaireStep2() {
           }}
           className="flex items-center gap-2 ml-auto mb-8"
         >
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black">
+          <p className="text-[16px] text-black">
             Get Matching
           </p>
           <ChevronDown className="rotate-[-90deg] size-6" />

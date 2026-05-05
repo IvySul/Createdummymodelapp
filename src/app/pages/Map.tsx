@@ -501,7 +501,7 @@ export default function Map() {
       <div className="absolute top-6 left-6 z-[1000] w-[230px] bg-white/95 rounded-[15px] px-3 py-3 shadow-md">
         <div className="flex items-center justify-end mb-2">
           {isLocating ? (
-            <div className="bg-[#ebeff5] rounded-[10px] px-2 h-[28px] flex items-center gap-1 text-[11px] font-['ABC_Diatype_Edu:Regular',sans-serif]">
+            <div className="bg-[#ebeff5] rounded-[10px] px-2 h-[28px] flex items-center gap-1 text-[11px] ">
               <Loader2 className="size-3 animate-spin" />
               Locating...
             </div>
@@ -514,16 +514,16 @@ export default function Map() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search rentals"
-            className="bg-transparent font-['ABC_Diatype_Edu:Thin',sans-serif] text-[13px] text-black outline-none w-full"
+            className="bg-transparent font-light text-[13px] text-black outline-none w-full"
           />
         </div>
 
         <div className="flex items-center gap-2 mb-1">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px] text-black shrink-0">Distance</p>
+          <p className="text-[12px] text-black shrink-0">Distance</p>
           <select
             value={radius}
             onChange={(e) => setRadius(Number(e.target.value))}
-            className="bg-[#f5f8fc] h-[30px] rounded-[10px] px-2 text-[12px] font-['ABC_Diatype_Edu:Regular',sans-serif] outline-none w-full"
+            className="bg-[#f5f8fc] h-[30px] rounded-[10px] px-2 text-[12px] outline-none w-full"
           >
             {DISTANCE_OPTIONS.map((option) => (
               <option key={option.value} value={option.value}>
@@ -545,18 +545,18 @@ export default function Map() {
               if (e.key === 'Enter') e.currentTarget.blur();
             }}
             placeholder="Custom miles (0.25 - 50)"
-            className="bg-[#f5f8fc] h-[30px] rounded-[10px] px-2 text-[12px] font-['ABC_Diatype_Edu:Regular',sans-serif] outline-none w-full no-number-spinner"
+            className="bg-[#f5f8fc] h-[30px] rounded-[10px] px-2 text-[12px] outline-none w-full no-number-spinner"
           />
         </div>
 
-        <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[11px] text-black">
+        <p className="font-light text-[11px] text-black">
           {isLoading ? 'Loading nearby rentals...' : `${filteredRentals.length} places found`}
         </p>
         {error ? (
-          <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[11px] text-red-700 mt-1">{error}</p>
+          <p className="font-light text-[11px] text-red-700 mt-1">{error}</p>
         ) : null}
         {isUsingFallback ? (
-          <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[11px] text-black/70 mt-1">
+          <p className="font-light text-[11px] text-black/70 mt-1">
             Fallback data is shown until live APIs recover.
           </p>
         ) : null}
@@ -564,7 +564,7 @@ export default function Map() {
           <button
             type="button"
             onClick={() => fetchNearbyRentals(userPosition, radius)}
-            className="mt-2 w-full h-[28px] rounded-[9px] bg-[#f5f8fc] text-[11px] font-['ABC_Diatype_Edu:Regular',sans-serif] hover:bg-[#e8eef6]"
+            className="mt-2 w-full h-[28px] rounded-[9px] bg-[#f5f8fc] text-[11px] hover:bg-[#e8eef6]"
           >
             Retry loading places
           </button>
@@ -587,7 +587,7 @@ export default function Map() {
         <Marker position={userPosition} icon={icon}>
           <Popup className="rental-popup">
             <div className="p-1">
-              <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[14px]">Your location</p>
+              <p className="text-[14px]">Your location</p>
             </div>
           </Popup>
         </Marker>
@@ -596,19 +596,19 @@ export default function Map() {
           <Marker key={apartment.id} position={apartment.position} icon={icon}>
             <Popup className="rental-popup">
               <div className="rental-popup-card p-2">
-                <h3 className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] font-semibold mb-1 leading-tight">
+                <h3 className="text-[16px] font-semibold mb-1 leading-tight">
                   {apartment.name}
                 </h3>
-                <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[12px] mb-1 capitalize">
+                <p className="font-light text-[12px] mb-1 capitalize">
                   {apartment.type}
                 </p>
                 {apartment.address ? (
-                  <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[11px] text-black/75 mb-2 leading-snug">
+                  <p className="font-light text-[11px] text-black/75 mb-2 leading-snug">
                     {apartment.address}
                   </p>
                 ) : null}
                 <div className="flex items-center justify-between gap-3">
-                  <span className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[10px] uppercase tracking-wide text-black/60">
+                  <span className="text-[10px] uppercase tracking-wide text-black/60">
                     {apartment.source ?? 'listing'}
                   </span>
                   {apartment.url ? (
@@ -616,7 +616,7 @@ export default function Map() {
                       href={apartment.url}
                       target="_blank"
                       rel="noreferrer"
-                      className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[11px] underline text-black"
+                      className="text-[11px] underline text-black"
                     >
                       Open details
                     </a>

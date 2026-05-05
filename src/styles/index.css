@@ -1,28 +1,12 @@
-@import './fonts.css';
 @import './tailwind.css';
 @import './theme.css';
 @import './leaflet.css';
 
-/* Force all UI text to use ABC Diatype Rounded without changing sizing utilities. */
-html,
-body,
-button,
-input,
-select,
-textarea,
-p,
-span,
-label,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-li,
-a,
-div {
-  font-family: 'ABC Diatype Rounded', 'ABC_Diatype_Rounded', 'ABC_Diatype_Edu', sans-serif !important;
+/* Open Sans everywhere; !important overrides older per-component arbitrary font stacks. */
+*,
+*::before,
+*::after {
+  font-family: 'Open Sans', sans-serif !important;
 }
 
 .no-number-spinner::-webkit-outer-spin-button,

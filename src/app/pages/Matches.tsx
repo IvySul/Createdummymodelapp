@@ -248,12 +248,12 @@ export default function Matches() {
       {showFilters ? <div className="fixed inset-0 bg-black/25 z-[2500]" onClick={() => setShowFilters(false)} /> : null}
       <div className={`fixed top-0 left-0 h-full w-[280px] bg-[#ebeff5] z-[2600] p-4 shadow-xl transition-transform duration-200 ${showFilters ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex items-center justify-between mb-4">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[24px]">Filters</p>
+          <p className="text-[24px]">Filters</p>
           <button className="text-[24px] leading-none" onClick={() => setShowFilters(false)}>×</button>
         </div>
         <div className="grid grid-cols-1 gap-2">
           <div>
-            <p className="text-[12px] mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif]">Gender</p>
+            <p className="text-[12px] mb-1 ">Gender</p>
           <select value={filters.gender} onChange={(e) => setFilters({ ...filters, gender: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
             <option>All</option>
             <option>woman</option>
@@ -261,7 +261,7 @@ export default function Matches() {
           </select>
           </div>
           <div>
-            <p className="text-[12px] mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif]">Politics</p>
+            <p className="text-[12px] mb-1 ">Politics</p>
           <select value={filters.politics} onChange={(e) => setFilters({ ...filters, politics: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
             <option>All</option>
             <option>Right</option>
@@ -271,7 +271,7 @@ export default function Matches() {
           </select>
           </div>
           <div>
-            <p className="text-[12px] mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif]">Religion</p>
+            <p className="text-[12px] mb-1 ">Religion</p>
           <select value={filters.religion} onChange={(e) => setFilters({ ...filters, religion: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
             <option>All</option>
             {lifestyleTraits.book.map((item) => (
@@ -280,7 +280,7 @@ export default function Matches() {
           </select>
           </div>
           <div>
-            <p className="text-[12px] mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif]">Schedule</p>
+            <p className="text-[12px] mb-1 ">Schedule</p>
           <select value={filters.schedule} onChange={(e) => setFilters({ ...filters, schedule: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
             <option>All</option>
             {lifestyleTraits.circle.map((item) => (
@@ -289,7 +289,7 @@ export default function Matches() {
           </select>
           </div>
           <div>
-            <p className="text-[12px] mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif]">Noise Level</p>
+            <p className="text-[12px] mb-1 ">Noise Level</p>
           <select value={filters.noise} onChange={(e) => setFilters({ ...filters, noise: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
             <option>All</option>
             {lifestyleTraits.noise.map((item) => (
@@ -298,7 +298,7 @@ export default function Matches() {
           </select>
           </div>
           <div>
-            <p className="text-[12px] mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif]">Cleanliness</p>
+            <p className="text-[12px] mb-1 ">Cleanliness</p>
           <select value={filters.cleanliness} onChange={(e) => setFilters({ ...filters, cleanliness: e.target.value })} className="h-[34px] rounded-[9px] px-2 bg-white text-[13px]">
             <option>All</option>
             {lifestyleTraits.clean.map((item) => (
@@ -307,7 +307,7 @@ export default function Matches() {
           </select>
           </div>
           <div>
-            <p className="text-[12px] mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif]">Need Apartment Between (Start)</p>
+            <p className="text-[12px] mb-1 ">Need Apartment Between (Start)</p>
           <input
             type="date"
             value={filters.apartmentStartDate}
@@ -316,7 +316,7 @@ export default function Matches() {
           />
           </div>
           <div>
-            <p className="text-[12px] mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif]">Need Apartment Between (End)</p>
+            <p className="text-[12px] mb-1 ">Need Apartment Between (End)</p>
           <input
             type="date"
             value={filters.apartmentEndDate}
@@ -325,7 +325,7 @@ export default function Matches() {
           />
           </div>
           <div>
-            <p className="text-[12px] mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif]">Min Budget</p>
+            <p className="text-[12px] mb-1 ">Min Budget</p>
           <input
             value={filters.minBudget}
             onChange={(e) => setFilters({ ...filters, minBudget: e.target.value })}
@@ -334,7 +334,7 @@ export default function Matches() {
           />
           </div>
           <div>
-            <p className="text-[12px] mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif]">Max Budget</p>
+            <p className="text-[12px] mb-1 ">Max Budget</p>
           <input
             value={filters.maxBudget}
             onChange={(e) => setFilters({ ...filters, maxBudget: e.target.value })}
@@ -347,7 +347,7 @@ export default function Matches() {
 
       <div className="px-6 overflow-x-hidden overflow-y-visible" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
         {!match ? (
-          <div className="bg-[#ebeff5] rounded-[30px] p-8 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[18px] mb-6">
+          <div className="bg-[#ebeff5] rounded-[30px] p-8 text-center text-[18px] mb-6">
             No more matches in this lineup.
           </div>
         ) : (
@@ -370,14 +370,14 @@ export default function Matches() {
               alt={match.name}
               className="w-full h-full object-cover"
             />
-            <p className="pointer-events-none absolute left-5 top-5 font-['Open_Sans',sans-serif] text-[28px] font-light uppercase leading-none text-white">
+            <p className="pointer-events-none absolute left-5 top-5 text-[28px] font-light uppercase leading-none text-white">
               {match.name}
             </p>
           </div>
           <div
             className="relative z-10 -mt-20 flex w-full min-h-[7.75rem] items-center rounded-[22px] bg-white px-6 py-5 shadow-[0_4px_18px_rgba(0,0,0,0.12)]"
           >
-            <p className="w-full text-left font-['Open_Sans',sans-serif] text-[14px] font-normal leading-relaxed text-neutral-900">
+            <p className="w-full text-left text-[14px] font-normal leading-relaxed text-neutral-900">
               {match.bio}
             </p>
           </div>

@@ -53,26 +53,26 @@ export default function QuestionnaireStep1() {
   return (
     <div className="bg-white relative min-h-screen w-full overflow-y-auto pb-24">
       <div className="max-w-md mx-auto px-8 pt-12">
-        <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[40px] text-black mb-12">
+        <p className="text-[40px] text-black mb-12">
           Hello! tell us a little about yourself
         </p>
 
         {/* Name */}
         <div className="mb-6">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-2">
+          <p className="text-[16px] text-black mb-2">
             Your Name
           </p>
           <Input
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             placeholder="Enter your name"
-            className="bg-[#ebeff5] h-[38px] rounded-[11px] border-none font-['ABC_Diatype_Edu:Regular',sans-serif]"
+            className="bg-[#ebeff5] h-[38px] rounded-[11px] border-none "
           />
         </div>
 
         {/* Birthday */}
         <div className="mb-6">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-2">
+          <p className="text-[16px] text-black mb-2">
             Birthday
           </p>
           <div className="flex gap-3">
@@ -113,7 +113,7 @@ export default function QuestionnaireStep1() {
 
         {/* Gender */}
         <div className="mb-6">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-2">
+          <p className="text-[16px] text-black mb-2">
             Gender
           </p>
           <Select value={formData.gender} onValueChange={(value) => setFormData({ ...formData, gender: value })}>
@@ -130,7 +130,7 @@ export default function QuestionnaireStep1() {
 
         {/* Ethnicity */}
         <div className="mb-6">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-2">
+          <p className="text-[16px] text-black mb-2">
             Ethnicity
           </p>
           <Select value={formData.ethnicity} onValueChange={(value) => setFormData({ ...formData, ethnicity: value })}>
@@ -147,20 +147,20 @@ export default function QuestionnaireStep1() {
 
         {/* Occupation */}
         <div className="mb-6">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-2">
+          <p className="text-[16px] text-black mb-2">
             Occupation
           </p>
           <Input
             value={formData.occupation}
             onChange={(e) => setFormData({ ...formData, occupation: e.target.value })}
             placeholder="Type your occupation"
-            className="bg-[#ebeff5] h-[38px] rounded-[11px] border-none font-['ABC_Diatype_Edu:Regular',sans-serif]"
+            className="bg-[#ebeff5] h-[38px] rounded-[11px] border-none "
           />
         </div>
 
         {/* Religion */}
         <div className="mb-6">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-2">
+          <p className="text-[16px] text-black mb-2">
             Religion
           </p>
           <Select value={formData.religion} onValueChange={(value) => setFormData({ ...formData, religion: value })}>
@@ -177,7 +177,7 @@ export default function QuestionnaireStep1() {
 
         {/* Politics */}
         <div className="mb-12">
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black mb-2">
+          <p className="text-[16px] text-black mb-2">
             Politics
           </p>
           <div className="grid grid-cols-4 gap-2">
@@ -185,7 +185,7 @@ export default function QuestionnaireStep1() {
               <button
                 key={view}
                 onClick={() => setFormData({ ...formData, politics: view })}
-                className={`bg-[#ebeff5] h-[38px] rounded-[11px] font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px] text-black hover:bg-[#dfe5f0] transition-colors ${
+                className={`bg-[#ebeff5] h-[38px] rounded-[11px] text-[12px] text-black hover:bg-[#dfe5f0] transition-colors ${
                   formData.politics === view ? 'ring-2 ring-black' : ''
                 }`}
               >
@@ -203,7 +203,7 @@ export default function QuestionnaireStep1() {
           }}
           className="flex items-center gap-2 ml-auto mb-8"
         >
-          <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black">
+          <p className="text-[16px] text-black">
             Roommate Matching Questions
           </p>
           <ChevronDown className="rotate-[-90deg] size-6" />

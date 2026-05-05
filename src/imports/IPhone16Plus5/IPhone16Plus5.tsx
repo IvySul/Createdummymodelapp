@@ -100,9 +100,9 @@ export default function IPhone16Plus() {
       <Group1 />
       <Group3 />
       <Group2 />
-      <p className="absolute font-['ABC_Diatype_Edu:Thin',sans-serif] h-[66px] leading-[normal] left-[30px] not-italic text-[64px] text-black top-[851px] w-[46px]">R</p>
+      <p className="absolute font-light h-[66px] leading-[normal] left-[30px] not-italic text-[64px] text-black top-[851px] w-[46px]">R</p>
       <div className="absolute bg-[#f4f4f4] h-[37px] left-[77px] rounded-[15px] top-[32px] w-[184px]" />
-      <p className="absolute font-['ABC_Diatype_Edu:Thin',sans-serif] h-[87px] leading-[85px] left-[91px] not-italic text-[14px] text-black top-[8px] w-[84px]">Search</p>
+      <p className="absolute font-light h-[87px] leading-[85px] left-[91px] not-italic text-[14px] text-black top-[8px] w-[84px]">Search</p>
     </div>
   );
 }

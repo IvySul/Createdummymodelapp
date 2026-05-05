@@ -26,7 +26,7 @@ export default function Messages() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search messages..."
-            className="bg-transparent font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black outline-none w-full"
+            className="bg-transparent text-[16px] text-black outline-none w-full"
           />
         </div>
       </div>
@@ -47,10 +47,10 @@ export default function Messages() {
               />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[18px] text-black truncate">
+              <p className="text-[18px] text-black truncate">
                 {conversation.name}
               </p>
-              <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[15px] text-black/70 truncate">
+              <p className="font-light text-[15px] text-black/70 truncate">
                 {conversation.lastMessage}
               </p>
             </div>

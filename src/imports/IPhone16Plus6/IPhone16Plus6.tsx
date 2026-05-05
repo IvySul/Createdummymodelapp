@@ -97,7 +97,7 @@ export default function IPhone16Plus() {
       <Group1 />
       <Group3 />
       <Group2 />
-      <p className="absolute font-['ABC_Diatype_Edu:Thin',sans-serif] h-[66px] leading-[normal] left-[30px] not-italic text-[64px] text-black top-[851px] w-[46px]">R</p>
+      <p className="absolute font-light h-[66px] leading-[normal] left-[30px] not-italic text-[64px] text-black top-[851px] w-[46px]">R</p>
       <div className="absolute left-[22px] size-[58px] top-[201px]">
         <svg className="absolute block inset-0 size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 58 58">
           <circle cx="29" cy="29" fill="var(--fill-0, #D9D9D9)" id="Ellipse 4" r="29" />
@@ -128,8 +128,8 @@ export default function IPhone16Plus() {
           <circle cx="29" cy="29" fill="var(--fill-0, #D9D9D9)" id="Ellipse 4" r="29" />
         </svg>
       </div>
-      <p className="absolute font-['ABC_Diatype_Edu:Thin',sans-serif] h-[27px] leading-[normal] left-[120px] not-italic text-[20px] text-black top-[216px] w-[189px]">{`messaging `}</p>
-      <p className="absolute font-['ABC_Diatype_Edu:Thin',sans-serif] h-[27px] leading-[normal] left-[120px] not-italic text-[20px] text-black top-[316px] w-[189px]">{`messaging `}</p>
+      <p className="absolute font-light h-[27px] leading-[normal] left-[120px] not-italic text-[20px] text-black top-[216px] w-[189px]">{`messaging `}</p>
+      <p className="absolute font-light h-[27px] leading-[normal] left-[120px] not-italic text-[20px] text-black top-[316px] w-[189px]">{`messaging `}</p>
     </div>
   );
 }

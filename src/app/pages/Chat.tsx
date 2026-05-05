@@ -44,7 +44,7 @@ export default function Chat() {
           <div className="size-11 rounded-full overflow-hidden bg-[#ebeff5] shrink-0">
             <img src={conversation.image} alt="" className="w-full h-full object-cover" />
           </div>
-          <span className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[20px] text-black truncate">
+          <span className="text-[20px] text-black truncate">
             {conversation.name}
           </span>
         </button>
@@ -52,14 +52,14 @@ export default function Chat() {
 
       <div className="flex-1 overflow-y-auto px-6 py-6 space-y-3">
         {thread.length === 0 ? (
-          <p className="font-['ABC_Diatype_Edu:Thin',sans-serif] text-[16px] text-black/60 text-center pt-8">
+          <p className="font-light text-[16px] text-black/60 text-center pt-8">
             No messages yet. Say hello!
           </p>
         ) : (
           thread.map((m) => (
             <div key={m.id} className={`flex ${m.fromMe ? 'justify-end' : 'justify-start'}`}>
               <div
-                className={`max-w-[85%] rounded-[14px] px-4 py-2 font-['ABC_Diatype_Edu:Thin',sans-serif] text-[15px] ${
+                className={`max-w-[85%] rounded-[14px] px-4 py-2 font-light text-[15px] ${
                   m.fromMe ? 'bg-[#ebeff5] text-black' : 'bg-[#f5f7fa] text-black'
                 }`}
               >
@@ -80,11 +80,11 @@ export default function Chat() {
               if (e.key === 'Enter') sendMessage();
             }}
             placeholder="Message..."
-            className="bg-transparent font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black outline-none flex-1 min-w-0"
+            className="bg-transparent text-[16px] text-black outline-none flex-1 min-w-0"
           />
           <button
             type="button"
-            className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[14px] text-black/70 shrink-0"
+            className="text-[14px] text-black/70 shrink-0"
             onClick={sendMessage}
           >
             Send
