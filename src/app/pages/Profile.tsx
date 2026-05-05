@@ -163,7 +163,7 @@ export default function Profile() {
             <img src={profile.image} alt={resolvedName} className="h-full w-full object-cover" />
           </div>
 
-          <div className="relative z-10 -mt-20 flex w-full min-h-[7.75rem] flex-col rounded-[22px] bg-white px-6 py-5 shadow-[0_4px_18px_rgba(0,0,0,0.12)]">
+          <div className="relative z-10 -mt-20 flex w-full min-h-[7.75rem] flex-col rounded-[22px] bg-white px-6 py-5 shadow-[0_3px_14px_rgba(0,0,0,0.06)]">
             {isEditing ? (
               <>
                 <input
@@ -190,7 +190,7 @@ export default function Profile() {
         <div className="relative w-full">
           <button
             type="button"
-            className="absolute right-4 top-4 z-[30] rounded-full bg-white/95 p-2 text-neutral-900 shadow-[0_2px_12px_rgba(0,0,0,0.12)] ring-1 ring-black/10 hover:bg-white"
+            className="absolute right-4 top-4 z-[30] rounded-full bg-white/95 p-2 text-neutral-900 shadow-[0_2px_10px_rgba(0,0,0,0.06)] ring-1 ring-black/10 hover:bg-white"
             onClick={() => scrollToEditingSection('basic')}
             aria-label="Edit basic info"
           >
@@ -212,7 +212,7 @@ export default function Profile() {
         <div className="relative w-full">
           <button
             type="button"
-            className="absolute right-4 top-9 z-[30] rounded-full bg-white/95 p-2 text-neutral-900 shadow-[0_2px_12px_rgba(0,0,0,0.12)] ring-1 ring-black/10 hover:bg-white"
+            className="absolute right-4 top-9 z-[30] rounded-full bg-white/95 p-2 text-neutral-900 shadow-[0_2px_10px_rgba(0,0,0,0.06)] ring-1 ring-black/10 hover:bg-white"
             onClick={() => scrollToEditingSection('living')}
             aria-label="Edit living habits"
           >
@@ -229,7 +229,7 @@ export default function Profile() {
         </div>
 
         {isEditing ? (
-          <div className="relative mt-8 flex w-full flex-col rounded-[22px] bg-[#ebeff5] p-6 shadow-[0_4px_18px_rgba(0,0,0,0.08)]">
+          <div className="relative mt-8 flex w-full flex-col rounded-[22px] bg-[#ebeff5] p-6 shadow-[0_3px_14px_rgba(0,0,0,0.05)]">
             <div ref={basicFieldsRef}>
               <p className="mb-4 text-[16px] text-black">Basic info</p>
               <div className="grid grid-cols-1 gap-4 pb-8">

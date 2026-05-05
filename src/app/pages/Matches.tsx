@@ -285,7 +285,7 @@ export default function Matches() {
           {/* Drawer aligns to same centered max-w-md column as the match card. */}
           <div className="pointer-events-none fixed inset-x-0 top-0 z-[2600] flex h-screen justify-center">
             <div className="relative h-full w-full max-w-md pointer-events-auto">
-              <div className="absolute left-0 top-0 flex h-full w-[min(280px,100%)] flex-col overflow-y-auto bg-[#ebeff5] p-4 shadow-xl">
+              <div className="absolute left-0 top-0 flex h-full w-[min(280px,100%)] flex-col overflow-y-auto bg-[#ebeff5] p-4 shadow-[4px_0_24px_rgba(0,0,0,0.06)]">
                 <div className="mb-4 flex shrink-0 items-center justify-between">
                   <p className="text-[24px]">Filters</p>
                   <button type="button" className="text-[24px] leading-none" onClick={() => setShowFilters(false)}>
@@ -444,7 +444,7 @@ export default function Matches() {
             </p>
           </div>
           <div
-            className="relative z-10 -mt-20 flex w-full min-h-[7.75rem] items-center rounded-[22px] bg-white px-6 py-5 shadow-[0_4px_18px_rgba(0,0,0,0.12)]"
+            className="relative z-10 -mt-20 flex w-full min-h-[7.75rem] items-center rounded-[22px] bg-white px-6 py-5 shadow-[0_3px_14px_rgba(0,0,0,0.06)]"
           >
             <p className="w-full text-left text-[14px] font-normal leading-relaxed text-neutral-900">
               {match.bio}
