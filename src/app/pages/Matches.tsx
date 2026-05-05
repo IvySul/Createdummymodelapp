@@ -286,7 +286,7 @@ export default function Matches() {
     <div className="relative isolate mx-auto min-h-screen w-full max-w-md overflow-x-hidden bg-white pb-24">
       <MatchCelebrationOverlay visible={showMatchOverlay} />
       {/* Header */}
-      <div className="flex items-center px-6 pt-12 mb-8">
+      <div className="flex items-center pt-12 mb-8">
         <button
           type="button"
           className="p-2 text-neutral-900"
