@@ -20,7 +20,7 @@ const VIEWBOX_HEIGHT = MATCHES_ARTBOARD_VIEWBOX_H;
 
 /** Same header slot and list baselines as `MatchesBasicInfoArtboard` for matched vertical rhythm. */
 const TEXT = {
-  title: { x: 36.64, y: 60.76 },
+  title: { x: 47.07, y: 60.76 },
   schedule: { x: 88.67, y: 102.96 },
   noise: { x: 88.67, y: 148.08 },
   cleanliness: { x: 90.86, y: 193.39 },

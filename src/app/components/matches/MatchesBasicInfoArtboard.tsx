@@ -65,7 +65,7 @@ export function MatchesBasicInfoArtboard({
       >
         <g transform={matchesArtboardStretchTransform()}>
           <image href={basicInfoBlank} x="0" y="0" width={VIEWBOX_WIDTH} height={VIEWBOX_HEIGHT} />
-          <text x="36.64" y="60.76" fill="#282828" fontFamily="'Open Sans', sans-serif" fontSize="28" fontWeight="300">
+          <text x="44" y="60.76" fill="#282828" fontFamily="'Open Sans', sans-serif" fontSize="28" fontWeight="300">
             BASIC INFO
           </text>
 

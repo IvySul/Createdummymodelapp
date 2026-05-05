@@ -469,7 +469,7 @@ export default function Matches() {
             </p>
           </div>
           <div
-            className="relative z-10 -mt-20 flex w-full min-h-[7.75rem] items-center rounded-[22px] bg-white px-6 py-5 shadow-[0_3px_14px_rgba(0,0,0,0.06)]"
+            className="relative z-10 -mt-20 flex w-full min-h-[7.75rem] items-center rounded-[22px] bg-white px-8 py-5 shadow-[0_3px_14px_rgba(0,0,0,0.06)]"
           >
             <p className="w-full text-left text-[14px] font-normal leading-relaxed text-neutral-900">
               {match.bio}
@@ -477,30 +477,34 @@ export default function Matches() {
           </div>
         </div>
 
-        <div className="mb-6 w-full">
+        <div className="mb-6 w-full px-3">
           <CompatibilityKeyMeter key={match.id} value={match.compatibilityScore} />
         </div>
 
-        <MatchesBasicInfoArtboard
-          age={match.age}
-          genderDisplay={match.gender.charAt(0).toUpperCase() + match.gender.slice(1)}
-          location={match.distanceLabel}
-          priceRange={`$${match.budgetLow}–$${match.budgetHigh}`}
-          timeRange={`${formatDisplayDate(match.apartmentStartDate)} – ${formatDisplayDate(match.apartmentEndDate)}`}
-          politics={match.traits[1].label}
-          education={match.education}
-          occupation={match.occupation}
-          religion={match.traits[2].label}
-        />
+        <div className="px-3">
+          <MatchesBasicInfoArtboard
+            age={match.age}
+            genderDisplay={match.gender.charAt(0).toUpperCase() + match.gender.slice(1)}
+            location={match.distanceLabel}
+            priceRange={`$${match.budgetLow}–$${match.budgetHigh}`}
+            timeRange={`${formatDisplayDate(match.apartmentStartDate)} – ${formatDisplayDate(match.apartmentEndDate)}`}
+            politics={match.traits[1].label}
+            education={match.education}
+            occupation={match.occupation}
+            religion={match.traits[2].label}
+          />
+        </div>
 
-        <MatchesLivingHabitsArtboard
-          schedule={match.traits[0].label}
-          noise={match.traits[3].label}
-          cleanliness={match.traits[4].label}
-          pets={match.pets}
-          guestPolicy={match.guestPolicy}
-          substanceUse={match.substanceUse}
-        />
+        <div className="px-3">
+          <MatchesLivingHabitsArtboard
+            schedule={match.traits[0].label}
+            noise={match.traits[3].label}
+            cleanliness={match.traits[4].label}
+            pets={match.pets}
+            guestPolicy={match.guestPolicy}
+            substanceUse={match.substanceUse}
+          />
+        </div>
           </div>
         )}
       </div>
