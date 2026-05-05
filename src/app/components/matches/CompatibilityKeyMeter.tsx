@@ -20,8 +20,8 @@ export function CompatibilityKeyMeter({ value, className }: CompatibilityKeyMete
   const pct = Math.max(0, Math.min(100, value));
   const [displayPct, setDisplayPct] = useState(0);
   /** Path extents (horizontal key); fill animates along this span. */
-  const pathW = 73;
-  const pathH = 42;
+  const pathW = 92;
+  const pathH = 30;
   /** Padding so stroke is not clipped at the SVG edges. */
   const pad = 5;
   const viewW = pathW + pad * 2;
@@ -35,7 +35,7 @@ export function CompatibilityKeyMeter({ value, className }: CompatibilityKeyMete
 
   // Lying-down key (bow left, bit right); same topology as the vertical key, coords swapped + shifted.
   const keyPath =
-    'M 0 19 C 0 8 8 0 17 0 C 26 0 33 6 34 15 L 53 15 L 53 6 L 63 6 L 63 15 L 73 15 L 73 23 L 45 23 L 45 30 L 34 30 C 33 32 26 38 17 38 C 8 38 0 30 0 19 Z';
+    'M 0 15 C 0 8 6 2 13 2 C 21 2 27 7 28 12 L 68 12 L 68 6 L 77 6 L 77 12 L 86 12 L 86 18 L 58 18 L 58 23 L 28 23 C 27 25 21 28 13 28 C 6 28 0 22 0 15 Z';
 
   return (
     <div
@@ -79,7 +79,7 @@ export function CompatibilityKeyMeter({ value, className }: CompatibilityKeyMete
           d={keyPath}
           fill="none"
           stroke="rgba(64,64,64,0.82)"
-          strokeWidth={1.35}
+          strokeWidth={0.9}
           strokeLinejoin="round"
           strokeLinecap="round"
         />
