@@ -1,5 +1,10 @@
 import basicInfoBlank from '../../../assets/matches-basic-info-artboard.svg';
 import { MatchArtboardFrame } from './MatchArtboardFrame';
+import {
+  MATCHES_ARTBOARD_VIEWBOX_H,
+  MATCHES_ARTBOARD_VIEWBOX_W,
+  matchesArtboardStretchTransform,
+} from './matchesArtboardLayout';
 
 export type MatchesBasicInfoArtboardProps = {
   age: number;
@@ -14,8 +19,8 @@ export type MatchesBasicInfoArtboardProps = {
   religion: string;
 };
 
-const VIEWBOX_WIDTH = 426.1;
-const VIEWBOX_HEIGHT = 401.03;
+const VIEWBOX_WIDTH = MATCHES_ARTBOARD_VIEWBOX_W;
+const VIEWBOX_HEIGHT = MATCHES_ARTBOARD_VIEWBOX_H;
 
 /** Must match `matches-basic-info-artboard.svg` vertical dividers in the top stat row. */
 const TOP_ROW = {
@@ -54,33 +59,36 @@ export function MatchesBasicInfoArtboard({
       <MatchArtboardFrame>
       <svg
         viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
-        className="pointer-events-none block h-auto w-full select-none"
+        preserveAspectRatio="xMidYMid meet"
+        className="pointer-events-none block h-auto max-w-none min-w-0 w-full shrink-0 select-none"
         aria-hidden
       >
-        <image href={basicInfoBlank} x="0" y="0" width={VIEWBOX_WIDTH} height={VIEWBOX_HEIGHT} />
-        <text x="36.64" y="60.76" fill="#282828" fontFamily="'Open Sans', sans-serif" fontSize="28" fontWeight="300">
-          BASIC INFO
-        </text>
-
-        <g fill="#282828" fontFamily="'Open Sans', sans-serif" fontSize="14" fontWeight="300" letterSpacing="-0.2">
-          <text x={TOP_ROW_CENTERS.age} y={TOP_ROW.textY} textAnchor="middle">
-            {toCaps(age)}
-          </text>
-          <text x={TOP_ROW_CENTERS.gender} y={TOP_ROW.textY} textAnchor="middle">
-            {toCaps(genderDisplay)}
-          </text>
-          <text x={TOP_ROW_CENTERS.location} y={TOP_ROW.textY} textAnchor="middle">
-            {toCaps(location)}
-          </text>
-          <text x={TOP_ROW_CENTERS.price} y={TOP_ROW.textY} textAnchor="middle">
-            {toCaps(priceRange)}
+        <g transform={matchesArtboardStretchTransform()}>
+          <image href={basicInfoBlank} x="0" y="0" width={VIEWBOX_WIDTH} height={VIEWBOX_HEIGHT} />
+          <text x="36.64" y="60.76" fill="#282828" fontFamily="'Open Sans', sans-serif" fontSize="28" fontWeight="300">
+            BASIC INFO
           </text>
 
-          <text x="88.67" y="148.08">{toCaps(timeRange)}</text>
-          <text x="90.86" y="193.39">{toCaps(politics)}</text>
-          <text x="91.2" y="237.49">{toCaps(education)}</text>
-          <text x="90.58" y="280">{toCaps(occupation)}</text>
-          <text x="92.53" y="322.24">{toCaps(religion)}</text>
+          <g fill="#282828" fontFamily="'Open Sans', sans-serif" fontSize="14" fontWeight="300" letterSpacing="-0.2">
+            <text x={TOP_ROW_CENTERS.age} y={TOP_ROW.textY} textAnchor="middle">
+              {toCaps(age)}
+            </text>
+            <text x={TOP_ROW_CENTERS.gender} y={TOP_ROW.textY} textAnchor="middle">
+              {toCaps(genderDisplay)}
+            </text>
+            <text x={TOP_ROW_CENTERS.location} y={TOP_ROW.textY} textAnchor="middle">
+              {toCaps(location)}
+            </text>
+            <text x={TOP_ROW_CENTERS.price} y={TOP_ROW.textY} textAnchor="middle">
+              {toCaps(priceRange)}
+            </text>
+
+            <text x="88.67" y="148.08">{toCaps(timeRange)}</text>
+            <text x="90.86" y="193.39">{toCaps(politics)}</text>
+            <text x="91.2" y="237.49">{toCaps(education)}</text>
+            <text x="90.58" y="280">{toCaps(occupation)}</text>
+            <text x="92.53" y="322.24">{toCaps(religion)}</text>
+          </g>
         </g>
       </svg>
       </MatchArtboardFrame>

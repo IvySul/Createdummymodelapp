@@ -1,5 +1,27 @@
 import { type TouchEvent, useEffect, useMemo, useState } from 'react';
-import { Menu, Circle, Home, BookOpen } from 'lucide-react';
+import { Circle, Home, BookOpen } from 'lucide-react';
+
+/** Equal-length tracks with slider handles at ~75%, ~25%, ~65% (filter / settings style). */
+function FilterSlidersIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      className={className}
+      aria-hidden
+    >
+      <g stroke="currentColor" strokeWidth={1.35} strokeLinecap="round">
+        <line x1={3} y1={6} x2={21} y2={6} />
+        <line x1={16.5} y1={4.25} x2={16.5} y2={7.75} />
+        <line x1={3} y1={12} x2={21} y2={12} />
+        <line x1={7.5} y1={10.25} x2={7.5} y2={13.75} />
+        <line x1={3} y1={18} x2={21} y2={18} />
+        <line x1={14.7} y1={16.25} x2={14.7} y2={19.75} />
+      </g>
+    </svg>
+  );
+}
 import BottomNav from '../components/BottomNav';
 import { MatchesBasicInfoArtboard } from '../components/matches/MatchesBasicInfoArtboard';
 import { MatchesLivingHabitsArtboard } from '../components/matches/MatchesLivingHabitsArtboard';
@@ -240,8 +262,13 @@ export default function Matches() {
     <div className="relative isolate mx-auto min-h-screen w-full max-w-md overflow-x-hidden bg-white pb-24">
       {/* Header */}
       <div className="flex items-center px-6 pt-12 mb-8">
-        <button className="p-2" onClick={() => setShowFilters((v) => !v)}>
-          <Menu className="size-9" />
+        <button
+          type="button"
+          className="p-2 text-neutral-900"
+          onClick={() => setShowFilters((v) => !v)}
+          aria-label="Open filters"
+        >
+          <FilterSlidersIcon className="size-9" />
         </button>
       </div>
 

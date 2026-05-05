@@ -1,5 +1,10 @@
 import livingHabitsBlank from '../../../assets/matches-living-habits-artboard.svg';
 import { MatchArtboardFrame } from './MatchArtboardFrame';
+import {
+  MATCHES_ARTBOARD_VIEWBOX_H,
+  MATCHES_ARTBOARD_VIEWBOX_W,
+  matchesArtboardStretchTransform,
+} from './matchesArtboardLayout';
 
 export type MatchesLivingHabitsArtboardProps = {
   schedule: string;
@@ -10,8 +15,8 @@ export type MatchesLivingHabitsArtboardProps = {
   substanceUse: string;
 };
 
-const VIEWBOX_WIDTH = 426.1;
-const VIEWBOX_HEIGHT = 401.03;
+const VIEWBOX_WIDTH = MATCHES_ARTBOARD_VIEWBOX_W;
+const VIEWBOX_HEIGHT = MATCHES_ARTBOARD_VIEWBOX_H;
 
 /** Same header slot and list baselines as `MatchesBasicInfoArtboard` for matched vertical rhythm. */
 const TEXT = {
@@ -41,33 +46,36 @@ export function MatchesLivingHabitsArtboard({
       <MatchArtboardFrame>
       <svg
         viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
-        className="pointer-events-none block h-auto w-full select-none"
+        preserveAspectRatio="xMidYMid meet"
+        className="pointer-events-none block h-auto max-w-none min-w-0 w-full shrink-0 select-none"
         aria-hidden
       >
-        <image href={livingHabitsBlank} x="0" y="0" width={VIEWBOX_WIDTH} height={VIEWBOX_HEIGHT} />
-        <text x={TEXT.title.x} y={TEXT.title.y} fill="#282828" fontFamily="'Open Sans', sans-serif" fontSize="28" fontWeight="300">
-          LIVING HABITS
-        </text>
+        <g transform={matchesArtboardStretchTransform()}>
+          <image href={livingHabitsBlank} x="0" y="0" width={VIEWBOX_WIDTH} height={VIEWBOX_HEIGHT} />
+          <text x={TEXT.title.x} y={TEXT.title.y} fill="#282828" fontFamily="'Open Sans', sans-serif" fontSize="28" fontWeight="300">
+            LIVING HABITS
+          </text>
 
-        <g fill="#282828" fontFamily="'Open Sans', sans-serif" fontSize="14" fontWeight="300" letterSpacing="-0.2">
-          <text x={TEXT.schedule.x} y={TEXT.schedule.y}>
-            {toCaps(schedule)}
-          </text>
-          <text x={TEXT.noise.x} y={TEXT.noise.y}>
-            {toCaps(noise)}
-          </text>
-          <text x={TEXT.cleanliness.x} y={TEXT.cleanliness.y}>
-            {toCaps(cleanliness)}
-          </text>
-          <text x={TEXT.pets.x} y={TEXT.pets.y}>
-            {toCaps(pets)}
-          </text>
-          <text x={TEXT.guestPolicy.x} y={TEXT.guestPolicy.y}>
-            {toCaps(guestPolicy)}
-          </text>
-          <text x={TEXT.substanceUse.x} y={TEXT.substanceUse.y}>
-            {toCaps(substanceUse)}
-          </text>
+          <g fill="#282828" fontFamily="'Open Sans', sans-serif" fontSize="14" fontWeight="300" letterSpacing="-0.2">
+            <text x={TEXT.schedule.x} y={TEXT.schedule.y}>
+              {toCaps(schedule)}
+            </text>
+            <text x={TEXT.noise.x} y={TEXT.noise.y}>
+              {toCaps(noise)}
+            </text>
+            <text x={TEXT.cleanliness.x} y={TEXT.cleanliness.y}>
+              {toCaps(cleanliness)}
+            </text>
+            <text x={TEXT.pets.x} y={TEXT.pets.y}>
+              {toCaps(pets)}
+            </text>
+            <text x={TEXT.guestPolicy.x} y={TEXT.guestPolicy.y}>
+              {toCaps(guestPolicy)}
+            </text>
+            <text x={TEXT.substanceUse.x} y={TEXT.substanceUse.y}>
+              {toCaps(substanceUse)}
+            </text>
+          </g>
         </g>
       </svg>
       </MatchArtboardFrame>

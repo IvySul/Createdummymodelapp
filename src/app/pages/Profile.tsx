@@ -124,8 +124,8 @@ export default function Profile() {
 
   return (
     <div className="relative isolate mx-auto min-h-screen w-full max-w-md overflow-x-hidden bg-white pb-24">
-      <div className="flex items-center gap-4 px-6 pt-12 mb-8">
-        <div className="size-[58px] flex-shrink-0 overflow-hidden rounded-full bg-[#eaddff] ring-1 ring-black/10">
+      <div className="flex min-w-0 items-center gap-4 px-6 pt-12 mb-8">
+        <div className="size-[58px] shrink-0 overflow-hidden rounded-full bg-[#eaddff] ring-1 ring-black/10">
           <img
             src={profile.image}
             alt=""
@@ -134,7 +134,19 @@ export default function Profile() {
             aria-hidden
           />
         </div>
-        <div className="flex-1" aria-hidden />
+        {isEditing ? (
+          <input
+            value={profile.name}
+            onChange={(e) => setNameAndSyncQuestionnaire(e.target.value)}
+            className="min-w-0 flex-1 bg-transparent text-[22px] font-light uppercase leading-tight text-black outline-none placeholder:text-black/40"
+            placeholder={DEFAULT_NAME}
+            aria-label="Your name"
+          />
+        ) : (
+          <p className="min-w-0 flex-1 truncate text-[22px] font-light uppercase leading-tight text-black">
+            {resolvedName}
+          </p>
+        )}
       </div>
 
       <div className="overflow-x-hidden overflow-y-visible px-0">
@@ -149,18 +161,6 @@ export default function Profile() {
               {isEditing ? <Check className="size-6" /> : <Edit className="size-6" />}
             </button>
             <img src={profile.image} alt={resolvedName} className="h-full w-full object-cover" />
-            {isEditing ? (
-              <input
-                value={profile.name}
-                onChange={(e) => setNameAndSyncQuestionnaire(e.target.value)}
-                className="absolute left-5 top-5 max-w-[calc(100%-5rem)] bg-transparent text-[28px] font-light uppercase leading-none text-white outline-none placeholder:text-white/70 drop-shadow-[0_1px_8px_rgba(0,0,0,0.45)]"
-                placeholder={DEFAULT_NAME}
-              />
-            ) : (
-              <p className="pointer-events-none absolute left-5 top-5 text-[28px] font-light uppercase leading-none text-white drop-shadow-[0_1px_8px_rgba(0,0,0,0.45)]">
-                {resolvedName}
-              </p>
-            )}
           </div>
 
           <div className="relative z-10 -mt-20 flex w-full min-h-[7.75rem] flex-col rounded-[22px] bg-white px-6 py-5 shadow-[0_4px_18px_rgba(0,0,0,0.12)]">
