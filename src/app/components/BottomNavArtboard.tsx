@@ -51,10 +51,18 @@ export default function BottomNavArtboard({ active }: Props) {
         />
       </g>
       <g strokeMiterlimit={10}>
-        <g stroke={matches ? PEACH : STROKE} strokeWidth={0.77}>
-          <polyline fill="none" points="114.49 72.23 90.6 51.08 90.01 51.08 66.11 72.23" />
+        {matches ? (
+          <polygon
+            fill={PEACH}
+            stroke="none"
+            strokeMiterlimit={10}
+            points="90.01,51.08 90.6,51.08 114.49,72.23 104.36,86.66 76.25,86.82 66.11,72.23"
+          />
+        ) : null}
+        <g stroke={STROKE} strokeWidth={0.77} fill="none">
+          <polyline points="114.49 72.23 90.6 51.08 90.01 51.08 66.11 72.23" />
           <line x1={76.25} y1={63.18} x2={76.25} y2={86.82} />
-          <polyline fill="none" points="104.33 63.06 90.38 86.09 90.38 86.09 76.37 63.04" />
+          <polyline points="104.33 63.06 90.38 86.09 90.38 86.09 76.37 63.04" />
           <line x1={104.36} y1={63.01} x2={104.36} y2={86.66} />
         </g>
         <path
