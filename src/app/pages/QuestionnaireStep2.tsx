@@ -111,7 +111,7 @@ export default function QuestionnaireStep2() {
             value={formData.bio}
             onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
             placeholder="Tell us about yourself..."
-            className="bg-[#d9d9d9] min-h-[95px] rounded-[11px] border-none font-['ABC_Diatype_Edu:Regular',sans-serif] resize-none"
+            className="bg-[#ebeff5] min-h-[95px] rounded-[11px] border-none font-['ABC_Diatype_Edu:Regular',sans-serif] resize-none"
           />
         </div>
 
@@ -131,7 +131,7 @@ export default function QuestionnaireStep2() {
                   e.currentTarget.blur();
                 }
               }}
-              className="no-number-spinner bg-[#d9d9d9] h-[30px] rounded-[11px] border-none px-2 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] min-w-[60px] w-[60px]"
+              className="no-number-spinner bg-[#ebeff5] h-[30px] rounded-[11px] border-none px-2 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] min-w-[60px] w-[60px]"
             />
             <Slider
               value={formData.budget}
@@ -151,7 +151,7 @@ export default function QuestionnaireStep2() {
                   e.currentTarget.blur();
                 }
               }}
-              className="no-number-spinner bg-[#d9d9d9] h-[30px] rounded-[11px] border-none px-2 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] min-w-[60px] w-[60px]"
+              className="no-number-spinner bg-[#ebeff5] h-[30px] rounded-[11px] border-none px-2 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] min-w-[60px] w-[60px]"
             />
           </div>
           <div className="mt-2 text-center">
@@ -176,13 +176,13 @@ export default function QuestionnaireStep2() {
               type="date"
               value={formData.apartmentStartDate}
               onChange={(e) => setFormData({ ...formData, apartmentStartDate: e.target.value })}
-              className="bg-[#d9d9d9] h-[37px] rounded-[11px] border-none"
+              className="bg-[#ebeff5] h-[37px] rounded-[11px] border-none"
             />
             <Input
               type="date"
               value={formData.apartmentEndDate}
               onChange={(e) => setFormData({ ...formData, apartmentEndDate: e.target.value })}
-              className="bg-[#d9d9d9] h-[37px] rounded-[11px] border-none"
+              className="bg-[#ebeff5] h-[37px] rounded-[11px] border-none"
             />
           </div>
         </div>
@@ -194,7 +194,7 @@ export default function QuestionnaireStep2() {
           </p>
           <div className="grid grid-cols-3 gap-2">
             <Select value={formData.drinking} onValueChange={(value) => setFormData({ ...formData, drinking: value })}>
-              <SelectTrigger className="bg-[#d9d9d9] h-[38px] rounded-[11px] border-none w-full">
+              <SelectTrigger className="bg-[#ebeff5] h-[38px] rounded-[11px] border-none w-full">
                 <SelectValue placeholder="Drinking" />
               </SelectTrigger>
               <SelectContent>
@@ -205,7 +205,7 @@ export default function QuestionnaireStep2() {
             </Select>
 
             <Select value={formData.smoking} onValueChange={(value) => setFormData({ ...formData, smoking: value })}>
-              <SelectTrigger className="bg-[#d9d9d9] h-[38px] rounded-[11px] border-none w-full">
+              <SelectTrigger className="bg-[#ebeff5] h-[38px] rounded-[11px] border-none w-full">
                 <SelectValue placeholder="Smoking" />
               </SelectTrigger>
               <SelectContent>
@@ -216,7 +216,7 @@ export default function QuestionnaireStep2() {
             </Select>
 
             <Select value={formData.otherSubstances} onValueChange={(value) => setFormData({ ...formData, otherSubstances: value })}>
-              <SelectTrigger className="bg-[#d9d9d9] h-[38px] rounded-[11px] border-none w-full">
+              <SelectTrigger className="bg-[#ebeff5] h-[38px] rounded-[11px] border-none w-full">
                 <SelectValue placeholder="Other" />
               </SelectTrigger>
               <SelectContent>
@@ -234,7 +234,7 @@ export default function QuestionnaireStep2() {
             Do you have any pets?
           </p>
           <Select value={formData.pets} onValueChange={(value) => setFormData({ ...formData, pets: value })}>
-            <SelectTrigger className="bg-[#d9d9d9] h-[37px] rounded-[11px] border-none w-full">
+            <SelectTrigger className="bg-[#ebeff5] h-[37px] rounded-[11px] border-none w-full">
               <SelectValue placeholder="Select an option" />
             </SelectTrigger>
             <SelectContent>
@@ -251,7 +251,7 @@ export default function QuestionnaireStep2() {
             How clean do you keep your space?
           </p>
           <Select value={formData.cleanliness} onValueChange={(value) => setFormData({ ...formData, cleanliness: value })}>
-            <SelectTrigger className="bg-[#d9d9d9] h-[37px] rounded-[11px] border-none w-full">
+            <SelectTrigger className="bg-[#ebeff5] h-[37px] rounded-[11px] border-none w-full">
               <SelectValue placeholder="Select an option" />
             </SelectTrigger>
             <SelectContent>
@@ -268,7 +268,7 @@ export default function QuestionnaireStep2() {
             Thoughts on guests?
           </p>
           <Select value={formData.guests} onValueChange={(value) => setFormData({ ...formData, guests: value })}>
-            <SelectTrigger className="bg-[#d9d9d9] h-[37px] rounded-[11px] border-none w-full">
+            <SelectTrigger className="bg-[#ebeff5] h-[37px] rounded-[11px] border-none w-full">
               <SelectValue placeholder="Select an option" />
             </SelectTrigger>
             <SelectContent>
@@ -285,7 +285,7 @@ export default function QuestionnaireStep2() {
             Morning or night person?
           </p>
           <Select value={formData.schedule} onValueChange={(value) => setFormData({ ...formData, schedule: value })}>
-            <SelectTrigger className="bg-[#d9d9d9] h-[37px] rounded-[11px] border-none w-full">
+            <SelectTrigger className="bg-[#ebeff5] h-[37px] rounded-[11px] border-none w-full">
               <SelectValue placeholder="Select an option" />
             </SelectTrigger>
             <SelectContent>
@@ -302,7 +302,7 @@ export default function QuestionnaireStep2() {
             Noise level
           </p>
           <Select value={formData.noise} onValueChange={(value) => setFormData({ ...formData, noise: value })}>
-            <SelectTrigger className="bg-[#d9d9d9] h-[37px] rounded-[11px] border-none w-full">
+            <SelectTrigger className="bg-[#ebeff5] h-[37px] rounded-[11px] border-none w-full">
               <SelectValue placeholder="Select an option" />
             </SelectTrigger>
             <SelectContent>

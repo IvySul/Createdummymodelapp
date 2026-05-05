@@ -20,7 +20,7 @@ export default function Messages() {
   return (
     <div className="bg-white relative min-h-screen w-full max-w-md mx-auto pb-24">
       <div className="px-6 pt-12 mb-8">
-        <div className="bg-[#d9d9d9] h-[43px] rounded-[11px] px-4 flex items-center w-full">
+        <div className="bg-[#ebeff5] h-[43px] rounded-[11px] px-4 flex items-center w-full">
           <input
             type="text"
             value={query}
@@ -39,7 +39,7 @@ export default function Messages() {
             onClick={() => navigate(`/messages/chat/${conversation.id}`)}
             className="flex items-center gap-4 w-full text-left hover:opacity-80 transition-opacity"
           >
-            <div className="size-[58px] rounded-full overflow-hidden bg-[#d9d9d9] flex-shrink-0">
+            <div className="size-[58px] rounded-full overflow-hidden bg-[#ebeff5] flex-shrink-0">
               <img
                 src={conversation.image}
                 alt={conversation.name}

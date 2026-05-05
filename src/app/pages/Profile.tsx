@@ -125,17 +125,14 @@ export default function Profile() {
   return (
     <div className="relative min-h-screen w-full max-w-md mx-auto bg-white pb-24">
       <div className="flex items-center gap-4 px-6 pt-12 mb-8">
-        <div className="size-[58px] rounded-full overflow-hidden bg-[#eaddff] flex items-center justify-center flex-shrink-0">
-          <svg className="w-10 h-10" viewBox="0 0 40 37" fill="none" aria-hidden>
-            <path
-              d="M20 11C23.3137 11 26 8.31371 26 5C26 1.68629 23.3137 -1 20 -1C16.6863 -1 14 1.68629 14 5C14 8.31371 16.6863 11 20 11Z"
-              fill="#4F378A"
-            />
-            <path
-              d="M6 36.5257C6 27.9167 12.9167 21 21.5257 21H18.4743C27.0833 21 34 27.9167 34 36.5257"
-              fill="#4F378A"
-            />
-          </svg>
+        <div className="size-[58px] flex-shrink-0 overflow-hidden rounded-full bg-[#eaddff] ring-1 ring-black/10">
+          <img
+            src={profile.image}
+            alt=""
+            className="h-full w-full object-cover object-top"
+            decoding="async"
+            aria-hidden
+          />
         </div>
         <div className="flex-1" aria-hidden />
       </div>
@@ -232,7 +229,7 @@ export default function Profile() {
         </div>
 
         {isEditing ? (
-          <div className="relative mt-8 flex w-full flex-col rounded-[22px] bg-[#eaeaea] p-6 shadow-[0_4px_18px_rgba(0,0,0,0.08)]">
+          <div className="relative mt-8 flex w-full flex-col rounded-[22px] bg-[#ebeff5] p-6 shadow-[0_4px_18px_rgba(0,0,0,0.08)]">
             <div ref={basicFieldsRef}>
               <p className="mb-4 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black">Basic info</p>
               <div className="grid grid-cols-1 gap-4 pb-8">

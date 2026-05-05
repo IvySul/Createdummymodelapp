@@ -66,7 +66,7 @@ export default function QuestionnaireStep1() {
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             placeholder="Enter your name"
-            className="bg-[#d9d9d9] h-[38px] rounded-[11px] border-none font-['ABC_Diatype_Edu:Regular',sans-serif]"
+            className="bg-[#ebeff5] h-[38px] rounded-[11px] border-none font-['ABC_Diatype_Edu:Regular',sans-serif]"
           />
         </div>
 
@@ -77,7 +77,7 @@ export default function QuestionnaireStep1() {
           </p>
           <div className="flex gap-3">
             <Select value={formData.month} onValueChange={(value) => setFormData({ ...formData, month: value })}>
-              <SelectTrigger className="bg-[#d9d9d9] h-[38px] rounded-[11px] border-none flex-1">
+              <SelectTrigger className="bg-[#ebeff5] h-[38px] rounded-[11px] border-none flex-1">
                 <SelectValue placeholder="Month" />
               </SelectTrigger>
               <SelectContent>
@@ -88,7 +88,7 @@ export default function QuestionnaireStep1() {
             </Select>
 
             <Select value={formData.day} onValueChange={(value) => setFormData({ ...formData, day: value })}>
-              <SelectTrigger className="bg-[#d9d9d9] h-[38px] rounded-[11px] border-none flex-1">
+              <SelectTrigger className="bg-[#ebeff5] h-[38px] rounded-[11px] border-none flex-1">
                 <SelectValue placeholder="Day" />
               </SelectTrigger>
               <SelectContent>
@@ -99,7 +99,7 @@ export default function QuestionnaireStep1() {
             </Select>
 
             <Select value={formData.year} onValueChange={(value) => setFormData({ ...formData, year: value })}>
-              <SelectTrigger className="bg-[#d9d9d9] h-[38px] rounded-[11px] border-none flex-1">
+              <SelectTrigger className="bg-[#ebeff5] h-[38px] rounded-[11px] border-none flex-1">
                 <SelectValue placeholder="Year" />
               </SelectTrigger>
               <SelectContent>
@@ -117,7 +117,7 @@ export default function QuestionnaireStep1() {
             Gender
           </p>
           <Select value={formData.gender} onValueChange={(value) => setFormData({ ...formData, gender: value })}>
-            <SelectTrigger className="bg-[#d9d9d9] h-[38px] rounded-[11px] border-none w-full">
+            <SelectTrigger className="bg-[#ebeff5] h-[38px] rounded-[11px] border-none w-full">
               <SelectValue placeholder="Select gender" />
             </SelectTrigger>
             <SelectContent>
@@ -134,7 +134,7 @@ export default function QuestionnaireStep1() {
             Ethnicity
           </p>
           <Select value={formData.ethnicity} onValueChange={(value) => setFormData({ ...formData, ethnicity: value })}>
-            <SelectTrigger className="bg-[#d9d9d9] h-[38px] rounded-[11px] border-none w-full">
+            <SelectTrigger className="bg-[#ebeff5] h-[38px] rounded-[11px] border-none w-full">
               <SelectValue placeholder="Select ethnicity" />
             </SelectTrigger>
             <SelectContent>
@@ -154,7 +154,7 @@ export default function QuestionnaireStep1() {
             value={formData.occupation}
             onChange={(e) => setFormData({ ...formData, occupation: e.target.value })}
             placeholder="Type your occupation"
-            className="bg-[#d9d9d9] h-[38px] rounded-[11px] border-none font-['ABC_Diatype_Edu:Regular',sans-serif]"
+            className="bg-[#ebeff5] h-[38px] rounded-[11px] border-none font-['ABC_Diatype_Edu:Regular',sans-serif]"
           />
         </div>
 
@@ -164,7 +164,7 @@ export default function QuestionnaireStep1() {
             Religion
           </p>
           <Select value={formData.religion} onValueChange={(value) => setFormData({ ...formData, religion: value })}>
-            <SelectTrigger className="bg-[#d9d9d9] h-[38px] rounded-[11px] border-none w-full">
+            <SelectTrigger className="bg-[#ebeff5] h-[38px] rounded-[11px] border-none w-full">
               <SelectValue placeholder="Select religion" />
             </SelectTrigger>
             <SelectContent>
@@ -185,7 +185,7 @@ export default function QuestionnaireStep1() {
               <button
                 key={view}
                 onClick={() => setFormData({ ...formData, politics: view })}
-                className={`bg-[#d9d9d9] h-[38px] rounded-[11px] font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px] text-black hover:bg-[#c9c9c9] transition-colors ${
+                className={`bg-[#ebeff5] h-[38px] rounded-[11px] font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px] text-black hover:bg-[#dfe5f0] transition-colors ${
                   formData.politics === view ? 'ring-2 ring-black' : ''
                 }`}
               >

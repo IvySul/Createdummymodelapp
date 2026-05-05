@@ -12,14 +12,14 @@ export default function Landing() {
         <div className="flex flex-col gap-4 -mt-10">
           <button
             onClick={() => navigate('/questionnaire/step1')}
-            className="bg-[#d9d9d9] h-[38px] rounded-[11px] w-[125px] font-['ABC_Diatype_Rounded:Regular',sans-serif] text-[16px] text-black hover:bg-[#c9c9c9] transition-colors"
+            className="bg-[#ebeff5] h-[38px] rounded-[11px] w-[125px] font-['ABC_Diatype_Rounded:Regular',sans-serif] text-[16px] text-black hover:bg-[#dfe5f0] transition-colors"
           >
             Get Started
           </button>
           
           <button
             onClick={() => navigate('/matches')}
-            className="bg-[#d9d9d9] h-[38px] rounded-[11px] w-[125px] font-['ABC_Diatype_Rounded:Regular',sans-serif] text-[16px] text-black hover:bg-[#c9c9c9] transition-colors"
+            className="bg-[#ebeff5] h-[38px] rounded-[11px] w-[125px] font-['ABC_Diatype_Rounded:Regular',sans-serif] text-[16px] text-black hover:bg-[#dfe5f0] transition-colors"
           >
             Login
           </button>

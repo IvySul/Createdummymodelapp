@@ -41,7 +41,7 @@ export default function Chat() {
           onClick={() => navigate('/profile')}
           className="flex items-center gap-3 min-w-0 flex-1 text-left"
         >
-          <div className="size-11 rounded-full overflow-hidden bg-[#d9d9d9] shrink-0">
+          <div className="size-11 rounded-full overflow-hidden bg-[#ebeff5] shrink-0">
             <img src={conversation.image} alt="" className="w-full h-full object-cover" />
           </div>
           <span className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[20px] text-black truncate">
@@ -60,7 +60,7 @@ export default function Chat() {
             <div key={m.id} className={`flex ${m.fromMe ? 'justify-end' : 'justify-start'}`}>
               <div
                 className={`max-w-[85%] rounded-[14px] px-4 py-2 font-['ABC_Diatype_Edu:Thin',sans-serif] text-[15px] ${
-                  m.fromMe ? 'bg-[#d9d9d9] text-black' : 'bg-[#f0f0f0] text-black'
+                  m.fromMe ? 'bg-[#ebeff5] text-black' : 'bg-[#f5f7fa] text-black'
                 }`}
               >
                 {m.text}
@@ -71,7 +71,7 @@ export default function Chat() {
       </div>
 
       <div className="px-6 pb-2">
-        <div className="bg-[#d9d9d9] rounded-[11px] px-4 py-2 flex items-center gap-2">
+        <div className="bg-[#ebeff5] rounded-[11px] px-4 py-2 flex items-center gap-2">
           <input
             type="text"
             value={draft}

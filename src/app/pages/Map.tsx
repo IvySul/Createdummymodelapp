@@ -501,14 +501,14 @@ export default function Map() {
       <div className="absolute top-6 left-6 z-[1000] w-[230px] bg-white/95 rounded-[15px] px-3 py-3 shadow-md">
         <div className="flex items-center justify-end mb-2">
           {isLocating ? (
-            <div className="bg-[#d9d9d9] rounded-[10px] px-2 h-[28px] flex items-center gap-1 text-[11px] font-['ABC_Diatype_Edu:Regular',sans-serif]">
+            <div className="bg-[#ebeff5] rounded-[10px] px-2 h-[28px] flex items-center gap-1 text-[11px] font-['ABC_Diatype_Edu:Regular',sans-serif]">
               <Loader2 className="size-3 animate-spin" />
               Locating...
             </div>
           ) : null}
         </div>
 
-        <div className="bg-[#f4f4f4] h-[34px] rounded-[12px] px-3 flex items-center mb-2">
+        <div className="bg-[#f5f8fc] h-[34px] rounded-[12px] px-3 flex items-center mb-2">
           <input
             type="text"
             value={search}
@@ -523,7 +523,7 @@ export default function Map() {
           <select
             value={radius}
             onChange={(e) => setRadius(Number(e.target.value))}
-            className="bg-[#f4f4f4] h-[30px] rounded-[10px] px-2 text-[12px] font-['ABC_Diatype_Edu:Regular',sans-serif] outline-none w-full"
+            className="bg-[#f5f8fc] h-[30px] rounded-[10px] px-2 text-[12px] font-['ABC_Diatype_Edu:Regular',sans-serif] outline-none w-full"
           >
             {DISTANCE_OPTIONS.map((option) => (
               <option key={option.value} value={option.value}>
@@ -545,7 +545,7 @@ export default function Map() {
               if (e.key === 'Enter') e.currentTarget.blur();
             }}
             placeholder="Custom miles (0.25 - 50)"
-            className="bg-[#f4f4f4] h-[30px] rounded-[10px] px-2 text-[12px] font-['ABC_Diatype_Edu:Regular',sans-serif] outline-none w-full no-number-spinner"
+            className="bg-[#f5f8fc] h-[30px] rounded-[10px] px-2 text-[12px] font-['ABC_Diatype_Edu:Regular',sans-serif] outline-none w-full no-number-spinner"
           />
         </div>
 
@@ -564,7 +564,7 @@ export default function Map() {
           <button
             type="button"
             onClick={() => fetchNearbyRentals(userPosition, radius)}
-            className="mt-2 w-full h-[28px] rounded-[9px] bg-[#f4f4f4] text-[11px] font-['ABC_Diatype_Edu:Regular',sans-serif] hover:bg-[#e9e9e9]"
+            className="mt-2 w-full h-[28px] rounded-[9px] bg-[#f5f8fc] text-[11px] font-['ABC_Diatype_Edu:Regular',sans-serif] hover:bg-[#e8eef6]"
           >
             Retry loading places
           </button>

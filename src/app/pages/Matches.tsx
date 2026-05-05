@@ -246,7 +246,7 @@ export default function Matches() {
       </div>
 
       {showFilters ? <div className="fixed inset-0 bg-black/25 z-[2500]" onClick={() => setShowFilters(false)} /> : null}
-      <div className={`fixed top-0 left-0 h-full w-[280px] bg-[#d9d9d9] z-[2600] p-4 shadow-xl transition-transform duration-200 ${showFilters ? 'translate-x-0' : '-translate-x-full'}`}>
+      <div className={`fixed top-0 left-0 h-full w-[280px] bg-[#ebeff5] z-[2600] p-4 shadow-xl transition-transform duration-200 ${showFilters ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex items-center justify-between mb-4">
           <p className="font-['ABC_Diatype_Edu:Regular',sans-serif] text-[24px]">Filters</p>
           <button className="text-[24px] leading-none" onClick={() => setShowFilters(false)}>×</button>
@@ -347,7 +347,7 @@ export default function Matches() {
 
       <div className="px-6 overflow-x-hidden overflow-y-visible" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
         {!match ? (
-          <div className="bg-[#d9d9d9] rounded-[30px] p-8 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[18px] mb-6">
+          <div className="bg-[#ebeff5] rounded-[30px] p-8 text-center font-['ABC_Diatype_Edu:Regular',sans-serif] text-[18px] mb-6">
             No more matches in this lineup.
           </div>
         ) : (
