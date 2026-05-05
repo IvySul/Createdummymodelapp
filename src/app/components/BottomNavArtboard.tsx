@@ -57,7 +57,7 @@ export default function BottomNavArtboard({ active }: Props) {
               fill={PEACH}
               stroke="none"
               strokeMiterlimit={10}
-              points="90.01,51.08 90.6,51.08 114.49,72.23 66.11,72.23"
+              points="90.305,51.08 114.49,72.23 66.11,72.23"
             />
             <polygon
               fill={PEACH}
