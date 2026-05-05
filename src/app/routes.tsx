@@ -7,6 +7,7 @@ import Map from "./pages/Map";
 import Messages from "./pages/Messages";
 import Chat from "./pages/Chat";
 import Profile from "./pages/Profile";
+import DrawIcon from "./pages/DrawIcon";
 
 export const router = createHashRouter([
   {
@@ -40,5 +41,9 @@ export const router = createHashRouter([
   {
     path: "/profile",
     Component: Profile,
+  },
+  {
+    path: "/draw-icon",
+    Component: DrawIcon,
   },
 ]);

@@ -1,4 +1,4 @@
-import { type TouchEvent, useEffect, useMemo, useState } from 'react';
+import { type TouchEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { Circle, Home, BookOpen } from 'lucide-react';
 
 /** Equal-length tracks with slider handles at ~75%, ~25%, ~65% (filter / settings style). */
@@ -24,6 +24,7 @@ function FilterSlidersIcon({ className }: { className?: string }) {
 }
 import BottomNav from '../components/BottomNav';
 import { CompatibilityKeyMeter } from '../components/matches/CompatibilityKeyMeter';
+import { MatchCelebrationOverlay } from '../components/matches/MatchCelebrationOverlay';
 import { MatchesBasicInfoArtboard } from '../components/matches/MatchesBasicInfoArtboard';
 import { MatchesLivingHabitsArtboard } from '../components/matches/MatchesLivingHabitsArtboard';
 
@@ -133,6 +134,8 @@ export default function Matches() {
   const [isAnimatingSwipe, setIsAnimatingSwipe] = useState(false);
   const [isResettingSwipePosition, setIsResettingSwipePosition] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
+  const [showMatchOverlay, setShowMatchOverlay] = useState(false);
+  const overlayTimeoutRef = useRef<number | null>(null);
   const [filters, setFilters] = useState({
     gender: 'All',
     politics: 'All',
@@ -221,7 +224,17 @@ export default function Matches() {
 
     window.setTimeout(() => {
       if (direction === 'left') markCurrentAsSwiped(false);
-      else markCurrentAsSwiped(true);
+      else {
+        markCurrentAsSwiped(true);
+        setShowMatchOverlay(true);
+        if (overlayTimeoutRef.current !== null) {
+          window.clearTimeout(overlayTimeoutRef.current);
+        }
+        overlayTimeoutRef.current = window.setTimeout(() => {
+          setShowMatchOverlay(false);
+          overlayTimeoutRef.current = null;
+        }, 3900);
+      }
 
       // Hard reset without transition so the new profile starts on the opposite side.
       setIsResettingSwipePosition(true);
@@ -239,6 +252,14 @@ export default function Matches() {
       });
     }, 220);
   };
+
+  useEffect(() => {
+    return () => {
+      if (overlayTimeoutRef.current !== null) {
+        window.clearTimeout(overlayTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const handleTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
     if (ignoreSwipe) {
@@ -263,6 +284,7 @@ export default function Matches() {
 
   return (
     <div className="relative isolate mx-auto min-h-screen w-full max-w-md overflow-x-hidden bg-white pb-24">
+      <MatchCelebrationOverlay visible={showMatchOverlay} />
       {/* Header */}
       <div className="flex items-center px-6 pt-12 mb-8">
         <button
