@@ -17,38 +17,40 @@ export default function BottomNav() {
   const active = activeRoute(pathname);
 
   return (
-    <div className="pointer-events-auto fixed bottom-0 left-1/2 z-[5000] w-full max-w-md -translate-x-1/2 px-0 pb-3">
-      <div className="relative w-full">
-        <BottomNavArtboard active={active} />
+    <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[5000] flex justify-center px-0 pb-3">
+      <div className="pointer-events-auto w-full max-w-md">
+        <div className="relative w-full">
+          <BottomNavArtboard active={active} />
 
-        <div className="absolute inset-0 grid grid-cols-4">
-          <button
-            type="button"
-            onClick={() => navigate('/matches')}
-            className="min-h-0 min-w-0"
-            aria-label="Matches"
-          />
+          <div className="absolute inset-0 grid grid-cols-4">
+            <button
+              type="button"
+              onClick={() => navigate('/matches')}
+              className="min-h-0 min-w-0"
+              aria-label="Matches"
+            />
 
-          <button
-            type="button"
-            onClick={() => navigate('/messages')}
-            className="min-h-0 min-w-0"
-            aria-label="Messages"
-          />
+            <button
+              type="button"
+              onClick={() => navigate('/messages')}
+              className="min-h-0 min-w-0"
+              aria-label="Messages"
+            />
 
-          <button
-            type="button"
-            onClick={() => navigate('/map')}
-            className="min-h-0 min-w-0"
-            aria-label="Map"
-          />
+            <button
+              type="button"
+              onClick={() => navigate('/map')}
+              className="min-h-0 min-w-0"
+              aria-label="Map"
+            />
 
-          <button
-            type="button"
-            onClick={() => navigate('/profile')}
-            className="min-h-0 min-w-0"
-            aria-label="Profile"
-          />
+            <button
+              type="button"
+              onClick={() => navigate('/profile')}
+              className="min-h-0 min-w-0"
+              aria-label="Profile"
+            />
+          </div>
         </div>
       </div>
     </div>

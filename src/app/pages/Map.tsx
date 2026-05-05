@@ -496,9 +496,9 @@ export default function Map() {
   }, [userPosition, radius]);
 
   return (
-    <div className="relative isolate mx-auto h-screen w-full max-w-md overflow-x-hidden overflow-y-hidden bg-white">
+    <div className="app-leaflet-root relative isolate mx-auto flex h-[100dvh] w-full min-w-0 max-w-md flex-col overflow-x-clip overflow-y-hidden bg-white">
       {/* Top-left Controls */}
-      <div className="absolute top-6 left-6 z-[1000] w-[230px] bg-white/95 rounded-[15px] px-3 py-3 shadow-md">
+      <div className="absolute top-6 left-6 z-[1000] w-[230px] max-w-[calc(100%-3rem)] bg-white/95 rounded-[15px] px-3 py-3 shadow-md">
         <div className="flex items-center justify-end mb-2">
           {isLocating ? (
             <div className="bg-[#ebeff5] rounded-[10px] px-2 h-[28px] flex items-center gap-1 text-[11px] ">
@@ -571,63 +571,64 @@ export default function Map() {
         ) : null}
       </div>
 
-      {/* Map */}
-      <MapContainer
-        key={`${userPosition[0]}-${userPosition[1]}`}
-        className="z-0 h-full w-full max-w-full border-0 shadow-none outline-none focus:outline-none"
-        center={userPosition}
-        zoom={14}
-        style={{ height: '100%', width: '100%', maxWidth: '100%' }}
-        zoomControl={false}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+      {/* Map fills the shell; absolute + app-leaflet-root CSS prevents tile layers from expanding layout width */}
+      <div className="relative min-h-0 min-w-0 flex-1 overflow-hidden">
+        <MapContainer
+          key={`${userPosition[0]}-${userPosition[1]}`}
+          className="!absolute inset-0 z-0 !h-auto !w-auto max-w-none border-0 shadow-none outline-none focus:outline-none"
+          center={userPosition}
+          zoom={14}
+          zoomControl={false}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
 
-        <Marker position={userPosition} icon={icon}>
-          <Popup className="rental-popup">
-            <div className="p-1">
-              <p className="text-[14px]">Your location</p>
-            </div>
-          </Popup>
-        </Marker>
-
-        {filteredRentals.map((apartment) => (
-          <Marker key={apartment.id} position={apartment.position} icon={icon}>
+          <Marker position={userPosition} icon={icon}>
             <Popup className="rental-popup">
-              <div className="rental-popup-card p-2">
-                <h3 className="text-[16px] font-semibold mb-1 leading-tight">
-                  {apartment.name}
-                </h3>
-                <p className="font-light text-[12px] mb-1 capitalize">
-                  {apartment.type}
-                </p>
-                {apartment.address ? (
-                  <p className="font-light text-[11px] text-black/75 mb-2 leading-snug">
-                    {apartment.address}
-                  </p>
-                ) : null}
-                <div className="flex items-center justify-between gap-3">
-                  <span className="text-[10px] uppercase tracking-wide text-black/60">
-                    {apartment.source ?? 'listing'}
-                  </span>
-                  {apartment.url ? (
-                    <a
-                      href={apartment.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-[11px] underline text-black"
-                    >
-                      Open details
-                    </a>
-                  ) : null}
-                </div>
+              <div className="p-1">
+                <p className="text-[14px]">Your location</p>
               </div>
             </Popup>
           </Marker>
-        ))}
-      </MapContainer>
+
+          {filteredRentals.map((apartment) => (
+            <Marker key={apartment.id} position={apartment.position} icon={icon}>
+              <Popup className="rental-popup">
+                <div className="rental-popup-card p-2">
+                  <h3 className="text-[16px] font-semibold mb-1 leading-tight">
+                    {apartment.name}
+                  </h3>
+                  <p className="font-light text-[12px] mb-1 capitalize">
+                    {apartment.type}
+                  </p>
+                  {apartment.address ? (
+                    <p className="font-light text-[11px] text-black/75 mb-2 leading-snug">
+                      {apartment.address}
+                    </p>
+                  ) : null}
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-[10px] uppercase tracking-wide text-black/60">
+                      {apartment.source ?? 'listing'}
+                    </span>
+                    {apartment.url ? (
+                      <a
+                        href={apartment.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-[11px] underline text-black"
+                      >
+                        Open details
+                      </a>
+                    ) : null}
+                  </div>
+                </div>
+              </Popup>
+            </Marker>
+          ))}
+        </MapContainer>
+      </div>
 
       <BottomNav />
     </div>

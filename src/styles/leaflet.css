@@ -1,8 +1,15 @@
 /* Leaflet CSS */
 @import 'leaflet/dist/leaflet.css';
 
-/* Pin the map canvas to the app shell so tiles can’t spill wider than max-w-md. */
-.leaflet-container {
-  width: 100% !important;
-  max-width: 100%;
+/*
+ * Map route only: lock the map canvas into an absolutely positioned box so huge
+ * tile-layer dimensions can’t widen the max-w-md column (flow vs. absolute paint).
+ */
+.app-leaflet-root .leaflet-container {
+  position: absolute !important;
+  inset: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: none !important;
+  overflow: hidden !important;
 }

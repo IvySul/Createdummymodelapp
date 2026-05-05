@@ -17,16 +17,16 @@ export default function BottomNavArtboard({ active }: Props) {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 484.52 137.9"
-      className="block size-full select-none pointer-events-none"
+      className="block h-auto w-full max-w-none select-none pointer-events-none"
       aria-hidden
     >
       <defs>
         <filter
           id="bottom-nav-drop-shadow"
-          x={-7.86}
-          y={11.26}
-          width={501}
-          height={133}
+          x={-10}
+          y={11}
+          width={508}
+          height={135}
           filterUnits="userSpaceOnUse"
         >
           <feOffset dx="0" dy="7.96" />
@@ -37,14 +37,15 @@ export default function BottomNavArtboard({ active }: Props) {
         </filter>
       </defs>
       <g filter="url(#bottom-nav-drop-shadow)">
+        {/* Nearly full viewBox width so the bar matches full-bleed content in the max-w-md shell */}
         <rect
           fill="#fff"
           stroke="#e4e4e4"
           strokeWidth={0.99}
           strokeMiterlimit={10}
-          x={10.3}
+          x={3}
           y={20.89}
-          width={463.91}
+          width={478.52}
           height={96.12}
           rx={12}
           ry={12}
