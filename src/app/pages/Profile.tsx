@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Edit, Check } from 'lucide-react';
+import { useLocation } from 'react-router';
 import BottomNav from '../components/BottomNav';
 import {
   Select,
@@ -10,6 +11,30 @@ import {
 } from '../components/ui/select';
 import { MatchesBasicInfoArtboard } from '../components/matches/MatchesBasicInfoArtboard';
 import { MatchesLivingHabitsArtboard } from '../components/matches/MatchesLivingHabitsArtboard';
+
+const DEFAULT_NAME = 'Olivia';
+
+function readQuestionnaireStep1(): Record<string, string> | null {
+  try {
+    const raw = localStorage.getItem('questionnaireStep1');
+    if (!raw) return null;
+    return JSON.parse(raw) as Record<string, string>;
+  } catch {
+    return null;
+  }
+}
+
+/** Name shown everywhere: questionnaire `name`, or Olivia if missing/blank. */
+function displayNameFromQuestionnaire(): string {
+  const parsed = readQuestionnaireStep1();
+  const trimmed = typeof parsed?.name === 'string' ? parsed.name.trim() : '';
+  return trimmed !== '' ? trimmed : DEFAULT_NAME;
+}
+
+function persistQuestionnaireName(nextName: string) {
+  const prev = readQuestionnaireStep1() ?? {};
+  localStorage.setItem('questionnaireStep1', JSON.stringify({ ...prev, name: nextName }));
+}
 
 const genders = ['Male', 'Female', 'Non-binary', 'Prefer not to say'];
 const religions = ['Christian', 'Muslim', 'Jewish', 'Hindu', 'Buddhist', 'Atheist', 'Agnostic', 'Other', 'Prefer not to say'];
@@ -35,9 +60,13 @@ function formatDisplayDate(dateString: string): string {
 }
 
 export default function Profile() {
+  const location = useLocation();
   const [isEditing, setIsEditing] = useState(false);
-  const [profile, setProfile] = useState({
-    name: 'Your Name',
+  const basicFieldsRef = useRef<HTMLDivElement>(null);
+  const livingFieldsRef = useRef<HTMLDivElement>(null);
+
+  const [profile, setProfile] = useState(() => ({
+    name: displayNameFromQuestionnaire(),
     image:
       'https://images.unsplash.com/photo-1546961329-78bef0414d7c?auto=format&fit=crop&w=2400&q=90',
     bio: "Hi, my name is___ I'm a sophomore looking for housing! I'm a quiet roommate, mostly studying in my room. I love animals, music, and TV. Looking for someone similar!",
@@ -53,7 +82,14 @@ export default function Profile() {
     pets: 'No pets',
     guestPolicy: 'Rarely',
     substanceUse: 'Non-smoker',
-  });
+  }));
+
+  useEffect(() => {
+    if (location.pathname !== '/profile') return;
+    setProfile((prev) => ({ ...prev, name: displayNameFromQuestionnaire() }));
+  }, [location.pathname]);
+
+  const resolvedName = (profile.name || '').trim() || DEFAULT_NAME;
 
   const { budgetLow, budgetHigh } = useMemo(() => {
     const b = Number.parseInt(profile.budget, 10);
@@ -71,11 +107,37 @@ export default function Profile() {
 
   const genderDisplay = profile.gender.charAt(0).toUpperCase() + profile.gender.slice(1);
 
+  const toggleHeroEditing = () => setIsEditing((v) => !v);
+
+  const scrollToEditingSection = (which: 'basic' | 'living') => {
+    setIsEditing(true);
+    window.requestAnimationFrame(() => {
+      const el = which === 'basic' ? basicFieldsRef.current : livingFieldsRef.current;
+      el?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  };
+
+  const setNameAndSyncQuestionnaire = (raw: string) => {
+    setProfile((prev) => ({ ...prev, name: raw }));
+    persistQuestionnaireName(raw);
+  };
+
   return (
     <div className="relative min-h-screen w-full max-w-md mx-auto bg-white pb-24">
-      {/* Same top gutter rhythm as Matches (menu strip height) */}
-      <div className="flex items-center px-6 pt-12 mb-8">
-        <div className="size-9" aria-hidden />
+      <div className="flex items-center gap-4 px-6 pt-12 mb-8">
+        <div className="size-[58px] rounded-full overflow-hidden bg-[#eaddff] flex items-center justify-center flex-shrink-0">
+          <svg className="w-10 h-10" viewBox="0 0 40 37" fill="none" aria-hidden>
+            <path
+              d="M20 11C23.3137 11 26 8.31371 26 5C26 1.68629 23.3137 -1 20 -1C16.6863 -1 14 1.68629 14 5C14 8.31371 16.6863 11 20 11Z"
+              fill="#4F378A"
+            />
+            <path
+              d="M6 36.5257C6 27.9167 12.9167 21 21.5257 21H18.4743C27.0833 21 34 27.9167 34 36.5257"
+              fill="#4F378A"
+            />
+          </svg>
+        </div>
+        <div className="flex-1" aria-hidden />
       </div>
 
       <div className="px-6 overflow-x-hidden overflow-y-visible">
@@ -84,21 +146,22 @@ export default function Profile() {
             <button
               type="button"
               className="absolute top-4 right-4 z-20 rounded-full bg-black/25 p-2 text-white hover:bg-black/35"
-              onClick={() => setIsEditing((v) => !v)}
-              aria-label={isEditing ? 'Finish editing profile' : 'Edit profile'}
+              onClick={toggleHeroEditing}
+              aria-label={isEditing ? 'Finish editing photo and bio' : 'Edit photo and bio'}
             >
               {isEditing ? <Check className="size-6" /> : <Edit className="size-6" />}
             </button>
-            <img src={profile.image} alt={profile.name} className="h-full w-full object-cover" />
+            <img src={profile.image} alt={resolvedName} className="h-full w-full object-cover" />
             {isEditing ? (
               <input
                 value={profile.name}
-                onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+                onChange={(e) => setNameAndSyncQuestionnaire(e.target.value)}
                 className="absolute left-5 top-5 max-w-[calc(100%-5rem)] bg-transparent font-['Open_Sans',sans-serif] text-[28px] font-light uppercase leading-none text-white outline-none placeholder:text-white/70 drop-shadow-[0_1px_8px_rgba(0,0,0,0.45)]"
+                placeholder={DEFAULT_NAME}
               />
             ) : (
               <p className="pointer-events-none absolute left-5 top-5 font-['Open_Sans',sans-serif] text-[28px] font-light uppercase leading-none text-white drop-shadow-[0_1px_8px_rgba(0,0,0,0.45)]">
-                {profile.name}
+                {resolvedName}
               </p>
             )}
           </div>
@@ -127,251 +190,280 @@ export default function Profile() {
           </div>
         </div>
 
-        <MatchesBasicInfoArtboard
-          age={Number.isNaN(ageDisplay) ? 0 : ageDisplay}
-          genderDisplay={genderDisplay}
-          location={profile.distanceLabel}
-          priceRange={`$${budgetLow}–$${budgetHigh}`}
-          timeRange={`${formatDisplayDate(profile.apartmentStartDate)} – ${formatDisplayDate(profile.apartmentEndDate)}`}
-          politics={profile.traits[1]}
-          education={profile.education}
-          occupation={profile.occupation}
-          religion={profile.traits[2]}
-        />
+        <div className="relative w-full">
+          <button
+            type="button"
+            className="absolute right-4 top-4 z-[30] rounded-full bg-white/95 p-2 text-neutral-900 shadow-[0_2px_12px_rgba(0,0,0,0.12)] ring-1 ring-black/10 hover:bg-white"
+            onClick={() => scrollToEditingSection('basic')}
+            aria-label="Edit basic info"
+          >
+            <Edit className="size-5" aria-hidden />
+          </button>
+          <MatchesBasicInfoArtboard
+            age={Number.isNaN(ageDisplay) ? 0 : ageDisplay}
+            genderDisplay={genderDisplay}
+            location={profile.distanceLabel}
+            priceRange={`$${budgetLow}–$${budgetHigh}`}
+            timeRange={`${formatDisplayDate(profile.apartmentStartDate)} – ${formatDisplayDate(profile.apartmentEndDate)}`}
+            politics={profile.traits[1]}
+            education={profile.education}
+            occupation={profile.occupation}
+            religion={profile.traits[2]}
+          />
+        </div>
 
-        <MatchesLivingHabitsArtboard
-          schedule={profile.traits[0]}
-          noise={profile.traits[3]}
-          cleanliness={profile.traits[4]}
-          pets={profile.pets}
-          guestPolicy={profile.guestPolicy}
-          substanceUse={profile.substanceUse}
-        />
+        <div className="relative w-full">
+          <button
+            type="button"
+            className="absolute right-4 top-9 z-[30] rounded-full bg-white/95 p-2 text-neutral-900 shadow-[0_2px_12px_rgba(0,0,0,0.12)] ring-1 ring-black/10 hover:bg-white"
+            onClick={() => scrollToEditingSection('living')}
+            aria-label="Edit living habits"
+          >
+            <Edit className="size-5" aria-hidden />
+          </button>
+          <MatchesLivingHabitsArtboard
+            schedule={profile.traits[0]}
+            noise={profile.traits[3]}
+            cleanliness={profile.traits[4]}
+            pets={profile.pets}
+            guestPolicy={profile.guestPolicy}
+            substanceUse={profile.substanceUse}
+          />
+        </div>
 
         {isEditing ? (
           <div className="relative mt-8 flex w-full flex-col rounded-[22px] bg-[#eaeaea] p-6 shadow-[0_4px_18px_rgba(0,0,0,0.08)]">
-            <div className="grid grid-cols-1 gap-4">
-              <div>
-                <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Age</p>
-                <input
-                  value={profile.age}
-                  onChange={(e) => setProfile({ ...profile, age: e.target.value })}
-                  inputMode="numeric"
-                  className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white px-3 font-['Open_Sans',sans-serif] text-[14px] outline-none"
-                />
-              </div>
-              <div>
-                <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Gender</p>
-                <Select value={profile.gender} onValueChange={(value) => setProfile({ ...profile, gender: value })}>
-                  <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {genders.map((option) => (
-                      <SelectItem key={option} value={option}>
-                        {option}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">
-                  Distance label (shows on card)
-                </p>
-                <input
-                  value={profile.distanceLabel}
-                  onChange={(e) => setProfile({ ...profile, distanceLabel: e.target.value })}
-                  className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white px-3 font-['Open_Sans',sans-serif] text-[14px] outline-none"
-                  placeholder='e.g. "12 miles away"'
-                />
-              </div>
-              <div>
-                <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">
-                  Budget midpoint ($)
-                </p>
-                <input
-                  value={profile.budget}
-                  onChange={(e) => setProfile({ ...profile, budget: e.target.value })}
-                  inputMode="numeric"
-                  className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white px-3 font-['Open_Sans',sans-serif] text-[14px] outline-none"
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-2">
+            <div ref={basicFieldsRef}>
+              <p className="mb-4 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black">Basic info</p>
+              <div className="grid grid-cols-1 gap-4 pb-8">
                 <div>
-                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Lease start</p>
+                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Age</p>
                   <input
-                    type="date"
-                    value={profile.apartmentStartDate}
-                    onChange={(e) => setProfile({ ...profile, apartmentStartDate: e.target.value })}
-                    className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white px-2 text-[13px] outline-none"
+                    value={profile.age}
+                    onChange={(e) => setProfile({ ...profile, age: e.target.value })}
+                    inputMode="numeric"
+                    className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white px-3 font-['Open_Sans',sans-serif] text-[14px] outline-none"
                   />
                 </div>
                 <div>
-                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Lease end</p>
+                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Gender</p>
+                  <Select value={profile.gender} onValueChange={(value) => setProfile({ ...profile, gender: value })}>
+                    <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {genders.map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">
+                    Distance label (shows on card)
+                  </p>
                   <input
-                    type="date"
-                    value={profile.apartmentEndDate}
-                    onChange={(e) => setProfile({ ...profile, apartmentEndDate: e.target.value })}
-                    className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white px-2 text-[13px] outline-none"
+                    value={profile.distanceLabel}
+                    onChange={(e) => setProfile({ ...profile, distanceLabel: e.target.value })}
+                    className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white px-3 font-['Open_Sans',sans-serif] text-[14px] outline-none"
+                    placeholder='e.g. "12 miles away"'
                   />
                 </div>
+                <div>
+                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">
+                    Budget midpoint ($)
+                  </p>
+                  <input
+                    value={profile.budget}
+                    onChange={(e) => setProfile({ ...profile, budget: e.target.value })}
+                    inputMode="numeric"
+                    className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white px-3 font-['Open_Sans',sans-serif] text-[14px] outline-none"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Lease start</p>
+                    <input
+                      type="date"
+                      value={profile.apartmentStartDate}
+                      onChange={(e) => setProfile({ ...profile, apartmentStartDate: e.target.value })}
+                      className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white px-2 text-[13px] outline-none"
+                    />
+                  </div>
+                  <div>
+                    <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Lease end</p>
+                    <input
+                      type="date"
+                      value={profile.apartmentEndDate}
+                      onChange={(e) => setProfile({ ...profile, apartmentEndDate: e.target.value })}
+                      className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white px-2 text-[13px] outline-none"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Education</p>
+                  <Select value={profile.education} onValueChange={(value) => setProfile({ ...profile, education: value })}>
+                    <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {educationOptions.map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Occupation</p>
+                  <Select value={profile.occupation} onValueChange={(value) => setProfile({ ...profile, occupation: value })}>
+                    <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {occupationOptions.map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Politics</p>
+                  <Select value={profile.traits[1]} onValueChange={(value) => updateTrait(1, value)}>
+                    <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {politicalViews.map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Religion</p>
+                  <Select value={profile.traits[2]} onValueChange={(value) => updateTrait(2, value)}>
+                    <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {religions.map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
-              <div>
-                <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Education</p>
-                <Select value={profile.education} onValueChange={(value) => setProfile({ ...profile, education: value })}>
-                  <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {educationOptions.map((option) => (
-                      <SelectItem key={option} value={option}>
-                        {option}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Occupation</p>
-                <Select value={profile.occupation} onValueChange={(value) => setProfile({ ...profile, occupation: value })}>
-                  <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {occupationOptions.map((option) => (
-                      <SelectItem key={option} value={option}>
-                        {option}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Schedule</p>
-                <Select value={profile.traits[0]} onValueChange={(value) => updateTrait(0, value)}>
-                  <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {scheduleOptions.map((option) => (
-                      <SelectItem key={option} value={option}>
-                        {option}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Politics</p>
-                <Select value={profile.traits[1]} onValueChange={(value) => updateTrait(1, value)}>
-                  <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {politicalViews.map((option) => (
-                      <SelectItem key={option} value={option}>
-                        {option}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Religion</p>
-                <Select value={profile.traits[2]} onValueChange={(value) => updateTrait(2, value)}>
-                  <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {religions.map((option) => (
-                      <SelectItem key={option} value={option}>
-                        {option}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Noise level</p>
-                <Select value={profile.traits[3]} onValueChange={(value) => updateTrait(3, value)}>
-                  <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {noiseOptions.map((option) => (
-                      <SelectItem key={option} value={option}>
-                        {option}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Cleanliness</p>
-                <Select value={profile.traits[4]} onValueChange={(value) => updateTrait(4, value)}>
-                  <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {cleanlinessOptions.map((option) => (
-                      <SelectItem key={option} value={option}>
-                        {option}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Pets</p>
-                <Select value={profile.pets} onValueChange={(value) => setProfile({ ...profile, pets: value })}>
-                  <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {petsOptions.map((option) => (
-                      <SelectItem key={option} value={option}>
-                        {option}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Guest policy</p>
-                <Select
-                  value={profile.guestPolicy}
-                  onValueChange={(value) => setProfile({ ...profile, guestPolicy: value })}
-                >
-                  <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {guestPolicyOptions.map((option) => (
-                      <SelectItem key={option} value={option}>
-                        {option}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Substance use</p>
-                <Select
-                  value={profile.substanceUse}
-                  onValueChange={(value) => setProfile({ ...profile, substanceUse: value })}
-                >
-                  <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {substanceUseOptions.map((option) => (
-                      <SelectItem key={option} value={option}>
-                        {option}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+            </div>
+
+            <div ref={livingFieldsRef} className="border-t border-black/10 pt-6">
+              <p className="mb-4 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[16px] text-black">Living habits</p>
+              <div className="grid grid-cols-1 gap-4">
+                <div>
+                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Schedule</p>
+                  <Select value={profile.traits[0]} onValueChange={(value) => updateTrait(0, value)}>
+                    <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {scheduleOptions.map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Noise level</p>
+                  <Select value={profile.traits[3]} onValueChange={(value) => updateTrait(3, value)}>
+                    <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {noiseOptions.map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Cleanliness</p>
+                  <Select value={profile.traits[4]} onValueChange={(value) => updateTrait(4, value)}>
+                    <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {cleanlinessOptions.map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Pets</p>
+                  <Select value={profile.pets} onValueChange={(value) => setProfile({ ...profile, pets: value })}>
+                    <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {petsOptions.map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Guest policy</p>
+                  <Select
+                    value={profile.guestPolicy}
+                    onValueChange={(value) => setProfile({ ...profile, guestPolicy: value })}
+                  >
+                    <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {guestPolicyOptions.map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <p className="mb-1 font-['ABC_Diatype_Edu:Regular',sans-serif] text-[12px]">Substance use</p>
+                  <Select
+                    value={profile.substanceUse}
+                    onValueChange={(value) => setProfile({ ...profile, substanceUse: value })}
+                  >
+                    <SelectTrigger className="h-[34px] w-full rounded-[9px] border border-black/15 bg-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {substanceUseOptions.map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </div>
           </div>

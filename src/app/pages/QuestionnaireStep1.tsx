@@ -10,19 +10,32 @@ import {
 } from "../components/ui/select";
 import { Input } from "../components/ui/input";
 
+const step1Defaults = {
+  name: '',
+  month: '',
+  day: '',
+  year: '',
+  gender: '',
+  ethnicity: '',
+  occupation: '',
+  religion: '',
+  politics: '',
+} as const;
+
+function loadQuestionnaireStep1State() {
+  if (typeof window === 'undefined') return { ...step1Defaults };
+  try {
+    const raw = window.localStorage.getItem('questionnaireStep1');
+    if (!raw) return { ...step1Defaults };
+    return { ...step1Defaults, ...JSON.parse(raw) };
+  } catch {
+    return { ...step1Defaults };
+  }
+}
+
 export default function QuestionnaireStep1() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    name: '',
-    month: '',
-    day: '',
-    year: '',
-    gender: '',
-    ethnicity: '',
-    occupation: '',
-    religion: '',
-    politics: '',
-  });
+  const [formData, setFormData] = useState(loadQuestionnaireStep1State);
 
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   const days = Array.from({ length: 31 }, (_, i) => (i + 1).toString());
