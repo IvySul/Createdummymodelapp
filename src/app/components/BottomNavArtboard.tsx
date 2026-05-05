@@ -56,7 +56,7 @@ export default function BottomNavArtboard({ active }: Props) {
             fill={PEACH}
             stroke="none"
             strokeMiterlimit={10}
-            points="90.01,51.08 90.6,51.08 114.49,72.23 104.36,86.66 76.25,86.82 66.11,72.23"
+            points="76.25,72.23 104.36,72.23 104.36,86.66 76.25,86.82"
           />
         ) : null}
         <g stroke={STROKE} strokeWidth={0.77} fill="none">
