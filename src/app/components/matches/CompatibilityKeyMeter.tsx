@@ -78,15 +78,12 @@ export function CompatibilityKeyMeter({ value, className }: CompatibilityKeyMete
         <path
           d={keyPath}
           fill="none"
-          stroke="rgba(64,64,64,0.82)"
+          stroke={KEY_FILL}
           strokeWidth={0.9}
           strokeLinejoin="round"
           strokeLinecap="round"
         />
       </svg>
-      <p className="mt-2 text-center text-[13px] font-medium tabular-nums tracking-tight text-neutral-800">
-        {Math.round(pct)}%
-      </p>
     </div>
   );
 }
