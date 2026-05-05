@@ -1,6 +1,13 @@
 const PEACH = '#ffd4ae';
 const STROKE = '#000';
 
+/** Roof underside between pillars — where pillar x meets outer roof segments (stroke geometry). */
+const ROOF_LEFT_INNER_Y =
+  72.23 + ((51.08 - 72.23) * (76.25 - 66.11)) / (90.01 - 66.11);
+const ROOF_RIGHT_INNER_Y =
+  72.23 + ((51.08 - 72.23) * (104.36 - 114.49)) / (90.6 - 114.49);
+const ROOF_APEX_X = (90.01 + 90.6) / 2;
+
 export type BottomNavRoute = 'matches' | 'messages' | 'map' | 'profile';
 
 type Props = {
@@ -57,7 +64,7 @@ export default function BottomNavArtboard({ active }: Props) {
               fill={PEACH}
               stroke="none"
               strokeMiterlimit={10}
-              points="90.305,51.08 114.49,72.23 66.11,72.23"
+              points={`${ROOF_APEX_X},51.08 ${104.36},${ROOF_RIGHT_INNER_Y} ${76.25},${ROOF_LEFT_INNER_Y}`}
             />
             <polygon
               fill={PEACH}
