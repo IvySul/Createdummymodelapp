@@ -17,10 +17,10 @@ export function MatchCelebrationOverlay({ visible }: MatchCelebrationOverlayProp
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 z-[4000] bg-[#ffd4ae] grid place-items-center px-5 py-8 overflow-hidden">
-      <section className="w-full max-w-xl flex flex-col items-center gap-6">
+    <div className="fixed inset-0 z-[4000] flex justify-center pointer-events-auto">
+      <section className="w-full max-w-md min-h-dvh bg-[#ffd4ae] flex flex-col items-center justify-center gap-6 px-5 py-8 overflow-hidden">
         <h1
-          className="font-semibold text-zinc-900 text-center leading-[1.05] uppercase"
+          className="title-reveal font-semibold text-zinc-900 text-center leading-[1.05] uppercase"
           style={{ fontFamily: "'Open Sans', sans-serif", fontSize: "clamp(2.2rem, 8vw, 4.2rem)" }}
         >
           You Matched!
@@ -28,7 +28,7 @@ export function MatchCelebrationOverlay({ visible }: MatchCelebrationOverlayProp
 
         <div className="w-[min(88vw,320px)] aspect-[300/230] flex items-center justify-center overflow-visible">
           <svg
-            viewBox="0 0 300 220"
+            viewBox="0 -50 300 270"
             role="img"
             aria-label="You matched celebration icon"
             className="w-full h-full"
@@ -61,6 +61,12 @@ export function MatchCelebrationOverlay({ visible }: MatchCelebrationOverlayProp
           animation: roof-drop 1.05s cubic-bezier(0.18, 0.95, 0.2, 1) 2.62s forwards;
         }
 
+        .title-reveal {
+          opacity: 0;
+          transform: translateY(8px);
+          animation: title-in 420ms ease-out 3.72s forwards;
+        }
+
         @keyframes draw-stroke {
           from {
             stroke-dashoffset: 1;
@@ -82,6 +88,13 @@ export function MatchCelebrationOverlay({ visible }: MatchCelebrationOverlayProp
           }
           100% {
             transform: translateY(0) scale(1);
+          }
+        }
+
+        @keyframes title-in {
+          to {
+            opacity: 1;
+            transform: translateY(0);
           }
         }
       `}</style>
