@@ -42,7 +42,10 @@ export function MatchesLivingHabitsArtboard({
   substanceUse,
 }: MatchesLivingHabitsArtboardProps) {
   return (
-    <div data-no-swipe="true" className="mt-5 w-full">
+    <div
+      data-no-swipe="true"
+      className="w-full [margin-top:calc(1.75rem-100%*32/426.1)]"
+    >
       <MatchArtboardFrame>
       <svg
         viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
