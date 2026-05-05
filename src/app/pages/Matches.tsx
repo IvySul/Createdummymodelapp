@@ -23,6 +23,7 @@ function FilterSlidersIcon({ className }: { className?: string }) {
   );
 }
 import BottomNav from '../components/BottomNav';
+import { CompatibilityKeyMeter } from '../components/matches/CompatibilityKeyMeter';
 import { MatchesBasicInfoArtboard } from '../components/matches/MatchesBasicInfoArtboard';
 import { MatchesLivingHabitsArtboard } from '../components/matches/MatchesLivingHabitsArtboard';
 
@@ -117,6 +118,8 @@ const matches = Array.from({ length: 8 }, (_, i) => {
   pets: petsOptions[i % petsOptions.length],
   guestPolicy: guestPolicyOptions[i % guestPolicyOptions.length],
   substanceUse: substanceUseOptions[i % substanceUseOptions.length],
+  /** Dummy compatibility for the key meter (52–96%). */
+  compatibilityScore: 52 + ((i * 17 + 11) % 45),
 };
 });
 
@@ -450,6 +453,10 @@ export default function Matches() {
               {match.bio}
             </p>
           </div>
+        </div>
+
+        <div className="mb-6 flex justify-center px-6">
+          <CompatibilityKeyMeter key={match.id} value={match.compatibilityScore} className="h-[5.5rem]" />
         </div>
 
         <MatchesBasicInfoArtboard
