@@ -212,7 +212,7 @@ export default function Profile() {
         <div className="relative w-full">
           <button
             type="button"
-            className="absolute right-4 top-9 z-[30] rounded-full bg-white/95 p-2 text-neutral-900 shadow-[0_2px_10px_rgba(0,0,0,0.06)] ring-1 ring-black/10 hover:bg-white"
+            className="absolute right-4 top-4 z-[30] rounded-full bg-white/95 p-2 text-neutral-900 shadow-[0_2px_10px_rgba(0,0,0,0.06)] ring-1 ring-black/10 hover:bg-white"
             onClick={() => scrollToEditingSection('living')}
             aria-label="Edit living habits"
           >

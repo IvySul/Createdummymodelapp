@@ -16,28 +16,13 @@ export default function BottomNavArtboard({ active }: Props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 484.52 137.9"
+      viewBox="0 10 484.52 108"
       className="block h-auto w-full max-w-none select-none pointer-events-none"
+      preserveAspectRatio="xMidYMax meet"
       aria-hidden
     >
-      <defs>
-        <filter
-          id="bottom-nav-drop-shadow"
-          x={-10}
-          y={11}
-          width={508}
-          height={135}
-          filterUnits="userSpaceOnUse"
-        >
-          <feOffset dx="0" dy="7.96" />
-          <feGaussianBlur result="blur" stdDeviation={5.69} />
-          <feFlood floodColor="#939393" floodOpacity={0.5} />
-          <feComposite in2="blur" operator="in" />
-          <feComposite in="SourceGraphic" />
-        </filter>
-      </defs>
-      <g filter="url(#bottom-nav-drop-shadow)">
-        {/* Nearly full viewBox width so the bar matches full-bleed content in the max-w-md shell */}
+      <g>
+        {/* Drop shadow removed — can be clipped flush to the screen bottom */}
         <rect
           fill="#fff"
           stroke="#e4e4e4"

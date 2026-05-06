@@ -8,6 +8,8 @@
 .app-leaflet-root .leaflet-container {
   position: absolute !important;
   inset: 0 !important;
+  /* Nudge past the box bottom to hide a 1px seam above the fixed bottom nav on mobile. */
+  bottom: -2px !important;
   width: auto !important;
   height: auto !important;
   max-width: none !important;

@@ -31,28 +31,28 @@ export default function Chat() {
   };
 
   return (
-    <div className="relative isolate mx-auto flex min-h-screen w-full max-w-md flex-col overflow-x-hidden bg-white pb-24">
-      <div className="flex items-center gap-3 px-6 pt-12 pb-4 border-b border-[#e5e5e5]">
+    <div className="relative isolate mx-auto flex h-svh max-h-svh w-full max-w-md flex-col overflow-hidden bg-white pb-24">
+      <div className="flex shrink-0 items-center gap-3 border-b border-[#e5e5e5] px-6 pb-3 pt-[max(0.75rem,env(safe-area-inset-top,0px))]">
         <button type="button" onClick={() => navigate('/messages')} className="p-1 -ml-1">
           <ChevronLeft className="size-8" />
         </button>
         <button
           type="button"
           onClick={() => navigate('/profile')}
-          className="flex items-center gap-3 min-w-0 flex-1 text-left"
+          className="flex min-w-0 flex-1 items-center gap-3 text-left"
         >
-          <div className="size-11 rounded-full overflow-hidden bg-[#ebeff5] shrink-0">
-            <img src={conversation.image} alt="" className="w-full h-full object-cover" />
+          <div className="size-11 shrink-0 overflow-hidden rounded-full bg-[#ebeff5]">
+            <img src={conversation.image} alt="" className="h-full w-full object-cover" />
           </div>
-          <span className="text-[20px] text-black truncate">
+          <span className="truncate text-[20px] text-black">
             {conversation.name}
           </span>
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-6 py-6 space-y-3">
+      <div className="min-h-0 flex-1 overflow-y-auto px-6 py-4 space-y-3">
         {thread.length === 0 ? (
-          <p className="font-light text-[16px] text-black/60 text-center pt-8">
+          <p className="pt-6 text-center font-light text-[16px] text-black/60">
             No messages yet. Say hello!
           </p>
         ) : (
@@ -70,8 +70,8 @@ export default function Chat() {
         )}
       </div>
 
-      <div className="px-6 pb-2">
-        <div className="bg-[#ebeff5] rounded-[11px] px-4 py-2 flex items-center gap-2">
+      <div className="shrink-0 bg-white px-6 pb-2 pt-1">
+        <div className="flex items-center gap-2 rounded-[11px] bg-[#ebeff5] px-4 py-[0.4rem]">
           <input
             type="text"
             value={draft}
@@ -80,11 +80,11 @@ export default function Chat() {
               if (e.key === 'Enter') sendMessage();
             }}
             placeholder="Message..."
-            className="bg-transparent text-[16px] text-black outline-none flex-1 min-w-0"
+            className="min-w-0 flex-1 bg-transparent text-[16px] text-black outline-none"
           />
           <button
             type="button"
-            className="text-[14px] text-black/70 shrink-0"
+            className="shrink-0 text-[14px] text-black/70"
             onClick={sendMessage}
           >
             Send
