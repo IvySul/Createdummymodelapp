@@ -18,8 +18,8 @@ export default function Messages() {
   }, [query]);
 
   return (
-    <div className="relative isolate mx-auto min-h-screen w-full max-w-md overflow-x-hidden bg-white pb-24">
-      <div className="px-6 pt-12 mb-8">
+    <div className="relative isolate mx-auto min-h-screen w-full max-w-md overflow-x-hidden bg-white px-8 pb-24">
+      <div className="pt-12 mb-8">
         <div className="bg-[#ebeff5] h-[43px] rounded-[11px] px-4 flex items-center w-full">
           <input
             type="text"
@@ -31,7 +31,7 @@ export default function Messages() {
         </div>
       </div>
 
-      <div className="px-6 space-y-6">
+      <div className="space-y-6">
         {filtered.map((conversation) => (
           <button
             key={conversation.id}

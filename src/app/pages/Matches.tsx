@@ -283,10 +283,10 @@ export default function Matches() {
   const cardOpacity = 1 - swipeProgress * 0.18;
 
   return (
-    <div className="relative isolate mx-auto min-h-screen w-full max-w-md overflow-x-hidden bg-white pb-24">
+    <div className="relative isolate mx-auto min-h-screen w-full max-w-md overflow-x-hidden bg-white px-6 pb-24">
       <MatchCelebrationOverlay visible={showMatchOverlay} />
       {/* Header */}
-      <div className="flex items-center pt-12 mb-8">
+      <div className="flex items-center pt-6 mb-6">
         <button
           type="button"
           className="p-2 text-neutral-900"
@@ -441,7 +441,7 @@ export default function Matches() {
 
       <div className="overflow-x-hidden overflow-y-visible px-0" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
         {!match ? (
-          <div className="mx-6 mb-6 rounded-[30px] bg-[#ebeff5] p-8 text-center text-[18px]">
+          <div className="mb-6 rounded-[30px] bg-[#ebeff5] p-8 text-center text-[18px]">
             No more matches in this lineup.
           </div>
         ) : (

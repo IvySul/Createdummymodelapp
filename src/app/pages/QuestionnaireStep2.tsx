@@ -97,7 +97,7 @@ export default function QuestionnaireStep2() {
 
   return (
     <div className="relative isolate mx-auto min-h-screen w-full max-w-md overflow-x-hidden bg-white pb-24">
-      <div className="px-6 pt-12">
+      <div className="px-8 pt-10">
         <p className="text-[40px] text-black mb-8">
           Questionnaire
         </p>

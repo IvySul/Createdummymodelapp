@@ -123,8 +123,8 @@ export default function Profile() {
   };
 
   return (
-    <div className="relative isolate mx-auto min-h-screen w-full max-w-md overflow-x-hidden bg-white pb-24">
-      <div className="flex min-w-0 items-center gap-4 px-6 pt-12 mb-8">
+    <div className="relative isolate mx-auto min-h-screen w-full max-w-md overflow-x-hidden bg-white px-6 pb-24">
+      <div className="flex min-w-0 items-center gap-4 pt-6 mb-6">
         <div className="size-[58px] shrink-0 overflow-hidden rounded-full bg-[#eaddff] ring-1 ring-black/10">
           <img
             src={profile.image}

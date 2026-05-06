@@ -52,7 +52,7 @@ export default function QuestionnaireStep1() {
 
   return (
     <div className="relative isolate mx-auto min-h-screen w-full max-w-md overflow-x-hidden bg-white pb-24">
-      <div className="px-6 pt-12">
+      <div className="px-8 pt-10">
         <p className="text-[40px] text-black mb-12">
           Hello! tell us a little about yourself
         </p>
