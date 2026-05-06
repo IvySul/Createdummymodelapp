@@ -17,8 +17,8 @@ export default function BottomNav() {
   const active = activeRoute(pathname);
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[5000] flex justify-center px-0 pb-0">
-      <div className="pointer-events-auto w-full max-w-md">
+    <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[5000] flex w-full justify-center bg-white pb-[env(safe-area-inset-bottom,0px)]">
+      <div className="pointer-events-auto w-full max-w-md bg-white">
         <div className="relative w-full">
           <BottomNavArtboard active={active} />
 

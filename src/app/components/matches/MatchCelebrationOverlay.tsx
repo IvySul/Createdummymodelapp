@@ -17,8 +17,8 @@ export function MatchCelebrationOverlay({ visible }: MatchCelebrationOverlayProp
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 z-[4000] flex justify-center pointer-events-auto">
-      <section className="w-full max-w-md min-h-dvh bg-[#ffd4ae] flex flex-col items-center justify-center -translate-y-20 gap-5 px-5 py-8 overflow-hidden">
+    <div className="fixed inset-0 z-[6000] flex min-h-[100dvh] w-full min-w-0 flex-col bg-[#ffd4ae] pointer-events-auto pt-[env(safe-area-inset-top,0px)] pb-[env(safe-area-inset-bottom,0px)]">
+      <section className="flex min-h-0 flex-1 flex-col items-center justify-center gap-5 overflow-hidden px-5 py-8">
         <h1
           className="title-reveal font-semibold text-zinc-900 text-center leading-[1.05] uppercase"
           style={{ fontFamily: "'Open Sans', sans-serif", fontSize: "clamp(1.8rem, 6.6vw, 3.4rem)" }}
